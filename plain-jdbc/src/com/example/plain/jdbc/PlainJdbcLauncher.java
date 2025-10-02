@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class PlainJdbcLauncher {
-    public static void main(String[] args) {
-        SpringApplication.run(PlainJdbcLauncher.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(PlainJdbcLauncher.class, args);
+  }
 }

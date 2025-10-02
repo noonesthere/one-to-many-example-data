@@ -3,8 +3,8 @@ plugins {
     alias(libs.plugins.spring.dependency.management)
 }
 
-group = "com.example.data.jpa"
 
+group = "com.example.data.jpa"
 
 
 configurations {
@@ -23,4 +23,3 @@ dependencies {
 
     testRuntimeOnly(libs.junit.platform.launcher)
 }
-

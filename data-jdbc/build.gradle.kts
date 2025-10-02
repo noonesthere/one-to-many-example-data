@@ -3,8 +3,8 @@ plugins {
     alias(libs.plugins.spring.dependency.management)
 }
 
-group = "com.example.data.jdbc"
 
+group = "com.example.data.jdbc"
 
 
 sourceSets {
@@ -12,7 +12,6 @@ sourceSets {
         resources.srcDirs("db")
     }
 }
-
 
 
 configurations {
@@ -32,4 +31,3 @@ dependencies {
     testRuntimeOnly(libs.junit.platform.launcher)
 
 }
-
