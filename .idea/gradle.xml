@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleHome" value="" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/data-jdbc" />
+            <option value="$PROJECT_DIR$/data-jpa" />
+            <option value="$PROJECT_DIR$/plain-jdbc" />
+            <option value="$PROJECT_DIR$/scenarios" />
+            <option value="$PROJECT_DIR$/scenarios/inbound" />
+            <option value="$PROJECT_DIR$/scenarios/outbound" />
+            <option value="$PROJECT_DIR$/scenarios/usecases" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>
