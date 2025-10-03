@@ -3,6 +3,7 @@ plugins {
   alias(libs.plugins.spring.dependency.management)
 }
 
+
 base {
   archivesName = "data-jpa"
   group = "com.example.data.jpa"
@@ -17,8 +18,6 @@ configurations {
 
 
 dependencies {
-
-
   implementation(project(":scenarios"))
   implementation(project(":rest"))
   implementation(project(":data-jpa:persistence"))

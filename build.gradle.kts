@@ -9,6 +9,8 @@ plugins {
 
 
 subprojects {
+
+
   configurations.all {
     resolutionStrategy {
       eachDependency {
@@ -53,6 +55,7 @@ subprojects {
     }
   }
 
+
   tasks {
     withType<JavaCompile> {
       options.compilerArgs.add("-Xlint:all")
@@ -62,7 +65,6 @@ subprojects {
     withType<Jar> {
       duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     }
-
 
     withType<Test> {
       useJUnitPlatform()
@@ -78,6 +80,5 @@ subprojects {
       }
     }
   }
-
 
 }

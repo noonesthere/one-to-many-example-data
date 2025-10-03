@@ -1,8 +1,8 @@
-
 base {
   archivesName = "data-jdbc-persistence"
   group = "com.example.data.jdbc.persistence"
 }
+
 
 sourceSets {
   main {

@@ -8,6 +8,7 @@ base {
   group = "com.example.common.events"
 }
 
+
 dependencies {
   implementation(project(":common:types"))
 }

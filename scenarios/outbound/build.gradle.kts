@@ -3,6 +3,7 @@ base {
   group = "com.example.scenarios.outbound"
 }
 
+
 dependencies {
   implementation(project(":domain"))
 }
