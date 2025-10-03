@@ -10,6 +10,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/common" />
+            <option value="$PROJECT_DIR$/common/events" />
             <option value="$PROJECT_DIR$/common/types" />
             <option value="$PROJECT_DIR$/data-jdbc" />
             <option value="$PROJECT_DIR$/data-jdbc/persistence" />
