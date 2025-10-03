@@ -1,4 +1,4 @@
 package com.example.common.types;
 
-public class DomainEntity {
+public abstract class DomainEntity<T> {
 }

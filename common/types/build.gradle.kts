@@ -11,4 +11,5 @@ base {
 
 dependencies {
   api(libs.annotation.api) // non null nullable
+  api(libs.vavr)
 }

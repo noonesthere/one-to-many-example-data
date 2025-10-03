@@ -1,6 +1,7 @@
 rootProject.name = "one-to-many-example-data"
 
 include(":common:types")
+include(":common:events")
 
 include(":domain")
 include(":rest")

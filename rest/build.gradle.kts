@@ -4,9 +4,6 @@ base {
 }
 
 
-
-
-
 configurations {
   compileOnly {
     extendsFrom(configurations.annotationProcessor.get())
@@ -17,6 +14,7 @@ configurations {
 dependencies {
   implementation(project(":domain"))
   implementation(project(":scenarios:inbound"))
+  implementation(project(":scenarios:dto"))
 
   implementation(libs.spring.boot.starter.web)
 
