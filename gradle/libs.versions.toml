@@ -9,6 +9,9 @@ vavr = "0.10.7"
 [libraries]
 
 
+
+
+spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter", version.ref = "spring-boot"}
 spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "spring-boot" }
 
 spring-boot-starter-jdbc = { module = "org.springframework.boot:spring-boot-starter-jdbc", version.ref = "spring-boot" }

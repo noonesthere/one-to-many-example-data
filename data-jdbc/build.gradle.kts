@@ -22,6 +22,8 @@ dependencies {
   implementation(project(":rest"))
   implementation(project(":data-jdbc:persistence"))
 
+  implementation(libs.spring.boot.starter)
+
   annotationProcessor(libs.spring.boot.configuration.processor)
 
   testImplementation(libs.spring.boot.starter.test)

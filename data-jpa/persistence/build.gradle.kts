@@ -19,6 +19,9 @@ configurations {
 
 
 dependencies {
+
+
+  implementation(project(":common:types"))
   implementation(project(":domain"))
   implementation(project(":scenarios:outbound"))
 

@@ -17,11 +17,13 @@ configurations {
 
 
 dependencies {
-  implementation(project(":domain"))
+
+
   implementation(project(":scenarios"))
   implementation(project(":rest"))
   implementation(project(":data-jpa:persistence"))
 
+  implementation(libs.spring.boot.starter)
   annotationProcessor(libs.spring.boot.configuration.processor)
   testImplementation(libs.spring.boot.starter.test)
 
