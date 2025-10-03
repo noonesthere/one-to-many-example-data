@@ -1,4 +1,8 @@
-group = "com.example.scenarios.outbound"
+base {
+  archivesName = "outbound"
+  group = "com.example.scenarios.outbound"
+}
+
 
 
 

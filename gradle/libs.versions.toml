@@ -1,30 +1,34 @@
 [versions]
 
-
 spring-boot = "3.5.6"
 spring-dependency-management = "1.1.7"
 
-
+annotation-api = "2.1.1"
+inject-api = "2.0.1"
 [libraries]
 
 
-spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
+spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "spring-boot" }
 
-spring-boot-starter-jdbc = { module = "org.springframework.boot:spring-boot-starter-jdbc" }
+spring-boot-starter-jdbc = { module = "org.springframework.boot:spring-boot-starter-jdbc", version.ref = "spring-boot" }
 
-spring-boot-starter-data-jdbc = { module = "org.springframework.boot:spring-boot-starter-data-jdbc" }
+spring-boot-starter-data-jdbc = { module = "org.springframework.boot:spring-boot-starter-data-jdbc", version.ref = "spring-boot" }
 
-spring-boot-starter-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa" }
+spring-boot-starter-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "spring-boot" }
 
-spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot" }
 
 postgresql = { module = "org.postgresql:postgresql", version = "42.7.4" } # example driver
 
 h2 = { module = "com.h2database:h2", version = "2.3.232" }
 
-spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor" }
+spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor", version.ref = "spring-boot" }
 
-junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version = "1.12.2" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version = "5.12.2" }
+
+annotation-api = { module = "jakarta.annotation:jakarta.annotation-api", version.ref = "annotation-api" }
+inject-api = { module = "jakarta.inject:jakarta.inject-api", version.ref = "inject-api" }
 
 [plugins]
 

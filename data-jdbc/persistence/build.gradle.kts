@@ -1,11 +1,12 @@
-plugins {
-  alias(libs.plugins.spring.boot)
-  alias(libs.plugins.spring.dependency.management)
+base {
+  archivesName = "data-jdbc-persistence"
+  group = "com.example.data.jdbc.persistence"
 }
 
-base {
-  archivesName = "plain-jdbc"
-  group = "com.example.plain.jdbc"
+sourceSets {
+  main {
+    resources.srcDirs("db")
+  }
 }
 
 
@@ -15,15 +16,16 @@ configurations {
   }
 }
 
+
 dependencies {
   implementation(project(":domain"))
-  implementation(project(":scenarios"))
-  implementation(project(":rest"))
-  implementation(project(":plain-jdbc:persistence"))
+  implementation(project(":scenarios:outbound"))
+
+  implementation(libs.spring.boot.starter.data.jdbc)
+  runtimeOnly(libs.h2)
 
   annotationProcessor(libs.spring.boot.configuration.processor)
 
   testImplementation(libs.spring.boot.starter.test)
   testRuntimeOnly(libs.junit.platform.launcher)
 }
-

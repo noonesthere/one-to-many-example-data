@@ -9,13 +9,20 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/common" />
+            <option value="$PROJECT_DIR$/common/types" />
             <option value="$PROJECT_DIR$/data-jdbc" />
+            <option value="$PROJECT_DIR$/data-jdbc/persistence" />
             <option value="$PROJECT_DIR$/data-jpa" />
+            <option value="$PROJECT_DIR$/data-jpa/persistence" />
+            <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/plain-jdbc" />
+            <option value="$PROJECT_DIR$/plain-jdbc/persistence" />
+            <option value="$PROJECT_DIR$/rest" />
             <option value="$PROJECT_DIR$/scenarios" />
+            <option value="$PROJECT_DIR$/scenarios/dto" />
             <option value="$PROJECT_DIR$/scenarios/inbound" />
             <option value="$PROJECT_DIR$/scenarios/outbound" />
-            <option value="$PROJECT_DIR$/scenarios/usecases" />
           </set>
         </option>
       </GradleProjectSettings>

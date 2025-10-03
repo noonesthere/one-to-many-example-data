@@ -1,33 +1,31 @@
 plugins {
-    alias(libs.plugins.spring.boot)
-    alias(libs.plugins.spring.dependency.management)
+  alias(libs.plugins.spring.boot)
+  alias(libs.plugins.spring.dependency.management)
 }
 
-
-group = "com.example.data.jdbc"
-
-
-sourceSets {
-    main {
-        resources.srcDirs("db")
-    }
+base {
+  archivesName = "data-jdbc"
+  group = "com.example.data.jdbc"
 }
 
 
 configurations {
-    compileOnly {
-        extendsFrom(configurations.annotationProcessor.get())
-    }
+  compileOnly {
+    extendsFrom(configurations.annotationProcessor.get())
+  }
 }
 
 
 dependencies {
-    implementation(libs.spring.boot.starter.data.jdbc)
+  implementation(project(":domain"))
+  implementation(project(":scenarios"))
+  implementation(project(":rest"))
+  implementation(project(":data-jdbc:persistence"))
 
-    implementation(libs.spring.boot.starter.web)
-    annotationProcessor(libs.spring.boot.configuration.processor)
-    testImplementation(libs.spring.boot.starter.test)
+  annotationProcessor(libs.spring.boot.configuration.processor)
 
-    testRuntimeOnly(libs.junit.platform.launcher)
+  testImplementation(libs.spring.boot.starter.test)
 
+  testImplementation(libs.junit.jupiter)
+  testRuntimeOnly(libs.junit.platform.launcher)
 }

@@ -1,18 +1,18 @@
-pluginManagement {
-    repositories {
-        mavenCentral()
-        mavenLocal()
-    }
-}
-
 rootProject.name = "one-to-many-example-data"
 
+include(":common:types")
 
-include(":plain-jdbc")
-include(":data-jdbc")
-include(":data-jpa")
+include(":domain")
+include(":rest")
 
 include(":scenarios")
+include(":scenarios:dto")
 include(":scenarios:inbound")
 include(":scenarios:outbound")
-include(":scenarios:usecases")
+
+include(":plain-jdbc")
+include(":plain-jdbc:persistence")
+include(":data-jdbc")
+include(":data-jdbc:persistence")
+include(":data-jpa")
+include(":data-jpa:persistence")
