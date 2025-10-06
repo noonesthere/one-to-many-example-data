@@ -16,7 +16,7 @@ public record CategoryWebModel(
 
   private static CategoryWebModel from(Category category) {
     final var id = category.id.asLongValue();
-    return new CategoryWebModel(TSID.from(id).toString(), category.name.asStringValue());
+    return new CategoryWebModel(TSID.from(id).toString(), category.name().asStringValue());
   }
 
 }

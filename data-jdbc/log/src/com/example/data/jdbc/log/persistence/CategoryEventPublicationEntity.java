@@ -2,6 +2,7 @@ package com.example.data.jdbc.log.persistence;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.domain.Persistable;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.OffsetDateTime;
@@ -13,12 +14,18 @@ public class CategoryEventPublicationEntity implements Persistable<UUID> {
   @Id
   private UUID id;
 
+  @Column("EVENT_TYPE")
+  private String eventType;
+
+  @Column("PUBLICATION_DATE")
   private OffsetDateTime publicationDate;
 
+  @Column("SERIALIZED_EVENT")
   private String serializedEvent;
 
-  public CategoryEventPublicationEntity(UUID id, OffsetDateTime publicationDate, String serializedEvent) {
+  public CategoryEventPublicationEntity(UUID id, String eventType, OffsetDateTime publicationDate, String serializedEvent) {
     this.id = id;
+    this.eventType = eventType;
     this.publicationDate = publicationDate;
     this.serializedEvent = serializedEvent;
   }
@@ -38,5 +45,13 @@ public class CategoryEventPublicationEntity implements Persistable<UUID> {
 
   public String getSerializedEvent() {
     return serializedEvent;
+  }
+
+  public String getEventId() {
+    return eventType;
+  }
+
+  public void setEventId(String eventId) {
+    this.eventType = eventId;
   }
 }

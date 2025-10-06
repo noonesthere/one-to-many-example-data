@@ -1,7 +1,7 @@
 package com.example.data.jdbc.log.persistence;
 
 
-import com.example.domain.category.events.CategoryCreatedEvent;
+import com.example.domain.category.events.CategoryEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
@@ -19,12 +19,13 @@ class CategoryEventPublicationMapper {
     this.objectMapper = objectMapper;
   }
 
-  public CategoryEventPublicationEntity toEntity(CategoryCreatedEvent event) {
+  public CategoryEventPublicationEntity toEntity(CategoryEvent event) {
     try {
       final String serializedEvent = objectMapper.writeValueAsString(event);
 
       return new CategoryEventPublicationEntity(
         UUID.randomUUID(),
+        event.getClass().getCanonicalName(),
         OffsetDateTime.now(ZoneOffset.UTC),
         serializedEvent
       );

@@ -1,10 +1,9 @@
 package com.example.scenarios.outbound.category;
 
 import com.example.domain.category.Category;
-import com.example.domain.category.CategoryId;
 
 import java.util.List;
 
-public interface CategoryExtractor {
-  Category get(CategoryId id);
+public interface CategoriesExtractor {
+  List<Category> getAll();
 }

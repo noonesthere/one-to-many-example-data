@@ -3,14 +3,16 @@ package com.example.domain.category;
 import com.example.common.types.DomainEntity;
 import com.example.common.types.Version;
 import com.example.domain.category.commands.CreateCategoryCommand;
+import com.example.domain.category.commands.RenameCategoryCommand;
 import com.example.domain.category.events.CategoryCreatedEvent;
+import com.example.domain.category.events.CategoryRenamedEvent;
 import jakarta.annotation.Nullable;
 
 import java.time.Instant;
 
 public class Category extends DomainEntity<CategoryId> {
 
-  public final CategoryName name;
+  private CategoryName name;
   @Nullable
   private final Instant updatedAt;
   @Nullable
@@ -41,11 +43,21 @@ public class Category extends DomainEntity<CategoryId> {
     return category;
   }
 
+  public Category rename(RenameCategoryCommand command) {
+    this.name = command.name();
+    addEvent(CategoryRenamedEvent.create(id, name));
+    return this;
+  }
+
   public Instant updatedAt() {
     return updatedAt;
   }
 
   public Instant deletedAt() {
     return deletedAt;
+  }
+
+  public CategoryName name() {
+    return name;
   }
 }

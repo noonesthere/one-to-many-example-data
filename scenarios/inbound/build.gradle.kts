@@ -1,3 +1,7 @@
+plugins {
+  id("java-library")
+}
+
 base {
   archivesName = "inbound"
   group = "com.example.scenarios.inbound"
@@ -6,7 +10,7 @@ base {
 
 dependencies {
   implementation(project(":domain"))
-  implementation(project(":scenarios:dto"))
+  api(project(":scenarios:dto"))
 }
 
 

@@ -23,7 +23,7 @@ public record CategoryEntity (
   public static CategoryEntity from(Category category) {
     return new CategoryEntity(
       category.id.asLongValue(),
-      category.name.asStringValue(),
+      category.name().asStringValue(),
       category.updatedAt(),
       category.deletedAt(),
       category.version().value() - 1

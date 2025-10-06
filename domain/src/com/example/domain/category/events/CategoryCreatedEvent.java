@@ -1,6 +1,5 @@
 package com.example.domain.category.events;
 
-import com.example.common.types.DomainEvent;
 import com.example.domain.category.CategoryId;
 import com.example.domain.category.CategoryName;
 
@@ -12,7 +11,7 @@ public record CategoryCreatedEvent(
   Instant createdAt,
   Long categoryId,
   String categoryName
-) implements DomainEvent {
+) implements CategoryEvent {
 
 
   public static CategoryCreatedEvent create(CategoryId categoryId, CategoryName categoryName) {

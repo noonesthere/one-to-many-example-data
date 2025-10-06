@@ -2,7 +2,7 @@ package com.example.scenarios.category;
 
 import com.example.domain.category.Category;
 import com.example.scenarios.inbound.category.GetCategories;
-import com.example.scenarios.outbound.category.CategoryExtractor;
+import com.example.scenarios.outbound.category.CategoriesExtractor;
 import jakarta.inject.Named;
 
 import java.util.List;
@@ -10,9 +10,9 @@ import java.util.List;
 @Named
 class GetCategoriesUseCase implements GetCategories {
 
-  private final CategoryExtractor extractor;
+  private final CategoriesExtractor extractor;
 
-  GetCategoriesUseCase(CategoryExtractor extractor) {
+  GetCategoriesUseCase(CategoriesExtractor extractor) {
     this.extractor = extractor;
   }
 

@@ -1,14 +1,14 @@
 package com.example.data.jpa.persistence.category;
 
 import com.example.domain.category.Category;
-import com.example.scenarios.outbound.category.CategoryExtractor;
+import com.example.scenarios.outbound.category.CategoriesExtractor;
 import com.example.scenarios.outbound.category.CategoryPersister;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-class H2CategoryRepositoryAdapter implements CategoryPersister, CategoryExtractor {
+class H2CategoryRepositoryAdapter implements CategoryPersister, CategoriesExtractor {
 
   private final CategoryRepository repository;
 

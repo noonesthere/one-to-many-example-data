@@ -1,6 +1,7 @@
 package com.example.data.jdbc.log.persistence;
 
-import com.example.domain.category.events.CategoryCreatedEvent;
+import com.example.domain.category.events.CategoryEvent;
+import com.example.domain.category.events.CategoryRenamedEvent;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -16,7 +17,7 @@ public class H2CategoryEventRepositoryAdapter { // Skipped interface and other s
     this.mapper = mapper;
   }
 
-  public void persist(CategoryCreatedEvent event) {
+  public void persist(CategoryEvent event) {
     repository.save(mapper.toEntity(event));
   }
 }
