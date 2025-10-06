@@ -11,14 +11,14 @@ import java.time.Instant;
 public class Category extends DomainEntity<CategoryId> {
 
   public final CategoryName name;
-  private final Instant updatedAt;
-  private final Instant deletedAt;
+  @Nullable private final  Instant updatedAt;
+  @Nullable private final  Instant deletedAt;
 
   public Category(
     CategoryId categoryId,
     Version version,
     CategoryName name,
-    Instant updatedAt,
+    @Nullable Instant updatedAt,
     @Nullable Instant deletedAt
   ) {
     super(categoryId, version);

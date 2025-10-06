@@ -16,7 +16,7 @@ spring:
       path: /h2-console
 
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+#    database-platform: org.hibernate.dialect.H2SQLDialect
     hibernate:
       ddl-auto: update   # none | validate | update | create | create-drop
     show-sql: true        # log SQL to console
