@@ -1,4 +1,20 @@
 spring:
+  modulith:
+    events:
+      # Persist events in the database (enables Outbox pattern)
+      externalized: true
+
+      # Initialize the database schema automatically (creates EVENT_PUBLICATION table)
+      jdbc:
+        schema-initialization:
+          enabled: true
+
+      # Automatically republish any undelivered events on application startup
+      republish-outstanding-events-on-restart: true
+
+      # Optional: choose how events are serialized (default = Java serialization)
+      serializer: jackson
+
   datasource:
     url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     username: sa
@@ -9,6 +25,7 @@ spring:
       minimum-idle: 2
       idle-timeout: 30000
       connection-timeout: 20000
+
   h2:
     console:
       enabled: true
@@ -16,7 +33,7 @@ spring:
 
   sql:
     init:
-      mode: always     # always | embedded | never
+      mode: always
       schema-locations: classpath:schema.sql
       data-locations: classpath:data.sql
       encoding: UTF-8
@@ -26,3 +43,4 @@ logging:
     org.springframework.jdbc.core: DEBUG
     org.springframework.jdbc.datasource: DEBUG
     org.springframework.transaction: DEBUG
+    org.springframework.modulith.events: DEBUG

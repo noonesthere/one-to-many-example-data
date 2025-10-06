@@ -9,6 +9,7 @@ import com.example.scenarios.outbound.category.CategoryPersister;
 import com.example.scenarios.outbound.category.CategoryUpdater;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -27,6 +28,7 @@ class H2CategoryRepositoryAdapter implements CategoryPersister, CategoriesExtrac
     this.eventPublisher = eventPublisher;
   }
 
+  @Transactional
   @Override
   public Category persist(Category category) {
     final List<DomainEvent> domainEvents = category.popEvents();
@@ -48,6 +50,7 @@ class H2CategoryRepositoryAdapter implements CategoryPersister, CategoriesExtrac
     return all.stream().map(CategoryEntity::to).toList();
   }
 
+  @Transactional
   @Override
   public Category update(Category category) {
     final List<DomainEvent> domainEvents = category.popEvents();

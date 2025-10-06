@@ -1,4 +1,4 @@
-package com.example.rest;
+package com.example.rest.article;
 
 import com.example.scenarios.dto.ArticleDto;
 import com.example.scenarios.inbound.article.PostArticle;

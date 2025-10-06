@@ -3,6 +3,7 @@
 spring = "6.2.11"
 spring-boot = "3.5.6"
 spring-dependency-management = "1.1.7"
+spring-modulith  = "1.4.1"
 
 annotation-api = "2.1.1"
 inject-api = "2.0.1"

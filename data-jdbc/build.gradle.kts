@@ -23,7 +23,10 @@ dependencies {
   implementation(project(":data-jdbc:persistence"))
   implementation(project(":data-jdbc:log"))
 
-//  implementation("org.springframework.modulith:spring-modulith-starter-core")
+  implementation("org.springframework.modulith:spring-modulith-starter-core") // TODO move to toml
+  implementation("org.springframework.modulith:spring-modulith-events-jackson")
+  implementation("org.springframework.modulith:spring-modulith-events-jdbc")
+
   implementation(libs.spring.boot.starter)
   implementation(libs.spring.boot.starter.data.jdbc)
 
@@ -37,3 +40,11 @@ dependencies {
 
   testRuntimeOnly(libs.junit.platform.launcher)
 }
+
+dependencyManagement {
+  imports {
+    mavenBom("org.springframework.modulith:spring-modulith-bom:1.4.1") //TODO: use toml
+  }
+}
+
+
