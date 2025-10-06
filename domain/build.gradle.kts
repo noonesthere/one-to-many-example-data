@@ -9,6 +9,7 @@ base {
 
 
 dependencies {
+  implementation(project(":common:utilities"))
   api(project(":common:types"))
 }
 

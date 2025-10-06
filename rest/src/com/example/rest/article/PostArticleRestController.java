@@ -1,9 +1,9 @@
 package com.example.rest.article;
 
-import com.example.scenarios.dto.ArticleDto;
 import com.example.scenarios.inbound.article.PostArticle;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,10 +17,10 @@ class PostArticleRestController {
     this.postArticle = postArticle;
   }
 
-  @PostMapping
-  public ResponseEntity<?> postArticle(){
-    postArticle.post(new ArticleDto());
 
+  @PostMapping
+  public ResponseEntity<?> postArticle(@RequestBody PostArticleWebModel webModel) {
+    postArticle.post(webModel.to());
     return ResponseEntity.ok().build();
   }
 }

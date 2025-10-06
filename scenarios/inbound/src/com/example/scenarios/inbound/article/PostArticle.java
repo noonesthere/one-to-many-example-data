@@ -1,8 +1,8 @@
 package com.example.scenarios.inbound.article;
 
-import com.example.scenarios.dto.ArticleDto;
+import com.example.scenarios.dto.ArticleInput;
 
 public interface PostArticle {
 
-  void post(ArticleDto articleDto);
+  void post(ArticleInput articleInput);
 }

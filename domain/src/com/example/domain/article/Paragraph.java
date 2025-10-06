@@ -1,13 +1,20 @@
 package com.example.domain.article;
 
-public class Paragraph {
+import com.example.common.types.DomainEntity;
+import com.example.common.types.Version;
+
+public class Paragraph extends DomainEntity<ParagraphId> {
+
+  private final ArticleId articleId;
   private final String text;
 
-  public Paragraph(String text) {
+  protected Paragraph(ParagraphId id, Version version, ArticleId articleId, String text) {
+    super(id, version);
+    this.articleId = articleId;
     this.text = text;
   }
 
-  public String getText() {
-    return text;
+  public static Paragraph from(ArticleId articleId, ParagraphIdProvider provider, String text) {
+    return new Paragraph(provider.provide(), Version.newVersion(), articleId, text);
   }
 }

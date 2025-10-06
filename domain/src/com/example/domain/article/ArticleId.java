@@ -2,17 +2,17 @@ package com.example.domain.article;
 
 public class ArticleId {
 
-  private final String value;
+  private final Long value;
 
-  private ArticleId(String value) {
+  private ArticleId(Long value) {
     this.value = value;
   }
 
-  public String asString() {
+  public Long asLong() {
     return value;
   }
 
-  public static ArticleId from(String value) {
+  public static ArticleId from(Long value) {
     // validation
     return new ArticleId(value);
   }
