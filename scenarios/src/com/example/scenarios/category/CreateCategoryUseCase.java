@@ -30,6 +30,6 @@ class CreateCategoryUseCase implements CreateCategory {
     final var createCategoryCommand = new CreateCategoryCommand(categoryId, categoryName);
     final var category = Category.create(createCategoryCommand);
 
-    return persister.invoke(category);
+    return persister.persist(category);
   }
 }

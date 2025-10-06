@@ -1,4 +1,4 @@
-package com.example.data.jdbc.persistence;
+package com.example.plain.jdbc.persistence;
 
 import com.example.domain.category.Category;
 import com.example.scenarios.outbound.category.CategoryExtractor;
@@ -17,7 +17,7 @@ class H2CategoryRepositoryAdapter implements CategoryPersister, CategoryExtracto
   }
 
   @Override
-  public Category invoke(Category category) {
+  public Category persist(Category category) {
     final CategoryEntity entity = CategoryEntity.from(category);
 
     final var saved = categoryRepository.save(entity);
@@ -25,7 +25,7 @@ class H2CategoryRepositoryAdapter implements CategoryPersister, CategoryExtracto
   }
 
   @Override
-  public List<Category> invoke() {
+  public List<Category> getAll() {
     final List<CategoryEntity> all = categoryRepository.findAll();
     return all.stream().map(CategoryEntity::to).toList();
   }

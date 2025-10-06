@@ -1,13 +1,13 @@
-package com.example.data.jpa.persistence.category;
+package com.example.plain.jdbc.persistence;
 
 import com.example.domain.category.Category;
 import com.example.scenarios.outbound.category.CategoryExtractor;
 import com.example.scenarios.outbound.category.CategoryPersister;
-import org.springframework.stereotype.Component;
+import jakarta.inject.Named;
 
 import java.util.List;
 
-@Component
+@Named
 class H2CategoryRepositoryAdapter implements CategoryPersister, CategoryExtractor {
 
   private final CategoryRepository repository;
@@ -18,12 +18,12 @@ class H2CategoryRepositoryAdapter implements CategoryPersister, CategoryExtracto
 
   @Override
   public List<Category> getAll() {
-    return repository.findAll().stream().map(CategoryEntity::to).toList();
+    return repository.selectAll();
   }
 
   @Override
   public Category persist(Category category) {
-    final var entity = CategoryEntity.from(category);
-    return repository.save(entity).to();
+    return repository.insert(category);
   }
+
 }

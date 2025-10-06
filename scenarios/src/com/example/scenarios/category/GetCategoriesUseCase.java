@@ -18,6 +18,6 @@ class GetCategoriesUseCase implements GetCategories {
 
   @Override
   public List<Category> execute() {
-    return extractor.invoke();
+    return extractor.getAll();
   }
 }

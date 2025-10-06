@@ -1,4 +1,4 @@
-package com.example.data.jdbc.persistence;
+package com.example.plain.jdbc.persistence;
 
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.stereotype.Repository;

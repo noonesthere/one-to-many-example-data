@@ -5,5 +5,5 @@ import com.example.domain.category.Category;
 import java.util.List;
 
 public interface CategoryExtractor {
-  List<Category> invoke();
+  List<Category> getAll();
 }

@@ -1,6 +1,6 @@
 base {
   archivesName = "data-jdbc-persistence"
-  group = "com.example.data.jdbc.persistence"
+  group = "com.example.plain.jdbc.persistence"
 }
 
 
@@ -19,6 +19,8 @@ configurations {
 
 
 dependencies {
+  implementation(project(":common:utilities"))
+
   implementation(project(":domain"))
   implementation(project(":scenarios:outbound"))
 
