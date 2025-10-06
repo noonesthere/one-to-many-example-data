@@ -1,4 +1,4 @@
-package com.example.plain.jdbc.persistence;
+package com.example.data.jdbc.persistence;
 
 import com.example.domain.category.Category;
 import com.example.scenarios.outbound.category.CategoryExtractor;
