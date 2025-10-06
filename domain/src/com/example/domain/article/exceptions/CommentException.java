@@ -1,4 +1,4 @@
-package com.example.domain.exceptions;
+package com.example.domain.article.exceptions;
 
 import com.example.common.types.BusinessException;
 

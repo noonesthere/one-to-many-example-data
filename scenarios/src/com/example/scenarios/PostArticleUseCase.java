@@ -1,7 +1,7 @@
 package com.example.scenarios;
 
-import com.example.domain.Article;
-import com.example.domain.commands.PostArticleCommand;
+import com.example.domain.article.Article;
+import com.example.domain.article.commands.PostArticleCommand;
 import com.example.scenarios.dto.ArticleDto;
 import com.example.scenarios.inbound.PostArticle;
 import com.example.scenarios.outbound.ArticlePersister;
