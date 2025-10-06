@@ -1,7 +1,7 @@
 package com.example.rest;
 
 import com.example.scenarios.dto.ArticleDto;
-import com.example.scenarios.inbound.PostArticle;
+import com.example.scenarios.inbound.article.PostArticle;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

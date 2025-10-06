@@ -5,6 +5,7 @@ base {
 
 
 dependencies {
+  implementation(project(":domain"))
   implementation(project(":scenarios:dto"))
 }
 

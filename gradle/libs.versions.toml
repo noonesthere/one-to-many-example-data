@@ -8,7 +8,7 @@ inject-api = "2.0.1"
 vavr = "0.10.7"
 [libraries]
 
-
+hypersistence-tsid = { module = "io.hypersistence:hypersistence-tsid", version = "2.1.4"  }
 
 
 spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter", version.ref = "spring-boot"}

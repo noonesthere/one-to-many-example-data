@@ -1,9 +1,5 @@
 package com.example.domain.category;
 
-import com.example.domain.category.errors.CategoryNameError;
-import com.example.domain.category.errors.CategoryNameLengthOverflowError;
-import io.vavr.control.Either;
-
 import java.util.Objects;
 
 public class CategoryName {
@@ -20,16 +16,16 @@ public class CategoryName {
     return value;
   }
 
-  public static Either<CategoryNameError, CategoryName> fromStringValue(String value) {
+  public static CategoryName from(String value) {
 
     if (Objects.isNull(value) || value.isBlank()) {
-      return Either.left(new CategoryNameError());
+      throw new IllegalArgumentException();
     }
 
     if (value.length() > CATEGORY_NAME_LENGTH) {
-      return Either.left(new CategoryNameLengthOverflowError());
+      throw new IllegalArgumentException();
     }
 
-    return Either.right(new CategoryName(value));
+    return new CategoryName(value);
   }
 }

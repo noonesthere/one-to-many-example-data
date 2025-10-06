@@ -1,3 +1,7 @@
+plugins {
+  id("java-library")
+}
+
 base {
   archivesName = "domain"
   group = "com.example.domain"
@@ -5,7 +9,7 @@ base {
 
 
 dependencies {
-  implementation(project(":common:types"))
+  api(project(":common:types"))
 }
 
 

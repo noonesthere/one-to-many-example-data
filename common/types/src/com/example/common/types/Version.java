@@ -2,10 +2,6 @@ package com.example.common.types;
 
 public record Version(long value) {
 
-  public Long toLongValue() {
-    return value;
-  }
-
   Version next() {
     return new Version(value + 1);
   }

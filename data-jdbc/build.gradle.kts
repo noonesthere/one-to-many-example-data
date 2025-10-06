@@ -23,11 +23,15 @@ dependencies {
   implementation(project(":data-jdbc:persistence"))
 
   implementation(libs.spring.boot.starter)
+  implementation(libs.spring.boot.starter.data.jdbc)
+
+  runtimeOnly(libs.h2)
+
 
   annotationProcessor(libs.spring.boot.configuration.processor)
 
   testImplementation(libs.spring.boot.starter.test)
-
   testImplementation(libs.junit.jupiter)
+
   testRuntimeOnly(libs.junit.platform.launcher)
 }
