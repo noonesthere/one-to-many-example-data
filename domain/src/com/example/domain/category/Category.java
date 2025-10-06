@@ -32,7 +32,7 @@ public class Category extends DomainEntity<CategoryId> {
       command.categoryId(),
       Version.newVersion(),
       command.categoryName(),
-      Instant.now(),
+      null,
       null
     );
     category.addEvent(
