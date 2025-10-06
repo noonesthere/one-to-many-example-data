@@ -21,7 +21,9 @@ dependencies {
   implementation(project(":scenarios"))
   implementation(project(":rest"))
   implementation(project(":data-jdbc:persistence"))
+  implementation(project(":data-jdbc:log"))
 
+//  implementation("org.springframework.modulith:spring-modulith-starter-core")
   implementation(libs.spring.boot.starter)
   implementation(libs.spring.boot.starter.data.jdbc)
 

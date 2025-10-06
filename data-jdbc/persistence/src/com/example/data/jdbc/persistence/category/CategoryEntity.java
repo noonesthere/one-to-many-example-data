@@ -1,4 +1,4 @@
-package com.example.data.jdbc.persistence;
+package com.example.data.jdbc.persistence.category;
 
 import com.example.common.types.Version;
 import com.example.domain.category.Category;

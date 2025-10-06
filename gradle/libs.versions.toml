@@ -1,5 +1,6 @@
 [versions]
 
+spring = "6.2.11"
 spring-boot = "3.5.6"
 spring-dependency-management = "1.1.7"
 
@@ -8,10 +9,13 @@ inject-api = "2.0.1"
 vavr = "0.10.7"
 [libraries]
 
-hypersistence-tsid = { module = "io.hypersistence:hypersistence-tsid", version = "2.1.4"  }
+hypersistence-tsid = { module = "io.hypersistence:hypersistence-tsid", version = "2.1.4" }
 
+spring-context = { module = "org.springframework:spring-context", version.ref = "spring" }
+spring-core = { module = "org.springframework:spring-core", version.ref = "spring" }
+spring-tx = { module = "org.springframework:spring-tx", version.ref = "spring" }
 
-spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter", version.ref = "spring-boot"}
+spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter", version.ref = "spring-boot" }
 spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "spring-boot" }
 
 spring-boot-starter-jdbc = { module = "org.springframework.boot:spring-boot-starter-jdbc", version.ref = "spring-boot" }
@@ -36,6 +40,7 @@ inject-api = { module = "jakarta.inject:jakarta.inject-api", version.ref = "inje
 
 vavr = { module = "io.vavr:vavr", version.ref = "vavr" }
 
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version = "2.19.2" }
 [plugins]
 
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }

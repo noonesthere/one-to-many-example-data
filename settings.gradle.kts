@@ -14,7 +14,10 @@ include(":scenarios:outbound")
 
 include(":plain-jdbc")
 include(":plain-jdbc:persistence")
+
 include(":data-jdbc")
 include(":data-jdbc:persistence")
+include(":data-jdbc:log")
+
 include(":data-jpa")
 include(":data-jpa:persistence")
