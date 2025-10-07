@@ -35,6 +35,11 @@ class ArticleEventListener {
     handle(event);
   }
 
+  @ApplicationModuleListener
+  public void on(ParagraphEditedEvent event) {
+    handle(event);
+  }
+
   private void handle(ArticleEvent event) {
     System.out.println(" =================        Received event in right handler: " + event.getClass() + "=========================================");
     repositoryAdapter.persist(event);

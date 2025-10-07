@@ -7,10 +7,7 @@ import com.example.domain.article.commands.EditParagraphCommand;
 import com.example.domain.article.commands.PostArticleCommand;
 import com.example.domain.article.commands.RenameTitleCommand;
 import com.example.domain.article.commands.VoteCommand;
-import com.example.domain.article.events.ArticlePostedEvent;
-import com.example.domain.article.events.ArticleRateChangedEvent;
-import com.example.domain.article.events.ArticleTitleRenamedEvent;
-import com.example.domain.article.events.ParagraphAddedEvent;
+import com.example.domain.article.events.*;
 import com.example.domain.category.CategoryId;
 
 import java.time.Instant;
@@ -157,9 +154,18 @@ public class Article extends AggregateRoot<ArticleId> {
       throw new IllegalStateException("Paragraph can not be empty");
     }
 
+    final var paragraph = changeParagraph(command.paragraphId(), text);
+    addEvent(ParagraphEditedEvent.create(paragraph.articleId.asLongValue(), paragraph.id.asLongValue(), text));
+  }
+
+  private Paragraph changeParagraph(ParagraphId paragraphId, String text) {
     final var paragraph = paragraphs.stream()
-      .filter(p -> p.id.equals(command.paragraphId()))
-      .findFirst().get();
+      .filter(p -> p.id.equals(paragraphId))
+      .findFirst()
+      .get();
+
     paragraph.changeText(text);
+    updatedAt = Instant.now();
+    return paragraph;
   }
 }
