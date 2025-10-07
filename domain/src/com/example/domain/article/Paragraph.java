@@ -20,9 +20,11 @@ public class Paragraph extends DomainEntity<ParagraphId> {
   }
 
 
-
-
   public String text() {
     return text;
+  }
+
+  void changeText(String text) {
+    this.text = text;
   }
 }

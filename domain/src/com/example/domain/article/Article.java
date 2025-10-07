@@ -3,6 +3,7 @@ package com.example.domain.article;
 import com.example.common.types.AggregateRoot;
 import com.example.common.types.Version;
 import com.example.common.utilities.CollectionsUtils;
+import com.example.domain.article.commands.EditParagraphCommand;
 import com.example.domain.article.commands.PostArticleCommand;
 import com.example.domain.article.commands.RenameTitleCommand;
 import com.example.domain.article.commands.VoteCommand;
@@ -147,5 +148,18 @@ public class Article extends AggregateRoot<ArticleId> {
     addEvent(ArticleTitleRenamedEvent.create(id.asLongValue(), title.value()));
 
     return this;
+  }
+
+  public void editParagraph(EditParagraphCommand command) {
+    final String text = command.value();
+
+    if (Objects.isNull(text) || text.isBlank()) {
+      throw new IllegalStateException("Paragraph can not be empty");
+    }
+
+    final var paragraph = paragraphs.stream()
+      .filter(p -> p.id.equals(command.paragraphId()))
+      .findFirst().get();
+    paragraph.changeText(text);
   }
 }
