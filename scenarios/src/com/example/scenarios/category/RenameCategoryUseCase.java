@@ -4,7 +4,7 @@ import com.example.domain.category.Category;
 import com.example.domain.category.CategoryId;
 import com.example.domain.category.CategoryName;
 import com.example.domain.category.commands.RenameCategoryCommand;
-import com.example.scenarios.dto.RenamingCategoryDto;
+import com.example.scenarios.dto.category.RenamingCategoryDto;
 import com.example.scenarios.inbound.category.RenameCategory;
 import com.example.scenarios.outbound.category.CategoryExtractor;
 import com.example.scenarios.outbound.category.CategoryUpdater;

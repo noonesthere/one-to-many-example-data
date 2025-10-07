@@ -3,7 +3,9 @@ package com.example.data.jdbc.persistence.article;
 import com.example.common.types.DomainEvent;
 import com.example.common.utilities.CollectionsUtils;
 import com.example.domain.article.Article;
+import com.example.domain.article.ArticleId;
 import com.example.scenarios.outbound.ArticlePersister;
+import com.example.scenarios.outbound.article.ArticleExtractor;
 import com.example.scenarios.outbound.article.ArticlesExtractor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
@@ -12,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Component
-class H2RepositoryAdapter implements ArticlePersister, ArticlesExtractor {
+class H2RepositoryAdapter implements ArticlePersister, ArticlesExtractor, ArticleExtractor {
 
   private final ArticleRepository articleRepository;
   private final ApplicationEventPublisher eventPublisher;
@@ -45,5 +47,13 @@ class H2RepositoryAdapter implements ArticlePersister, ArticlesExtractor {
       .streamOf(articleRepository.findAll())
       .map(ArticleEntity::to)
       .toList();
+  }
+
+  @Override
+  public Article get(ArticleId id) {
+    return articleRepository
+      .findById(id.asLongValue())
+      .map(ArticleEntity::to)
+      .orElseThrow();
   }
 }

@@ -20,7 +20,7 @@ class PostArticleRestController {
 
   @PostMapping
   public ResponseEntity<?> postArticle(@RequestBody PostArticleWebModel webModel) {
-    postArticle.post(webModel.to());
+    postArticle.execute(webModel.to());
     return ResponseEntity.ok().build();
   }
 }

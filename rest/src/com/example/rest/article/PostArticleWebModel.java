@@ -1,6 +1,6 @@
 package com.example.rest.article;
 
-import com.example.scenarios.dto.ArticleInput;
+import com.example.scenarios.dto.article.ArticleInput;
 import io.hypersistence.tsid.TSID;
 
 import java.util.List;

@@ -6,6 +6,7 @@ import com.example.domain.article.Paragraph;
 import java.util.List;
 
 public record ArticleDto(
+  Long id,
   String title,
   List<String> paragraphs,
   Double rating
@@ -14,9 +15,10 @@ public record ArticleDto(
   public static ArticleDto from(Article article) {
     List<String> paragraphs = article.paragraphs().stream().map(Paragraph::text).toList();
     return new ArticleDto(
+      article.id.asLongValue(),
       article.title().asStringValue(),
       paragraphs,
-      article.rating().asDoubleValue()
+      article.rating().value()
     );
   }
 }

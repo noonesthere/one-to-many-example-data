@@ -5,7 +5,7 @@ import com.example.domain.article.ArticleIdProvider;
 import com.example.domain.article.ParagraphIdProvider;
 import com.example.domain.article.commands.PostArticleCommand;
 import com.example.domain.category.CategoryId;
-import com.example.scenarios.dto.ArticleInput;
+import com.example.scenarios.dto.article.ArticleInput;
 import com.example.scenarios.inbound.article.PostArticle;
 import com.example.scenarios.outbound.ArticlePersister;
 import com.example.scenarios.outbound.category.CategoryExtractor;
@@ -31,7 +31,7 @@ class PostArticleUseCase implements PostArticle {
   }
 
   @Override
-  public void post(ArticleInput articleInput) {
+  public void execute(ArticleInput articleInput) {
     final var articleId = articleIdProvider.provide();
     final var categoryId = CategoryId.from(articleInput.categoryId());
 

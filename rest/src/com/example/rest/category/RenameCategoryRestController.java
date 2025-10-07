@@ -1,6 +1,6 @@
 package com.example.rest.category;
 
-import com.example.scenarios.dto.RenamingCategoryDto;
+import com.example.scenarios.dto.category.RenamingCategoryDto;
 import com.example.scenarios.inbound.category.RenameCategory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,4 +1,4 @@
-package com.example.scenarios.dto;
+package com.example.scenarios.dto.article;
 
 import java.util.List;
 

@@ -12,6 +12,7 @@ configurations {
 
 
 dependencies {
+  implementation(project(":common:utilities"))
   implementation(project(":domain"))
   implementation(project(":scenarios:inbound"))
   implementation(project(":scenarios:dto"))

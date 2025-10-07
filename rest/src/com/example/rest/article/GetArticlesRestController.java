@@ -1,10 +1,13 @@
 package com.example.rest.article;
 
+import com.example.scenarios.dto.article.ArticleDto;
 import com.example.scenarios.inbound.article.GetArticles;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/articles")
@@ -19,6 +22,7 @@ class GetArticlesRestController {
 
   @GetMapping
   public ResponseEntity<?> get() {
-    return ResponseEntity.ok(getArticles.execute()); //Skipped mapping to WebModel
+    List<ArticleDto> dtos = getArticles.execute();
+    return ResponseEntity.ok(GetArticleWebModel.from(dtos)); //Skipped mapping to WebModel
   }
 }

@@ -4,9 +4,10 @@ import com.example.common.types.AggregateRoot;
 import com.example.common.types.Version;
 import com.example.common.utilities.CollectionsUtils;
 import com.example.domain.article.commands.PostArticleCommand;
+import com.example.domain.article.commands.VoteCommand;
 import com.example.domain.article.events.ArticlePostedEvent;
+import com.example.domain.article.events.ArticleRateChangedEvent;
 import com.example.domain.article.events.ParagraphAddedEvent;
-import com.example.domain.category.Category;
 import com.example.domain.category.CategoryId;
 
 import java.time.Instant;
@@ -17,7 +18,7 @@ import java.util.Objects;
 public class Article extends AggregateRoot<ArticleId> {
 
   private Title title;
-  private  CategoryId categoryId;
+  private CategoryId categoryId;
   private final List<Paragraph> paragraphs;
   private Rating rating;
   private final Instant publishedAt;
@@ -132,5 +133,10 @@ public class Article extends AggregateRoot<ArticleId> {
 
   public CategoryId categoryId() {
     return categoryId;
+  }
+
+  public void vote(VoteCommand command) {
+    rating = rating.addVote(command.grade());
+    addEvent(ArticleRateChangedEvent.create(id.asLongValue(), rating.value(), rating.count()));
   }
 }
