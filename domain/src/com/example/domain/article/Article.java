@@ -4,9 +4,11 @@ import com.example.common.types.AggregateRoot;
 import com.example.common.types.Version;
 import com.example.common.utilities.CollectionsUtils;
 import com.example.domain.article.commands.PostArticleCommand;
+import com.example.domain.article.commands.RenameTitleCommand;
 import com.example.domain.article.commands.VoteCommand;
 import com.example.domain.article.events.ArticlePostedEvent;
 import com.example.domain.article.events.ArticleRateChangedEvent;
+import com.example.domain.article.events.ArticleTitleRenamedEvent;
 import com.example.domain.article.events.ParagraphAddedEvent;
 import com.example.domain.category.CategoryId;
 
@@ -138,5 +140,12 @@ public class Article extends AggregateRoot<ArticleId> {
   public void vote(VoteCommand command) {
     rating = rating.addVote(command.grade());
     addEvent(ArticleRateChangedEvent.create(id.asLongValue(), rating.value(), rating.count()));
+  }
+
+  public Article renameTitle(RenameTitleCommand command) {
+    title = new Title(command.title());
+    addEvent(ArticleTitleRenamedEvent.create(id.asLongValue(), title.value()));
+
+    return this;
   }
 }

@@ -1,10 +1,7 @@
 package com.example.data.jdbc.log.article;
 
 import com.example.data.jdbc.log.persistence.article.H2ArticleEventRepositoryAdapter;
-import com.example.domain.article.events.ArticleEvent;
-import com.example.domain.article.events.ArticlePostedEvent;
-import com.example.domain.article.events.ArticleRateChangedEvent;
-import com.example.domain.article.events.ParagraphAddedEvent;
+import com.example.domain.article.events.*;
 import org.springframework.modulith.events.ApplicationModuleListener;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +27,11 @@ class ArticleEventListener {
 
   @ApplicationModuleListener
   public void on(ArticleRateChangedEvent event) {
+    handle(event);
+  }
+
+  @ApplicationModuleListener
+  public void on(ArticleTitleRenamedEvent event) {
     handle(event);
   }
 
