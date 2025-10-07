@@ -17,7 +17,7 @@ include(":plain-jdbc:persistence")
 
 include(":data-jdbc")
 include(":data-jdbc:persistence")
-include(":data-jdbc:log")
+include("::log")
 
 include(":data-jpa")
 include(":data-jpa:persistence")

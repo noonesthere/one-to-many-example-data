@@ -14,11 +14,11 @@
             <option value="$PROJECT_DIR$/common/types" />
             <option value="$PROJECT_DIR$/common/utilities" />
             <option value="$PROJECT_DIR$/data-jdbc" />
-            <option value="$PROJECT_DIR$/data-jdbc/log" />
             <option value="$PROJECT_DIR$/data-jdbc/persistence" />
             <option value="$PROJECT_DIR$/data-jpa" />
             <option value="$PROJECT_DIR$/data-jpa/persistence" />
             <option value="$PROJECT_DIR$/domain" />
+            <option value="$PROJECT_DIR$/log" />
             <option value="$PROJECT_DIR$/plain-jdbc" />
             <option value="$PROJECT_DIR$/plain-jdbc/persistence" />
             <option value="$PROJECT_DIR$/rest" />

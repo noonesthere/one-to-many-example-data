@@ -1,3 +1,5 @@
+
+
 base {
   archivesName = "data-jdbc-log"
   group = "com.example.data.jdbc.log"

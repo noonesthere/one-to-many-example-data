@@ -21,7 +21,7 @@ dependencies {
   implementation(project(":scenarios"))
   implementation(project(":rest"))
   implementation(project(":data-jdbc:persistence"))
-  implementation(project(":data-jdbc:log"))
+  implementation(project(":log"))
 
   implementation("org.springframework.modulith:spring-modulith-starter-core") // TODO move to toml
   implementation("org.springframework.modulith:spring-modulith-events-jackson")
