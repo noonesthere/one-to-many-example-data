@@ -12,4 +12,9 @@ public record ArticlePostedEvent(
   public static ArticlePostedEvent create(Long articleId, Instant publishedAt) {
     return new ArticlePostedEvent(UUID.randomUUID(), Instant.now(), articleId, publishedAt);
   }
+
+  @Override
+  public Long domainId() {
+    return articleId;
+  }
 }

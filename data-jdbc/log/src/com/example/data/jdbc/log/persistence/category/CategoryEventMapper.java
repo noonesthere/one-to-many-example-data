@@ -1,4 +1,4 @@
-package com.example.data.jdbc.log.persistence;
+package com.example.data.jdbc.log.persistence.category;
 
 
 import com.example.domain.category.events.CategoryEvent;
@@ -6,16 +6,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
 
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.UUID;
 
 @Component
-class CategoryEventPublicationMapper {
+class CategoryEventMapper {
 
   private final ObjectMapper objectMapper;
 
-  public CategoryEventPublicationMapper(ObjectMapper objectMapper) {
+  public CategoryEventMapper(ObjectMapper objectMapper) {
     this.objectMapper = objectMapper;
   }
 
@@ -25,9 +23,9 @@ class CategoryEventPublicationMapper {
 
       return new CategoryEventPublicationEntity(
         UUID.randomUUID(),
-        event.categoryId(),
+        event.domainId(),
         event.getClass().getCanonicalName(),
-        OffsetDateTime.now(ZoneOffset.UTC),
+        event.createdAt(), // OffsetDateTime.now(ZoneOffset.UTC),
         serializedEvent
       );
     } catch (JsonProcessingException e) {

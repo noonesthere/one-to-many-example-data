@@ -15,4 +15,9 @@ public record CategoryRenamedEvent(
   public static CategoryRenamedEvent create(CategoryId categoryId, CategoryName categoryName) {
     return new CategoryRenamedEvent(UUID.randomUUID(), Instant.now(), categoryId.asLongValue(), categoryName.asStringValue());
   }
+
+  @Override
+  public Long domainId() {
+    return categoryId;
+  }
 }

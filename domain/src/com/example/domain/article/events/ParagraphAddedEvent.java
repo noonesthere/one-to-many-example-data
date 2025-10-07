@@ -14,4 +14,10 @@ public record ParagraphAddedEvent(
   public static ParagraphAddedEvent create(Long articleId, Long paragraphId, String text) {
     return new ParagraphAddedEvent(UUID.randomUUID(), Instant.now(), articleId, paragraphId, text);
   }
+
+  @Override
+  public Long domainId() {
+    return articleId;
+  }
+
 }

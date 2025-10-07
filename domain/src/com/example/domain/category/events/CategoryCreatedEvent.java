@@ -16,4 +16,9 @@ public record CategoryCreatedEvent(
   public static CategoryCreatedEvent create(CategoryId categoryId, CategoryName categoryName) {
     return new CategoryCreatedEvent(UUID.randomUUID(), Instant.now(), categoryId.asLongValue(), categoryName.asStringValue());
   }
+
+  @Override
+  public Long domainId() {
+    return categoryId;
+  }
 }
