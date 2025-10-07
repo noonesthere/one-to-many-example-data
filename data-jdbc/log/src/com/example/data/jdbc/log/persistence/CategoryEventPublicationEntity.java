@@ -9,49 +9,24 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Table("CATEGORY_EVENT_PUBLICATION")
-public class CategoryEventPublicationEntity implements Persistable<UUID> {
+public record CategoryEventPublicationEntity(
+  @Id UUID id,
+  @Column("CATEGORY_ID") Long categoryId,
+  @Column("EVENT_TYPE") String eventType,
 
-  @Id
-  private UUID id;
+  @Column("PUBLICATION_DATE") OffsetDateTime publicationDate,
 
-  @Column("EVENT_TYPE")
-  private String eventType;
+  @Column("SERIALIZED_EVENT") String serializedEvent
+) implements Persistable<UUID> {
 
-  @Column("PUBLICATION_DATE")
-  private OffsetDateTime publicationDate;
 
-  @Column("SERIALIZED_EVENT")
-  private String serializedEvent;
-
-  public CategoryEventPublicationEntity(UUID id, String eventType, OffsetDateTime publicationDate, String serializedEvent) {
-    this.id = id;
-    this.eventType = eventType;
-    this.publicationDate = publicationDate;
-    this.serializedEvent = serializedEvent;
-  }
-
+  @Override
   public UUID getId() {
     return id;
   }
 
   @Override
   public boolean isNew() {
-    return true;
-  }
-
-  public OffsetDateTime getPublicationDate() {
-    return publicationDate;
-  }
-
-  public String getSerializedEvent() {
-    return serializedEvent;
-  }
-
-  public String getEventId() {
-    return eventType;
-  }
-
-  public void setEventId(String eventId) {
-    this.eventType = eventId;
+    return true; // prevent updating
   }
 }

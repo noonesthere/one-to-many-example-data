@@ -1,15 +1,6 @@
-
-
 base {
   archivesName = "data-jdbc-log"
   group = "com.example.data.jdbc.log"
-}
-
-
-sourceSets {
-  main {
-    resources.srcDirs("db")
-  }
 }
 
 

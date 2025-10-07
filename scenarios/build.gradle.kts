@@ -10,6 +10,7 @@ dependencies {
   implementation(libs.hypersistence.tsid)
 
   implementation(project(":common:types"))
+  implementation(project(":common:utilities"))
   implementation(project(":domain"))
   implementation(project(":scenarios:dto"))
   implementation(project(":scenarios:inbound"))

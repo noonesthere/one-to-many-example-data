@@ -10,4 +10,8 @@ public record Rating(Double value) {
     //validation
     return new Rating(value);
   }
+
+  public Double asDoubleValue(){
+    return value;
+  }
 }

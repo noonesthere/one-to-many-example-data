@@ -3,6 +3,10 @@ base {
   group = "com.example.scenarios.dto"
 }
 
+dependencies {
+  implementation(project(":domain"))
+}
+
 
 
 

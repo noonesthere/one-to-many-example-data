@@ -1,4 +1,4 @@
-package com.example.data.jdbc.log;
+package com.example.data.jdbc.log.category;
 
 import com.example.data.jdbc.log.persistence.H2CategoryEventRepositoryAdapter;
 import com.example.domain.category.events.CategoryCreatedEvent;

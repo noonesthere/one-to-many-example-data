@@ -8,7 +8,7 @@ public class ArticleId {
     this.value = value;
   }
 
-  public Long asLong() {
+  public Long asLongValue() {
     return value;
   }
 

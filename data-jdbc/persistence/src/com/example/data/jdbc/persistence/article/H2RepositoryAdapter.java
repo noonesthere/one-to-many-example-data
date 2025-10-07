@@ -1,27 +1,49 @@
 package com.example.data.jdbc.persistence.article;
 
 import com.example.common.types.DomainEvent;
+import com.example.common.utilities.CollectionsUtils;
 import com.example.domain.article.Article;
 import com.example.scenarios.outbound.ArticlePersister;
+import com.example.scenarios.outbound.article.ArticlesExtractor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Component
-class H2RepositoryAdapter implements ArticlePersister {
+class H2RepositoryAdapter implements ArticlePersister, ArticlesExtractor {
 
   private final ArticleRepository articleRepository;
+  private final ApplicationEventPublisher eventPublisher;
 
-  H2RepositoryAdapter(ArticleRepository articleRepository) {
+  H2RepositoryAdapter(
+    ArticleRepository articleRepository,
+    ApplicationEventPublisher eventPublisher
+  ) {
     this.articleRepository = articleRepository;
+    this.eventPublisher = eventPublisher;
+  }
+
+  @Transactional
+  @Override
+  public void persist(Article article) {
+    final List<DomainEvent> events = article.popEvents();
+
+    if (!events.isEmpty()) {
+      final ArticleEntity entity = ArticleEntity.from(article);
+      articleRepository.save(entity);
+      events.forEach(eventPublisher::publishEvent);
+    } else {
+      throw new IllegalStateException("Stub when persist");
+    }
   }
 
   @Override
-  public void persist(Article article) {
-    final List<DomainEvent> domainEvents = article.popEvents();
-
-    if (!domainEvents.isEmpty()) {
-      final  ArticleEntity entity = ArticleEntity.from(article);
-    }
+  public List<Article> findAll() {
+    return CollectionsUtils
+      .streamOf(articleRepository.findAll())
+      .map(ArticleEntity::to)
+      .toList();
   }
 }

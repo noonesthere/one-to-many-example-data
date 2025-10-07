@@ -5,23 +5,25 @@ import com.example.common.types.Version;
 import com.example.common.utilities.CollectionsUtils;
 import com.example.domain.article.commands.PostArticleCommand;
 import com.example.domain.article.events.ArticlePostedEvent;
+import com.example.domain.article.events.ParagraphAddedEvent;
 import com.example.domain.category.Category;
+import com.example.domain.category.CategoryId;
 
-import java.lang.module.ModuleDescriptor;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Article extends AggregateRoot<ArticleId> {
 
-  private final Title title;
-  private final Category category;
+  private Title title;
+  private  CategoryId categoryId;
   private final List<Paragraph> paragraphs;
-  private final Rating rating;
+  private Rating rating;
   private final Instant publishedAt;
-  private final Instant updatedAt;
-  private final Instant deletedAt;
-  private final ArticleStatus status;
+  private Instant updatedAt;
+  private Instant deletedAt;
+  private ArticleStatus status;
 
   public Article(
     ArticleId articleId,
@@ -29,7 +31,7 @@ public class Article extends AggregateRoot<ArticleId> {
     List<Paragraph> paragraphs,
     Rating rating,
     Version version,
-    Category category,
+    CategoryId categoryId,
     Instant publishedAt,
     Instant updatedAt,
     Instant deletedAt,
@@ -39,7 +41,7 @@ public class Article extends AggregateRoot<ArticleId> {
     this.title = title;
     this.paragraphs = paragraphs;
     this.rating = rating;
-    this.category = category;
+    this.categoryId = categoryId;
     this.publishedAt = publishedAt;
     this.updatedAt = updatedAt;
     this.deletedAt = deletedAt;
@@ -52,44 +54,83 @@ public class Article extends AggregateRoot<ArticleId> {
   ) {
 
     final var title = new Title(command.title());
-    final var paragraphs = map(command.articleId(), command.paragraphs(), paragraphIdProvider);
 
     final var article = new Article(
       command.articleId(),
       title,
-      paragraphs,
+      new ArrayList<>(),
       Rating.newRating(),
       Version.newVersion(),
-      command.category(),
+      command.categoryId(),
       Instant.now(),
       null,
       null,
       ArticleStatus.PUBLISHED
     );
-
-    final List<Long> pids = paragraphs.stream()
-      .map(p -> p.id().asLongValue())
-      .toList();
-
-    article.addEvent(new ArticlePostedEvent(article.id.asLong(), pids, article.publishedAt));
+    article.addEvent(ArticlePostedEvent.create(article.id.asLongValue(), article.publishedAt));
+    article.addParagraphs(command.paragraphs(), paragraphIdProvider);
     return article;
   }
 
-  private static List<Paragraph> map(ArticleId articleId, List<String> paragraphs, ParagraphIdProvider provider) {
+
+  private void addParagraphs(List<String> paragraphs, ParagraphIdProvider provider) {
     if (Objects.isNull(paragraphs)) {
       throw new IllegalStateException("Article should contain at least one Paragraph");
     }
 
     final List<String> filteredParagraphs = CollectionsUtils.streamOf(paragraphs)
       .filter(Objects::nonNull)
-      .filter(String::isBlank).toList();
+      .filter(text -> !text.isBlank())
+      .toList();
 
     if (filteredParagraphs.isEmpty()) {
       throw new IllegalStateException("Article should contain at least one non empty Paragraph");
     }
 
-    return filteredParagraphs.stream()
-      .map(text -> Paragraph.from(articleId, provider, text))
-      .toList();
+    // one more invariant example
+    if (filteredParagraphs.size() > 10) {
+      throw new IllegalStateException("Article should not contain more then 10 paragraphs.");
+    }
+    for (String text : filteredParagraphs) {
+      Paragraph paragraph = Paragraph.createNew(id, provider.provide(), text);
+      addParagraph(paragraph);
+    }
+  }
+
+  private void addParagraph(Paragraph paragraph) {
+    paragraphs.add(paragraph);
+    addEvent(ParagraphAddedEvent.create(paragraph.articleId.asLongValue(), paragraph.id.asLongValue(), paragraph.text()));
+  }
+
+  public Title title() {
+    return title;
+  }
+
+  public List<Paragraph> paragraphs() {
+    return List.copyOf(paragraphs);
+  }
+
+  public Rating rating() {
+    return rating;
+  }
+
+  public Instant publishedAt() {
+    return publishedAt;
+  }
+
+  public Instant updatedAt() {
+    return updatedAt;
+  }
+
+  public Instant deletedAt() {
+    return deletedAt;
+  }
+
+  public ArticleStatus status() {
+    return status;
+  }
+
+  public CategoryId categoryId() {
+    return categoryId;
   }
 }

@@ -1,6 +1,5 @@
 package com.example.domain.category.events;
 
-import com.example.common.types.DomainEvent;
 import com.example.domain.category.CategoryId;
 import com.example.domain.category.CategoryName;
 

@@ -1,7 +1,6 @@
 package com.example.data.jdbc.log.persistence;
 
 import com.example.domain.category.events.CategoryEvent;
-import com.example.domain.category.events.CategoryRenamedEvent;
 import org.springframework.stereotype.Repository;
 
 @Repository

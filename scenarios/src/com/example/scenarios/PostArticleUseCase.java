@@ -3,9 +3,7 @@ package com.example.scenarios;
 import com.example.domain.article.Article;
 import com.example.domain.article.ArticleIdProvider;
 import com.example.domain.article.ParagraphIdProvider;
-import com.example.domain.article.Title;
 import com.example.domain.article.commands.PostArticleCommand;
-import com.example.domain.category.Category;
 import com.example.domain.category.CategoryId;
 import com.example.scenarios.dto.ArticleInput;
 import com.example.scenarios.inbound.article.PostArticle;
@@ -35,9 +33,11 @@ class PostArticleUseCase implements PostArticle {
   @Override
   public void post(ArticleInput articleInput) {
     final var articleId = articleIdProvider.provide();
-    final var category = categoryExtractor.get(CategoryId.from(articleInput.categoryId())); //TODO: validate
+    final var categoryId = CategoryId.from(articleInput.categoryId());
 
-    final var command = new PostArticleCommand(articleId, articleInput.title(), articleInput.paragraphs(), category);
+    categoryExtractor.get(categoryId); // TODO: just stub for emulate invariant
+
+    final var command = new PostArticleCommand(articleId, articleInput.title(), articleInput.paragraphs(), categoryId);
 
     final var article = Article.post(command, paragraphIdProvider);
     articlePersister.persist(article);

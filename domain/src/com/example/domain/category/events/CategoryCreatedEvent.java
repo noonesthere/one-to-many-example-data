@@ -13,7 +13,6 @@ public record CategoryCreatedEvent(
   String categoryName
 ) implements CategoryEvent {
 
-
   public static CategoryCreatedEvent create(CategoryId categoryId, CategoryName categoryName) {
     return new CategoryCreatedEvent(UUID.randomUUID(), Instant.now(), categoryId.asLongValue(), categoryName.asStringValue());
   }

@@ -5,16 +5,24 @@ import com.example.common.types.Version;
 
 public class Paragraph extends DomainEntity<ParagraphId> {
 
-  private final ArticleId articleId;
-  private final String text;
+  public final ArticleId articleId;
+  private String text;
 
-  protected Paragraph(ParagraphId id, Version version, ArticleId articleId, String text) {
+  public Paragraph(ParagraphId id, Version version, ArticleId articleId, String text) {
     super(id, version);
     this.articleId = articleId;
     this.text = text;
   }
 
-  public static Paragraph from(ArticleId articleId, ParagraphIdProvider provider, String text) {
-    return new Paragraph(provider.provide(), Version.newVersion(), articleId, text);
+  static Paragraph createNew(ArticleId articleId, ParagraphId paragraphId, String text) {
+    //validation for text e.g filter buzz words
+    return new Paragraph(paragraphId, Version.newVersion(), articleId, text);
+  }
+
+
+
+
+  public String text() {
+    return text;
   }
 }
