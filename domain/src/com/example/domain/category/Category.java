@@ -31,11 +31,14 @@ public class Category extends DomainEntity<CategoryId> {
     this.deletedAt = deletedAt;
   }
 
-  public static Category create(CreateCategoryCommand command) {
+  public static Category create(CreateCategoryCommand command, CategoryIdProvider categoryIdGenerator) {
+    final var categoryId = categoryIdGenerator.provide();
+    final var categoryName = CategoryName.from(command.categoryName());
+
     final var category = new Category(
-      command.categoryId(),
+      categoryId,
       Version.newVersion(),
-      command.categoryName(),
+      categoryName,
       null,
       null
     );

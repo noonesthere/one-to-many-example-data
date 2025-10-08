@@ -2,7 +2,6 @@ package com.example.scenarios.category;
 
 import com.example.domain.category.Category;
 import com.example.domain.category.CategoryIdProvider;
-import com.example.domain.category.CategoryName;
 import com.example.domain.category.commands.CreateCategoryCommand;
 import com.example.scenarios.inbound.category.CreateCategory;
 import com.example.scenarios.outbound.category.CategoryPersister;
@@ -24,11 +23,8 @@ class CreateCategoryUseCase implements CreateCategory {
 
   @Override
   public Category execute(String name) {
-    final var categoryName = CategoryName.from(name);
-    final var categoryId = categoryIdGenerator.provide();
-
-    final var createCategoryCommand = new CreateCategoryCommand(categoryId, categoryName);
-    final var category = Category.create(createCategoryCommand);
+    final var createCategoryCommand = new CreateCategoryCommand(name);
+    final var category = Category.create(createCategoryCommand, categoryIdGenerator);
 
     return persister.persist(category);
   }
