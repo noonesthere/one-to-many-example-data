@@ -19,7 +19,6 @@ public class Paragraph extends DomainEntity<ParagraphId> {
     return new Paragraph(paragraphId, Version.newVersion(), articleId, text);
   }
 
-
   public String text() {
     return text;
   }

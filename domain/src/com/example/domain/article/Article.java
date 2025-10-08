@@ -39,6 +39,7 @@ public class Article extends AggregateRoot<ArticleId> {
     ArticleStatus status
   ) {
     super(articleId, version);
+
     this.title = title;
     this.paragraphs = paragraphs;
     this.rating = rating;
@@ -73,7 +74,6 @@ public class Article extends AggregateRoot<ArticleId> {
     return article;
   }
 
-
   private void addParagraphs(List<String> paragraphs, ParagraphIdProvider provider) {
     if (Objects.isNull(paragraphs)) {
       throw new IllegalStateException("Article should contain at least one Paragraph");
@@ -100,39 +100,13 @@ public class Article extends AggregateRoot<ArticleId> {
 
   private void addParagraph(Paragraph paragraph) {
     paragraphs.add(paragraph);
-    addEvent(ParagraphAddedEvent.create(paragraph.articleId.asLongValue(), paragraph.id.asLongValue(), paragraph.text()));
-  }
-
-  public Title title() {
-    return title;
-  }
-
-  public List<Paragraph> paragraphs() {
-    return List.copyOf(paragraphs);
-  }
-
-  public Rating rating() {
-    return rating;
-  }
-
-  public Instant publishedAt() {
-    return publishedAt;
-  }
-
-  public Instant updatedAt() {
-    return updatedAt;
-  }
-
-  public Instant deletedAt() {
-    return deletedAt;
-  }
-
-  public ArticleStatus status() {
-    return status;
-  }
-
-  public CategoryId categoryId() {
-    return categoryId;
+    addEvent(
+      ParagraphAddedEvent.create(
+        paragraph.articleId.asLongValue(),
+        paragraph.id.asLongValue(),
+        paragraph.text()
+      )
+    );
   }
 
   public void vote(VoteCommand command) {
@@ -167,5 +141,37 @@ public class Article extends AggregateRoot<ArticleId> {
     paragraph.changeText(text);
     updatedAt = Instant.now();
     return paragraph;
+  }
+
+  public Title title() {
+    return title;
+  }
+
+  public List<Paragraph> paragraphs() {
+    return List.copyOf(paragraphs);
+  }
+
+  public Rating rating() {
+    return rating;
+  }
+
+  public Instant publishedAt() {
+    return publishedAt;
+  }
+
+  public Instant updatedAt() {
+    return updatedAt;
+  }
+
+  public Instant deletedAt() {
+    return deletedAt;
+  }
+
+  public ArticleStatus status() {
+    return status;
+  }
+
+  public CategoryId categoryId() {
+    return categoryId;
   }
 }

@@ -5,12 +5,11 @@ public record Rating(
   Integer count
 ) {
   public static Rating newRating() {
-    // validation count should not be less then 0 rating cant be negative
     return new Rating(0d, 0);
   }
 
   public static Rating from(Double value, Integer count) {
-    //validation
+    // validation count should not be less then 0 rating cant be negative
     return new Rating(value, count);
   }
 
@@ -19,8 +18,8 @@ public record Rating(
       throw new IllegalArgumentException("Vote value must be between 0 and 10");
     }
 
-    double newValue = ((value * count) + grade) / (count + 1);
-    int newCount = count + 1;
+    final double newValue = ((value * count) + grade) / (count + 1);
+    final int newCount = count + 1;
 
     return new Rating(newValue, newCount);
   }

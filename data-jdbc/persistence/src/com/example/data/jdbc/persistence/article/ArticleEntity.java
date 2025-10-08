@@ -2,7 +2,12 @@ package com.example.data.jdbc.persistence.article;
 
 import com.example.common.types.Version;
 import com.example.common.utilities.CollectionsUtils;
-import com.example.domain.article.*;
+import com.example.domain.article.Article;
+import com.example.domain.article.ArticleId;
+import com.example.domain.article.ArticleStatus;
+import com.example.domain.article.Paragraph;
+import com.example.domain.article.Rating;
+import com.example.domain.article.Title;
 import com.example.domain.category.CategoryId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.domain.Persistable;
@@ -47,6 +52,7 @@ public record ArticleEntity(
   }
 
   Article to() {
+
     return new Article(
       ArticleId.from(id),
       new Title(title),
