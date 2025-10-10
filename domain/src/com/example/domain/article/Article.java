@@ -7,7 +7,11 @@ import com.example.domain.article.commands.EditParagraphCommand;
 import com.example.domain.article.commands.PostArticleCommand;
 import com.example.domain.article.commands.RenameTitleCommand;
 import com.example.domain.article.commands.VoteCommand;
-import com.example.domain.article.events.*;
+import com.example.domain.article.events.ArticlePostedEvent;
+import com.example.domain.article.events.ArticleRateChangedEvent;
+import com.example.domain.article.events.ArticleTitleRenamedEvent;
+import com.example.domain.article.events.ParagraphAddedEvent;
+import com.example.domain.article.events.ParagraphEditedEvent;
 import com.example.domain.category.CategoryId;
 
 import java.time.Instant;
