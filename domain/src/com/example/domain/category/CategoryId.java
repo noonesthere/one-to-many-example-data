@@ -2,22 +2,10 @@ package com.example.domain.category;
 
 import java.util.Objects;
 
-public class CategoryId {
-  private final Long value;
-
-  private CategoryId(Long value) {
-    this.value = value;
-  }
-
-  public Long asLongValue() {
-    return value;
-  }
-
-  public static CategoryId from(Long value) {
+public record CategoryId(Long value) {
+  public CategoryId {
     if (Objects.isNull(value)) {
       throw new IllegalArgumentException();
     }
-
-    return new CategoryId(value);
   }
 }

@@ -31,4 +31,5 @@ public abstract class DomainEntity<T> {
   public Version version() {
     return version;
   }
+
 }

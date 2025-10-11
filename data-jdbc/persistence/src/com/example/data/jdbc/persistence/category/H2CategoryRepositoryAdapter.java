@@ -69,7 +69,7 @@ class H2CategoryRepositoryAdapter implements CategoryPersister, CategoriesExtrac
   @Override
   public Category get(CategoryId id) {
     // TODO just simplified
-    return categoryRepository.findById(id.asLongValue())
+    return categoryRepository.findById(id.value())
       .map(CategoryEntity::to)
       .orElseThrow();
   }

@@ -25,12 +25,12 @@ class EditParagraphUseCase implements EditParagraph {
 
   @Override
   public void execute(EditParagraphInput input) {
-    final var id = ArticleId.from(input.articleId());
+    final var id = new ArticleId(input.articleId());
     final var paragraphId = new ParagraphId(input.paragraphId());
 
     final var article = extractor.get(id);
 
-    article.editParagraph(new EditParagraphCommand(id, paragraphId, input.value()));
+    article.editParagraph(new EditParagraphCommand(id, paragraphId, input.text()));
 
     persister.persist(article);
   }

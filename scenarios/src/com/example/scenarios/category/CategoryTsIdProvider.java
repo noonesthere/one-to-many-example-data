@@ -10,7 +10,7 @@ class CategoryTsIdProvider implements CategoryIdProvider {
   @Override
   public CategoryId provide() {
     final long aLong = TSID.Factory.getTsid().toLong();
-    return CategoryId.from(aLong);
+    return new CategoryId(aLong);
   }
 
 }

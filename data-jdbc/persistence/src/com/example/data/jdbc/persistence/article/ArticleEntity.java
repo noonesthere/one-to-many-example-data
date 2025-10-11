@@ -37,9 +37,9 @@ public record ArticleEntity(
 
   static ArticleEntity from(Article article) {
     return new ArticleEntity(
-      article.id.asLongValue(),
+      article.id.value(),
       article.title().asStringValue(),
-      article.categoryId().asLongValue(),
+      article.categoryId().value(),
       map(article.paragraphs()),
       article.rating().value(),
       article.rating().count(),
@@ -52,18 +52,19 @@ public record ArticleEntity(
   }
 
   Article to() {
-
     return new Article(
-      ArticleId.from(id),
+      new ArticleId(id),
       new Title(title),
-      CollectionsUtils.streamOf(paragraphs).map(ParagraphEntity::to).collect(Collectors.toList()),
       Rating.from(rating, voteCount),
       Version.from(version),
-      CategoryId.from(categoryId),
+      new CategoryId(categoryId),
       publishedAt,
       updatedAt,
       deletedAt,
-      ArticleStatus.from(status)
+      ArticleStatus.from(status),
+      (a) -> CollectionsUtils.streamOf(paragraphs)
+        .map(ParagraphEntity::to)
+        .collect(Collectors.toList())
     );
   }
 

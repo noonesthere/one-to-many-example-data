@@ -1,19 +1,9 @@
 package com.example.domain.article;
 
-public class ArticleId {
+import java.util.Objects;
 
-  private final Long value;
-
-  private ArticleId(Long value) {
-    this.value = value;
-  }
-
-  public Long asLongValue() {
-    return value;
-  }
-
-  public static ArticleId from(Long value) {
-    // validation
-    return new ArticleId(value);
+public record ArticleId(Long value) {
+  public ArticleId {
+    Objects.requireNonNull(value, "Invariant: value must not be null");
   }
 }

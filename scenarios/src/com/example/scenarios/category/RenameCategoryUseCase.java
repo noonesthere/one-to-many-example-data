@@ -23,7 +23,7 @@ class RenameCategoryUseCase implements RenameCategory {
 
   @Override
   public Category execute(RenamingCategoryDto dto) {
-    final var id = CategoryId.from(dto.id());
+    final var id = new CategoryId(dto.id());
     final var name = CategoryName.from(dto.name());
     final var category = extractor.get(id);
 

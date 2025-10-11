@@ -32,12 +32,11 @@ public class Category extends DomainEntity<CategoryId> {
   }
 
   public static Category create(CreateCategoryCommand command) {
-    final var categoryName = CategoryName.from(command.categoryName());
 
     final var category = new Category(
       command.categoryId(),
       Version.newVersion(),
-      categoryName,
+      command.categoryName(),
       null,
       null
     );

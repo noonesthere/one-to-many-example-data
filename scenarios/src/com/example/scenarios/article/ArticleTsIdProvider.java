@@ -9,6 +9,6 @@ import jakarta.inject.Named;
 class ArticleTsIdProvider implements ArticleIdProvider {
   @Override
   public ArticleId provide() {
-    return ArticleId.from(TSID.Factory.getTsid().toLong());
+    return new ArticleId(TSID.Factory.getTsid().toLong());
   }
 }

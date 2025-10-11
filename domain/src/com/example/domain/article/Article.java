@@ -2,7 +2,6 @@ package com.example.domain.article;
 
 import com.example.common.types.AggregateRoot;
 import com.example.common.types.Version;
-import com.example.common.utilities.CollectionsUtils;
 import com.example.domain.article.commands.EditParagraphCommand;
 import com.example.domain.article.commands.PostArticleCommand;
 import com.example.domain.article.commands.RenameTitleCommand;
@@ -33,118 +32,83 @@ public class Article extends AggregateRoot<ArticleId> {
   public Article(
     ArticleId articleId,
     Title title,
-    List<Paragraph> paragraphs,
     Rating rating,
     Version version,
     CategoryId categoryId,
     Instant publishedAt,
     Instant updatedAt,
     Instant deletedAt,
-    ArticleStatus status
+    ArticleStatus status,
+    ParagraphsSupplier paragraphsSupplier
   ) {
     super(articleId, version);
-
-    this.title = title;
-    this.paragraphs = paragraphs;
-    this.rating = rating;
-    this.categoryId = categoryId;
-    this.publishedAt = publishedAt;
+    // TODO: add invariants
+    this.title = Objects.requireNonNull(title);
+    this.rating = Objects.requireNonNull(rating);
+    this.categoryId = Objects.requireNonNull(categoryId);
+    this.publishedAt = Objects.requireNonNull(publishedAt);
     this.updatedAt = updatedAt;
     this.deletedAt = deletedAt;
-    this.status = status;
+    this.status = Objects.requireNonNull(status);
+    this.paragraphs = Objects.requireNonNull(Objects.requireNonNull(paragraphsSupplier).apply(this));
   }
 
-  public static Article post(
-    PostArticleCommand command,
-    ParagraphIdProvider paragraphIdProvider
-  ) {
-
-    final var title = new Title(command.title());
+  public static Article post(PostArticleCommand command) {
 
     final var article = new Article(
       command.articleId(),
-      title,
-      new ArrayList<>(),
+      command.title(),
       Rating.newRating(),
       Version.newVersion(),
       command.categoryId(),
       Instant.now(),
       null,
       null,
-      ArticleStatus.PUBLISHED
+      ArticleStatus.PUBLISHED,
+      (a) -> {
+        a.addEvent(ArticlePostedEvent.create(a.id.value(), a.publishedAt));
+
+        final List<Paragraph> ps = new ArrayList<>();
+        for (Paragraph p : command.paragraphs()) {
+          ps.add(p);
+          a.addEvent(
+            ParagraphAddedEvent.create(a.id.value(), p.id.asLongValue(), p.text())
+          );
+        }
+
+        return ps;
+      }
+
     );
-    article.addEvent(ArticlePostedEvent.create(article.id.asLongValue(), article.publishedAt));
-    article.addParagraphs(command.paragraphs(), paragraphIdProvider);
     return article;
-  }
-
-  private void addParagraphs(List<String> paragraphs, ParagraphIdProvider provider) {
-    if (Objects.isNull(paragraphs)) {
-      throw new IllegalStateException("Article should contain at least one Paragraph");
-    }
-
-    final List<String> filteredParagraphs = CollectionsUtils.streamOf(paragraphs)
-      .filter(Objects::nonNull)
-      .filter(text -> !text.isBlank())
-      .toList();
-
-    if (filteredParagraphs.isEmpty()) {
-      throw new IllegalStateException("Article should contain at least one non empty Paragraph");
-    }
-
-    // one more invariant example
-    if (filteredParagraphs.size() > 10) {
-      throw new IllegalStateException("Article should not contain more then 10 paragraphs.");
-    }
-    for (String text : filteredParagraphs) {
-      Paragraph paragraph = Paragraph.createNew(id, provider.provide(), text);
-      addParagraph(paragraph);
-    }
-  }
-
-  private void addParagraph(Paragraph paragraph) {
-    paragraphs.add(paragraph);
-    addEvent(
-      ParagraphAddedEvent.create(
-        paragraph.articleId.asLongValue(),
-        paragraph.id.asLongValue(),
-        paragraph.text()
-      )
-    );
   }
 
   public void vote(VoteCommand command) {
     rating = rating.addVote(command.grade());
-    addEvent(ArticleRateChangedEvent.create(id.asLongValue(), rating.value(), rating.count()));
+    addEvent(ArticleRateChangedEvent.create(id.value(), rating.value(), rating.count()));
+    updatedAt = Instant.now();
   }
 
   public Article renameTitle(RenameTitleCommand command) {
-    title = new Title(command.title());
-    addEvent(ArticleTitleRenamedEvent.create(id.asLongValue(), title.value()));
-
+    final var articleTitleRenamedEvent = ArticleTitleRenamedEvent.create(
+      command.articleId().value(),
+      command.title().value()
+    );
+    addEvent(articleTitleRenamedEvent);
     return this;
   }
 
   public void editParagraph(EditParagraphCommand command) {
-    final String text = command.value();
+    final String text = command.text();
 
     if (Objects.isNull(text) || text.isBlank()) {
       throw new IllegalStateException("Paragraph can not be empty");
     }
 
     final var paragraph = changeParagraph(command.paragraphId(), text);
-    addEvent(ParagraphEditedEvent.create(paragraph.articleId.asLongValue(), paragraph.id.asLongValue(), text));
-  }
-
-  private Paragraph changeParagraph(ParagraphId paragraphId, String text) {
-    final var paragraph = paragraphs.stream()
-      .filter(p -> p.id.equals(paragraphId))
-      .findFirst()
-      .get();
-
-    paragraph.changeText(text);
-    updatedAt = Instant.now();
-    return paragraph;
+    addEvent(
+      ParagraphEditedEvent.create(paragraph.articleId.value(), paragraph.id.asLongValue(), text)
+    );
   }
 
   public Title title() {
@@ -178,4 +142,20 @@ public class Article extends AggregateRoot<ArticleId> {
   public CategoryId categoryId() {
     return categoryId;
   }
+
+  private Paragraph changeParagraph(ParagraphId paragraphId, String text) {
+    final var paragraph = paragraphs.stream()
+      .filter(p -> p.id.equals(paragraphId))
+      .findFirst()
+      .get(); // TODO: fixme
+
+    paragraph.changeText(text);
+    updatedAt = Instant.now();
+    return paragraph;
+  }
+
+//  private void addParagraphs(List<Paragraph> paragraphs) {
+//
+//
+//  }
 }

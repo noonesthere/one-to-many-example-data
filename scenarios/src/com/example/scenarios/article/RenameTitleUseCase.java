@@ -1,6 +1,7 @@
 package com.example.scenarios.article;
 
 import com.example.domain.article.ArticleId;
+import com.example.domain.article.Title;
 import com.example.domain.article.commands.RenameTitleCommand;
 import com.example.scenarios.dto.article.RenameTitleInput;
 import com.example.scenarios.inbound.article.RenameTitle;
@@ -21,9 +22,14 @@ class RenameTitleUseCase implements RenameTitle {
 
   @Override
   public void execute(RenameTitleInput input) {
-    final var id = ArticleId.from(input.articleId());
-    final var article = articleExtractor.get(id);
-    article.renameTitle(new RenameTitleCommand(input.title()));
+
+    final var articleId = new ArticleId(input.articleId());
+    final var article = articleExtractor.get(articleId);
+    final var title = new Title(input.title());
+
+    final var command = new RenameTitleCommand(articleId, title);
+
+    article.renameTitle(command);
 
     persister.persist(article);
   }

@@ -13,7 +13,7 @@ public record CategoryRenamedEvent(
   String categoryName
 ) implements CategoryEvent {
   public static CategoryRenamedEvent create(CategoryId categoryId, CategoryName categoryName) {
-    return new CategoryRenamedEvent(UUID.randomUUID(), Instant.now(), categoryId.asLongValue(), categoryName.asStringValue());
+    return new CategoryRenamedEvent(UUID.randomUUID(), Instant.now(), categoryId.value(), categoryName.asStringValue());
   }
 
   @Override

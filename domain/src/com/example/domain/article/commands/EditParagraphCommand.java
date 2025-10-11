@@ -6,6 +6,6 @@ import com.example.domain.article.ParagraphId;
 public record EditParagraphCommand(
   ArticleId articleId,
   ParagraphId paragraphId,
-  String value
+  String text
 ) {
 }
