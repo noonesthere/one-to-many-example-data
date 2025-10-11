@@ -5,7 +5,11 @@ import com.example.common.types.Version;
 import com.example.domain.article.ArticleId;
 import com.example.domain.article.Paragraph;
 import com.example.domain.article.ParagraphId;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "PARAGRAPH")
@@ -47,7 +51,7 @@ public class ParagraphEntity {
     return new Paragraph(
       new ParagraphId(id),
       Version.from(version),
-      ArticleId.from(articleId),
+      new ArticleId(articleId),
       text
     );
   }

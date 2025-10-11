@@ -2,6 +2,7 @@ package com.example.domain.article;
 
 import com.example.common.types.AggregateRoot;
 import com.example.common.types.Version;
+import com.example.domain.article.commands.ChangeCategoryCommand;
 import com.example.domain.article.commands.EditParagraphCommand;
 import com.example.domain.article.commands.PostArticleCommand;
 import com.example.domain.article.commands.RenameTitleCommand;
@@ -9,6 +10,7 @@ import com.example.domain.article.commands.VoteCommand;
 import com.example.domain.article.events.ArticlePostedEvent;
 import com.example.domain.article.events.ArticleRateChangedEvent;
 import com.example.domain.article.events.ArticleTitleRenamedEvent;
+import com.example.domain.article.events.CategoryChangedEvent;
 import com.example.domain.article.events.ParagraphAddedEvent;
 import com.example.domain.article.events.ParagraphEditedEvent;
 import com.example.domain.category.CategoryId;
@@ -66,7 +68,7 @@ public class Article extends AggregateRoot<ArticleId> {
       null,
       ArticleStatus.PUBLISHED,
       (a) -> {
-        a.addEvent(ArticlePostedEvent.create(a.id.value(), a.publishedAt));
+        a.addEvent(ArticlePostedEvent.create(a.id.value(), a.publishedAt, a.categoryId.value()));
 
         final List<Paragraph> ps = new ArrayList<>();
         for (Paragraph p : command.paragraphs()) {
@@ -86,7 +88,6 @@ public class Article extends AggregateRoot<ArticleId> {
   public void vote(VoteCommand command) {
     rating = rating.addVote(command.grade());
     addEvent(ArticleRateChangedEvent.create(id.value(), rating.value(), rating.count()));
-    updatedAt = Instant.now();
   }
 
   public Article renameTitle(RenameTitleCommand command) {
@@ -95,6 +96,12 @@ public class Article extends AggregateRoot<ArticleId> {
       command.title().value()
     );
     addEvent(articleTitleRenamedEvent);
+    return this;
+  }
+
+  public Article changeCategory(ChangeCategoryCommand command) {
+    categoryId = command.categoryId();
+    addEvent(CategoryChangedEvent.create(id.value(), categoryId.value()));
     return this;
   }
 
@@ -150,12 +157,11 @@ public class Article extends AggregateRoot<ArticleId> {
       .get(); // TODO: fixme
 
     paragraph.changeText(text);
-    updatedAt = Instant.now();
     return paragraph;
   }
 
-//  private void addParagraphs(List<Paragraph> paragraphs) {
-//
-//
-//  }
+  @Override
+  protected void update() {
+    this.updatedAt = Instant.now();
+  }
 }

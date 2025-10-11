@@ -17,9 +17,5 @@ public record Version(long value) {
   public static Version from(Long value) {
     return new Version(value);
   }
-
-  public Long asLongValue(){
-    return value;
-  }
 }
 

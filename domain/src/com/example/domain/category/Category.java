@@ -14,7 +14,7 @@ public class Category extends DomainEntity<CategoryId> {
 
   private CategoryName name;
   @Nullable
-  private final Instant updatedAt;
+  private Instant updatedAt;
   @Nullable
   private final Instant deletedAt;
 
@@ -60,5 +60,10 @@ public class Category extends DomainEntity<CategoryId> {
 
   public CategoryName name() {
     return name;
+  }
+
+  @Override
+  protected void update() {
+    updatedAt = Instant.now();
   }
 }

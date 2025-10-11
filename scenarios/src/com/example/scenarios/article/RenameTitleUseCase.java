@@ -5,8 +5,8 @@ import com.example.domain.article.Title;
 import com.example.domain.article.commands.RenameTitleCommand;
 import com.example.scenarios.dto.article.RenameTitleInput;
 import com.example.scenarios.inbound.article.RenameTitle;
-import com.example.scenarios.outbound.ArticlePersister;
 import com.example.scenarios.outbound.article.ArticleExtractor;
+import com.example.scenarios.outbound.article.ArticlePersister;
 import jakarta.inject.Named;
 
 @Named
@@ -29,8 +29,6 @@ class RenameTitleUseCase implements RenameTitle {
 
     final var command = new RenameTitleCommand(articleId, title);
 
-    article.renameTitle(command);
-
-    persister.persist(article);
+    persister.persist(article.renameTitle(command));
   }
 }

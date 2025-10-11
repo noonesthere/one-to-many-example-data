@@ -5,7 +5,7 @@ import com.example.domain.article.ParagraphId;
 import com.example.domain.article.commands.EditParagraphCommand;
 import com.example.scenarios.dto.article.EditParagraphInput;
 import com.example.scenarios.inbound.article.EditParagraph;
-import com.example.scenarios.outbound.ArticlePersister;
+import com.example.scenarios.outbound.article.ArticlePersister;
 import com.example.scenarios.outbound.article.ArticleExtractor;
 import jakarta.inject.Named;
 

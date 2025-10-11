@@ -60,4 +60,9 @@ public class Paragraph extends DomainEntity<ParagraphId> {
   void changeText(String text) {
     this.text = text;
   }
+
+  @Override
+  protected void update() {
+    // simplified domain entity
+  }
 }

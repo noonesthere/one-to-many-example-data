@@ -9,7 +9,7 @@ import com.example.domain.article.commands.PostArticleCommand;
 import com.example.domain.category.CategoryId;
 import com.example.scenarios.dto.article.ArticleInput;
 import com.example.scenarios.inbound.article.PostArticle;
-import com.example.scenarios.outbound.ArticlePersister;
+import com.example.scenarios.outbound.article.ArticlePersister;
 import com.example.scenarios.outbound.category.CategoryExtractor;
 import jakarta.inject.Named;
 
@@ -36,6 +36,7 @@ class PostArticleUseCase implements PostArticle {
 
   @Override
   public void execute(ArticleInput articleInput) {
+
     final var articleId = articleIdProvider.provide();
     final var categoryId = new CategoryId(articleInput.categoryId());
     final var title = new Title(articleInput.title());
@@ -46,7 +47,6 @@ class PostArticleUseCase implements PostArticle {
 
     final var command = new PostArticleCommand(articleId, title, paragraphs, categoryId);
 
-    final var article = Article.post(command);
-    articlePersister.persist(article);
+    articlePersister.persist(Article.post(command));
   }
 }

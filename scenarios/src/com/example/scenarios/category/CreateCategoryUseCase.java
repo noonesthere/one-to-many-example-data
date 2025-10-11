@@ -25,7 +25,7 @@ class CreateCategoryUseCase implements CreateCategory {
   @Override
   public Category execute(String name) {
     final var categoryId = categoryIdGenerator.provide();
-    final var categoryName = CategoryName.from(name);
+    final var categoryName = new CategoryName(name);
     final var createCategoryCommand = new CreateCategoryCommand(categoryId, categoryName);
     final var category = Category.create(createCategoryCommand);
 

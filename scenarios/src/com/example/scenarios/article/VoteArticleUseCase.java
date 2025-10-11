@@ -4,7 +4,7 @@ import com.example.domain.article.ArticleId;
 import com.example.domain.article.commands.VoteCommand;
 import com.example.scenarios.dto.article.VoteArticleInput;
 import com.example.scenarios.inbound.article.VoteArticle;
-import com.example.scenarios.outbound.ArticlePersister;
+import com.example.scenarios.outbound.article.ArticlePersister;
 import com.example.scenarios.outbound.article.ArticleExtractor;
 import jakarta.inject.Named;
 

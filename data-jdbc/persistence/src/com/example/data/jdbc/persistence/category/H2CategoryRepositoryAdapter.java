@@ -15,33 +15,30 @@ import java.util.List;
 import java.util.Objects;
 
 @Component
-class H2CategoryRepositoryAdapter implements CategoryPersister, CategoriesExtractor, CategoryUpdater, CategoryExtractor {
+class H2CategoryRepositoryAdapter implements
+  CategoryPersister,
+  CategoriesExtractor,
+  CategoryUpdater,
+  CategoryExtractor {
 
+  private final H2PartialCategoryUpdater h2PartialCategoryUpdater;
   private final CategoryRepository categoryRepository;
   private final ApplicationEventPublisher eventPublisher;
 
   H2CategoryRepositoryAdapter(
-    CategoryRepository categoryRepository,
+    H2PartialCategoryUpdater h2PartialCategoryUpdater, CategoryRepository categoryRepository,
     ApplicationEventPublisher eventPublisher
   ) {
+    this.h2PartialCategoryUpdater = h2PartialCategoryUpdater;
     this.categoryRepository = categoryRepository;
     this.eventPublisher = eventPublisher;
   }
 
-  @Transactional
   @Override
-  public Category persist(Category category) {
-    final List<DomainEvent> domainEvents = category.popEvents();
-
-    if (Objects.nonNull(domainEvents)) {
-      final CategoryEntity entity = CategoryEntity.from(category);
-
-      final var saved = categoryRepository.save(entity);
-      domainEvents.forEach(eventPublisher::publishEvent);
-      return saved.to();
-    } else {
-      throw new IllegalStateException("Stub "); // TODO: fix me
-    }
+  public Category get(CategoryId id) {
+    return categoryRepository.findById(id.value())
+      .map(CategoryEntity::to)
+      .orElseThrow();
   }
 
   @Override
@@ -52,12 +49,11 @@ class H2CategoryRepositoryAdapter implements CategoryPersister, CategoriesExtrac
 
   @Transactional
   @Override
-  public Category update(Category category) {
+  public Category persist(Category category) {
     final List<DomainEvent> domainEvents = category.popEvents();
 
     if (Objects.nonNull(domainEvents)) {
       final CategoryEntity entity = CategoryEntity.from(category);
-
       final var saved = categoryRepository.save(entity);
       domainEvents.forEach(eventPublisher::publishEvent);
       return saved.to();
@@ -66,12 +62,18 @@ class H2CategoryRepositoryAdapter implements CategoryPersister, CategoriesExtrac
     }
   }
 
+  @Transactional
   @Override
-  public Category get(CategoryId id) {
-    // TODO just simplified
-    return categoryRepository.findById(id.value())
-      .map(CategoryEntity::to)
-      .orElseThrow();
-  }
+  public Category update(Category category) {
+    final List<DomainEvent> domainEvents = category.popEvents();
 
+    if (Objects.nonNull(domainEvents)) {
+      final CategoryEntity entity = CategoryEntity.from(category);
+      final CategoryEntity updated = h2PartialCategoryUpdater.renameCategory(entity);
+      domainEvents.forEach(eventPublisher::publishEvent);
+      return updated.to();
+    } else {
+      throw new IllegalStateException("Stub "); // TODO: fix me
+    }
+  }
 }

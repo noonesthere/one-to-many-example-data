@@ -47,7 +47,7 @@ public record ArticleEntity(
       article.updatedAt(),
       article.deletedAt(),
       article.status().id,
-      article.version().asLongValue() - 1
+      article.version().value() - 1
     );
   }
 

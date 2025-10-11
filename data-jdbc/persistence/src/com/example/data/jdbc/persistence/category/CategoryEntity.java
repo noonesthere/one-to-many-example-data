@@ -25,7 +25,7 @@ public record CategoryEntity(
   static CategoryEntity from(Category category) {
     return new CategoryEntity(
       category.id.value(),
-      category.name().asStringValue(),
+      category.name().value(),
       category.updatedAt(),
       category.deletedAt(),
       category.version().value() - 1
@@ -36,7 +36,7 @@ public record CategoryEntity(
     return new Category(
       new CategoryId(id),
       Version.from(version),
-      CategoryName.from(name),
+      new CategoryName(name),
       updatedAt,
       deletedAt
     );
