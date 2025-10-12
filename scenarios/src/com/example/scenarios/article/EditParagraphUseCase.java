@@ -4,16 +4,16 @@ import com.example.domain.article.commands.EditParagraphCommand;
 import com.example.scenarios.dto.article.EditParagraphInput;
 import com.example.scenarios.inbound.article.EditParagraph;
 import com.example.scenarios.outbound.article.ArticleExtractor;
-import com.example.scenarios.outbound.article.ArticleParagraphEditor;
+import com.example.scenarios.outbound.article.ArticleUpdater;
 import jakarta.inject.Named;
 
 @Named
 class EditParagraphUseCase implements EditParagraph {
 
   private final ArticleExtractor articleExtractor;
-  private final ArticleParagraphEditor articleUpdater;
+  private final ArticleUpdater articleUpdater;
 
-  EditParagraphUseCase(ArticleExtractor articleExtractor, ArticleParagraphEditor articleUpdater) {
+  EditParagraphUseCase(ArticleExtractor articleExtractor, ArticleUpdater articleUpdater) {
     this.articleExtractor = articleExtractor;
     this.articleUpdater = articleUpdater;
   }
@@ -24,6 +24,6 @@ class EditParagraphUseCase implements EditParagraph {
     // TODO: can be different approach use single paragraph and then update article
     final var article = articleExtractor.get(command.articleId());
     article.editParagraph(command);
-    articleUpdater.changeParagraph(article);
+    articleUpdater.update(article);
   }
 }

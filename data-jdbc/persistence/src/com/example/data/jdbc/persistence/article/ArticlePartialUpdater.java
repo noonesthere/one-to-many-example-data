@@ -1,148 +1,113 @@
 package com.example.data.jdbc.persistence.article;
 
-import com.example.common.types.DomainEvent;
-import com.example.data.jdbc.persistence.PartialUpdater;
-import com.example.domain.article.Article;
 import com.example.domain.article.events.ArticleRateChangedEvent;
 import com.example.domain.article.events.ArticleTitleRenamedEvent;
 import com.example.domain.article.events.CategoryChangedEvent;
 import com.example.domain.article.events.ParagraphEditedEvent;
 import com.example.domain.article.events.ParagraphRemovedEvent;
-import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @Component
-class ArticlePartialUpdater implements PartialUpdater<Article> {
+class ArticlePartialUpdater {
 
   private final NamedParameterJdbcTemplate jdbcTemplate;
-  private final ApplicationEventPublisher eventPublisher;
 
   ArticlePartialUpdater(
-    NamedParameterJdbcTemplate jdbcTemplate, ApplicationEventPublisher eventPublisher
+    NamedParameterJdbcTemplate jdbcTemplate
   ) {
     this.jdbcTemplate = jdbcTemplate;
-    this.eventPublisher = eventPublisher;
   }
 
-  @Transactional
-  @Override
-  public int update(DomainEvent event, Article article) {
-    final var entity = ArticleEntity.from(article);
-
-    // can be changed be EventListener
-    final int result = switch (event) {
-      case ArticleTitleRenamedEvent e -> updateTitle(e, entity);
-      case CategoryChangedEvent e -> updateCategory(e, entity);
-      case ArticleRateChangedEvent e -> updateRate(e, entity);
-      case ParagraphEditedEvent e -> updateParagraph(e, entity);
-      case ParagraphRemovedEvent e -> deleteParagraph(e, entity);
-      // use for testing purposes
-      default -> throw new UnsupportedOperationException("Unsupported event " + event);
-    };
-    eventPublisher.publishEvent(event);
-
-    return result;
-  }
-
-  private int updateTitle(ArticleTitleRenamedEvent e, ArticleEntity entity) {
+  @EventListener
+  int updateTitle(ArticleTitleRenamedEvent event) {
     final var mapSqlParameterSource = new MapSqlParameterSource();
-    mapSqlParameterSource.addValue("updatedAt", entity.updatedAt());
-    mapSqlParameterSource.addValue("title", e.title());
-    mapSqlParameterSource.addValue("id", e.articleId());
-    mapSqlParameterSource.addValue("previous", entity.version() - 1);
-    mapSqlParameterSource.addValue("version", entity.version());
+    mapSqlParameterSource.addValue("title", event.title());
+    mapSqlParameterSource.addValue("id", event.articleId());
+    mapSqlParameterSource.addValue("previous", event.previousVersion());
+    mapSqlParameterSource.addValue("version", event.previousVersion() + 1);
 
     return jdbcTemplate.update(
       """
-        UPDATE ARTICLE SET UPDATED_AT = :updatedAt, TITLE = :title  VERSION = :version
+        UPDATE ARTICLE SET TITLE = :title  VERSION = :version
         WHERE ID = :id AND VERSION = :previous
         """,
       mapSqlParameterSource
     );
   }
 
-  private int deleteParagraph(ParagraphRemovedEvent e, ArticleEntity entity) {
+
+  @EventListener
+  int deleteParagraph(ParagraphRemovedEvent event) {
     final var mapSqlParameterSource = new MapSqlParameterSource();
-    mapSqlParameterSource.addValue("updatedAt", entity.updatedAt());
-    mapSqlParameterSource.addValue("id", entity.id());
-    mapSqlParameterSource.addValue("previous", entity.version() - 1);
-    mapSqlParameterSource.addValue("version", entity.version());
+    mapSqlParameterSource.addValue("id", event.articleId());
+    mapSqlParameterSource.addValue("previous", event.previousVersion());
+    mapSqlParameterSource.addValue("version", event.previousVersion() + 1);
 
     jdbcTemplate.update(
-      "UPDATE ARTICLE SET UPDATED_AT = :updatedAt, VERSION = :version WHERE ID = :id AND VERSION = :previous",
+      "UPDATE ARTICLE SET VERSION = :version WHERE ID = :id AND VERSION = :previous",
       mapSqlParameterSource
     );
 
     return jdbcTemplate.update(
-      "DELETE FROM PARAGRAPH WHERE ID  = :id", new MapSqlParameterSource("id", e.paragraphId())
+      "DELETE FROM PARAGRAPH WHERE ID  = :id", new MapSqlParameterSource("id", event.paragraphId())
     );
   }
 
-  int updateParagraph(ParagraphEditedEvent e, ArticleEntity entity) {
+  @EventListener
+  int updateParagraph(ParagraphEditedEvent event) {
     final var mapSqlParameterSource = new MapSqlParameterSource();
-    mapSqlParameterSource.addValue("updatedAt", entity.updatedAt());
-    mapSqlParameterSource.addValue("id", entity.id());
-    mapSqlParameterSource.addValue("previous", entity.version() - 1);
-    mapSqlParameterSource.addValue("version", entity.version());
+    mapSqlParameterSource.addValue("id", event.articleId());
+    mapSqlParameterSource.addValue("previous", event.previousVersion());
+    mapSqlParameterSource.addValue("version", event.previousVersion() + 1);
 
     jdbcTemplate.update(
-      "UPDATE ARTICLE SET UPDATED_AT = :updatedAt, VERSION = :version WHERE ID = :id AND VERSION = :previous",
+      "UPDATE ARTICLE SET VERSION = :version WHERE ID = :id AND VERSION = :previous",
       mapSqlParameterSource
     );
-
-    final ParagraphEntity paragraphEntity = entity.paragraphs().stream()
-      .filter(paragraph -> paragraph.id().equals(e.paragraphId()))
-      .findFirst()
-      .orElseThrow();
 
     final var params = new MapSqlParameterSource();
-    params.addValue("id", paragraphEntity.id());
-    params.addValue("text", paragraphEntity.text());
-    params.addValue("previous", entity.version() - 1);
-    params.addValue("version", entity.version());
+    params.addValue("id", event.paragraphId());
+    params.addValue("text", event.text());
+    //TODO: we can add Version and o/l for paragraphs skipped for simplicity
 
     return jdbcTemplate.update(
-      "UPDATE PARAGRAPH SET TEXT =:text, VERSION=:version WHERE ID = :id AND VERSION = :previous", params
+      "UPDATE PARAGRAPH SET TEXT =:text WHERE ID = :id", params
     );
   }
 
-  private int updateRate(ArticleRateChangedEvent e, ArticleEntity entity) {
+  @EventListener
+  int updateRate(ArticleRateChangedEvent event) {
     final var mapSqlParameterSource = new MapSqlParameterSource();
-    mapSqlParameterSource.addValue("rating", entity.rating());
-    mapSqlParameterSource.addValue("count", entity.voteCount());
-    mapSqlParameterSource.addValue("updatedAt", entity.updatedAt());
-    mapSqlParameterSource.addValue("version", entity.version());
+    mapSqlParameterSource.addValue("rating", event.rating());
+    mapSqlParameterSource.addValue("count", event.count());
+    mapSqlParameterSource.addValue("version", event.previousVersion() + 1);
 
-    mapSqlParameterSource.addValue("id", entity.id());
-    mapSqlParameterSource.addValue("previous", entity.version() - 1); // TODO: fix me
+    mapSqlParameterSource.addValue("id", event.articleId());
+    mapSqlParameterSource.addValue("previous", event.previousVersion());
 
-//    RATING
-//      VOTE_COUNT
     return jdbcTemplate.update(
       """
-        UPDATE ARTICLE SET RATING = :rating, VOTE_COUNT = :count, UPDATED_AT = :updatedAt, VERSION = :version
+        UPDATE ARTICLE SET RATING = :rating, VOTE_COUNT = :count, VERSION = :version
         WHERE ID = :id AND VERSION = :previous
         """,
       mapSqlParameterSource
     );
   }
 
-  private int updateCategory(CategoryChangedEvent e, ArticleEntity entity) {
+  @EventListener
+  int updateCategory(CategoryChangedEvent event) {
     final var mapSqlParameterSource = new MapSqlParameterSource();
-    mapSqlParameterSource.addValue("id", e.articleId());
-    mapSqlParameterSource.addValue("categoryId", e.categoryId());
-
-    // if we will use that fields in event we can fully use @EventListener
-    mapSqlParameterSource.addValue("updatedAt", entity.updatedAt());
-    mapSqlParameterSource.addValue("version", entity.version() + 1);
-    mapSqlParameterSource.addValue("previous", entity.version());
+    mapSqlParameterSource.addValue("id", event.articleId());
+    mapSqlParameterSource.addValue("categoryId", event.categoryId());
+    mapSqlParameterSource.addValue("previous", event.previousVersion());
+    mapSqlParameterSource.addValue("version", event.previousVersion() + 1);
 
     return jdbcTemplate.update(
       """
-        UPDATE ARTICLE SET CATEGORY_ID = :categoryId, UPDATED_AT = :updatedAt, VERSION = :version
+        UPDATE ARTICLE SET CATEGORY_ID = :categoryId, VERSION = :version
         WHERE ID = :id AND VERSION = :previous
         """,
       mapSqlParameterSource

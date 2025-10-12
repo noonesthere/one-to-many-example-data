@@ -17,7 +17,6 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Table("ARTICLE")
@@ -29,7 +28,6 @@ public record ArticleEntity(
   @Column("RATING") Double rating,
   @Column("VOTE_COUNT") Integer voteCount,
   @Column("PUBLISHED_AT") Instant publishedAt,
-  @Column("UPDATED_AT") Instant updatedAt,
   @Column("DELETED_AT") Instant deletedAt,
   @Column("STATUS") int status,
   @Column("VERSION") Long version
@@ -44,10 +42,9 @@ public record ArticleEntity(
       article.rating().value(),
       article.rating().count(),
       article.publishedAt(),
-      article.updatedAt(),
       article.deletedAt(),
       article.status().id,
-      article.version().value() - 1
+      article.version().value()
     );
   }
 
@@ -59,7 +56,6 @@ public record ArticleEntity(
       Version.from(version),
       new CategoryId(categoryId),
       publishedAt,
-      updatedAt,
       deletedAt,
       ArticleStatus.from(status),
       (a) -> CollectionsUtils.streamOf(paragraphs)
@@ -75,7 +71,7 @@ public record ArticleEntity(
 
   @Override
   public boolean isNew() {
-    return Objects.isNull(updatedAt);
+    return version() == 1;
   }
 
   private static List<ParagraphEntity> map(List<Paragraph> paragraphs) {

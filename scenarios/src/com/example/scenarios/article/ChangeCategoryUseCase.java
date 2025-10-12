@@ -5,17 +5,17 @@ import com.example.domain.article.commands.ChangeCategoryCommand;
 import com.example.scenarios.dto.article.ChangeCategoryInput;
 import com.example.scenarios.inbound.article.ChangeCategory;
 import com.example.scenarios.outbound.article.ArticleExtractor;
-import com.example.scenarios.outbound.article.ArticlePersister;
+import com.example.scenarios.outbound.article.ArticleUpdater;
 import jakarta.inject.Named;
 
 @Named
 class ChangeCategoryUseCase implements ChangeCategory {
 
-  private final ArticlePersister persister;
+  private final ArticleUpdater articleUpdater;
   private final ArticleExtractor extractor;
 
-  ChangeCategoryUseCase(ArticlePersister persister, ArticleExtractor extractor) {
-    this.persister = persister;
+  ChangeCategoryUseCase(ArticleUpdater articleUpdater, ArticleExtractor extractor) {
+    this.articleUpdater = articleUpdater;
     this.extractor = extractor;
   }
 
@@ -23,6 +23,6 @@ class ChangeCategoryUseCase implements ChangeCategory {
   public void execute(ChangeCategoryInput input) {
     final ChangeCategoryCommand command = input.toCommand();
     final Article article = extractor.get(command.articleId());
-    persister.persist(article.changeCategory(command));
+    articleUpdater.update(article.changeCategory(command));
   }
 }

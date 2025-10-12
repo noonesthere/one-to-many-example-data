@@ -1,53 +1,23 @@
 package com.example.data.jdbc.persistence.article;
 
-import com.example.data.jdbc.persistence.PartialUpdater;
 import com.example.domain.article.Article;
-import com.example.scenarios.outbound.article.ArticleCategoryChanger;
-import com.example.scenarios.outbound.article.ArticleParagraphEditor;
-import com.example.scenarios.outbound.article.ArticleParagraphRemover;
-import com.example.scenarios.outbound.article.ArticleRateChanger;
+import com.example.scenarios.outbound.article.ArticleUpdater;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
-class H2ArticleRepositoryUpdater implements
-  ArticleParagraphEditor,
-  ArticleParagraphRemover,
-  ArticleCategoryChanger,
-  ArticleRateChanger {
+class H2ArticleRepositoryUpdater implements ArticleUpdater {
+  private final ApplicationEventPublisher eventPublisher;
 
-  private final PartialUpdater<Article> partialUpdater;
-
-  H2ArticleRepositoryUpdater(
-    ArticlePartialUpdater partialUpdater
+  H2ArticleRepositoryUpdater(ApplicationEventPublisher eventPublisher
   ) {
-    this.partialUpdater = partialUpdater;
+    this.eventPublisher = eventPublisher;
   }
 
+  @Transactional
   @Override
-  public void changeParagraph(Article article) {
-    update(article);
-  }
-
-  @Override
-  public void remove(Article article) {
-    update(article);
-  }
-
-  @Override
-  public void changeCategory(Article article) {
-    update(article);
-  }
-
-  @Override
-  public void changeRate(Article article) {
-    update(article);
-  }
-
-  private void update(Article article) {
-    article.popEvents().forEach(e -> {
-        final int result = partialUpdater.update(e, article);
-        System.out.println(result);
-      }
-    );
+  public void update(Article article) {
+    article.popEvents().forEach(eventPublisher::publishEvent);
   }
 }

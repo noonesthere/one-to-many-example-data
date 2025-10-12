@@ -30,7 +30,6 @@ public class Article extends AggregateRoot<ArticleId> {
   private final List<Paragraph> paragraphs;
   private Rating rating;
   private final Instant publishedAt;
-  private Instant updatedAt;
   private Instant deletedAt;
   private ArticleStatus status;
 
@@ -41,7 +40,6 @@ public class Article extends AggregateRoot<ArticleId> {
     Version version,
     CategoryId categoryId,
     Instant publishedAt,
-    Instant updatedAt,
     Instant deletedAt,
     ArticleStatus status,
     ParagraphsSupplier paragraphsSupplier
@@ -52,7 +50,6 @@ public class Article extends AggregateRoot<ArticleId> {
     this.rating = Objects.requireNonNull(rating);
     this.categoryId = Objects.requireNonNull(categoryId);
     this.publishedAt = Objects.requireNonNull(publishedAt);
-    this.updatedAt = updatedAt;
     this.deletedAt = deletedAt;
     this.status = Objects.requireNonNull(status);
     this.paragraphs = Objects.requireNonNull(Objects.requireNonNull(paragraphsSupplier).apply(this));
@@ -66,7 +63,6 @@ public class Article extends AggregateRoot<ArticleId> {
       Version.newVersion(),
       command.categoryId(),
       Instant.now(),
-      null,
       null,
       ArticleStatus.PUBLISHED,
       (a) -> {
@@ -87,24 +83,24 @@ public class Article extends AggregateRoot<ArticleId> {
 
   public void vote(VoteCommand command) {
     rating = rating.addVote(command.grade());
-    addEvent(ArticleRateChangedEvent.create(id.value(), rating.value(), rating.count()));
-    update();
+    addEvent(
+      ArticleRateChangedEvent.create(id, rating, version())
+    );
   }
 
   public Article renameTitle(RenameTitleCommand command) {
     final var articleTitleRenamedEvent = ArticleTitleRenamedEvent.create(
-      command.articleId().value(),
-      command.title().value()
+      command.articleId(),
+      command.title(),
+      version()
     );
     addEvent(articleTitleRenamedEvent);
-    update();
     return this;
   }
 
   public Article changeCategory(ChangeCategoryCommand command) {
     categoryId = command.categoryId();
-    addEvent(CategoryChangedEvent.create(id.value(), categoryId.value()));
-    update();
+    addEvent(CategoryChangedEvent.create(id, categoryId, version()));
     return this;
   }
 
@@ -121,8 +117,7 @@ public class Article extends AggregateRoot<ArticleId> {
 
   private void isChangeText(Paragraph p, String text) {
     if (p.changeText(text)) {
-      addEvent(ParagraphEditedEvent.create(id.value(), p.id.value(), text));
-      update();
+      addEvent(ParagraphEditedEvent.create(id, p.id, text, version()));
     }
   }
 
@@ -147,10 +142,6 @@ public class Article extends AggregateRoot<ArticleId> {
     return publishedAt;
   }
 
-  public Instant updatedAt() {
-    return updatedAt;
-  }
-
   public Instant deletedAt() {
     return deletedAt;
   }
@@ -165,13 +156,7 @@ public class Article extends AggregateRoot<ArticleId> {
 
   private void removeParagraph(Paragraph paragraph) {
     this.paragraphs.remove(paragraph);
-    addEvent(ParagraphRemovedEvent.create(id.value(), paragraph.id.value()));
-    update();
-  }
-
-  @Override
-  protected void update() {
-    this.updatedAt = Instant.now();
+    addEvent(ParagraphRemovedEvent.create(id, paragraph.id, version()));
   }
 
   private Optional<Paragraph> findParagraph(ParagraphId paragraphId) {

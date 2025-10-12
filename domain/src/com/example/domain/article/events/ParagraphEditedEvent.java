@@ -1,5 +1,9 @@
 package com.example.domain.article.events;
 
+import com.example.common.types.Version;
+import com.example.domain.article.ArticleId;
+import com.example.domain.article.ParagraphId;
+
 import java.time.Instant;
 import java.util.UUID;
 
@@ -8,11 +12,19 @@ public record ParagraphEditedEvent(
   Instant createdAt,
   Long articleId,
   Long paragraphId,
-  String text
+  String text,
+  Long previousVersion
 ) implements ArticleEvent {
 
-  public static ParagraphEditedEvent create(Long articleId, Long paragraphId, String text) {
-    return new ParagraphEditedEvent(UUID.randomUUID(), Instant.now(), articleId, paragraphId, text);
+  public static ParagraphEditedEvent create(ArticleId articleId, ParagraphId paragraphId, String text, Version version) {
+    return new ParagraphEditedEvent(
+      UUID.randomUUID(),
+      Instant.now(),
+      articleId.value(),
+      paragraphId.value(),
+      text,
+      version.value()
+    );
   }
 
   @Override

@@ -32,6 +32,4 @@ public abstract class DomainEntity<T> {
     return version;
   }
 
-  protected abstract void update();
-
 }

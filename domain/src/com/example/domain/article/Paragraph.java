@@ -62,9 +62,4 @@ public class Paragraph extends DomainEntity<ParagraphId> {
     this.text = text;
     return result;
   }
-
-  @Override
-  protected void update() {
-    // simplified domain entity
-  }
 }

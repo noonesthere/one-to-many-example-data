@@ -5,28 +5,26 @@ import com.example.domain.article.commands.DropParagraphCommand;
 import com.example.scenarios.dto.article.DropParagraphInput;
 import com.example.scenarios.inbound.article.DropParagraph;
 import com.example.scenarios.outbound.article.ArticleExtractor;
-import com.example.scenarios.outbound.article.ArticleParagraphRemover;
+import com.example.scenarios.outbound.article.ArticleUpdater;
 import jakarta.inject.Named;
 
 @Named
 class DropParagraphUseCase implements DropParagraph {
 
-  private final ArticleParagraphRemover articleParagraphRemover;
+  private final ArticleUpdater articleUpdater;
   private final ArticleExtractor articleExtractor;
 
-  DropParagraphUseCase(
-    ArticleParagraphRemover articleParagraphRemover,
-    ArticleExtractor articleExtractor
-  ) {
-    this.articleParagraphRemover = articleParagraphRemover;
+  DropParagraphUseCase(ArticleUpdater articleUpdater, ArticleExtractor articleExtractor) {
+    this.articleUpdater = articleUpdater;
     this.articleExtractor = articleExtractor;
   }
+
 
   @Override
   public void execute(DropParagraphInput input) {
     final DropParagraphCommand command = input.toCommand();
     final Article article = articleExtractor.get(command.articleId());
     article.dropParagraph(command);
-    articleParagraphRemover.remove(article);
+    articleUpdater.update(article);
   }
 }

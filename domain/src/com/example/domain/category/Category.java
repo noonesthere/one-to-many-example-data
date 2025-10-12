@@ -52,9 +52,4 @@ public class Category extends DomainEntity<CategoryId> {
   public CategoryName name() {
     return name;
   }
-
-  @Override
-  protected void update() {
-    // stub used for version with updatedAt field
-  }
 }

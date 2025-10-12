@@ -6,18 +6,18 @@ import com.example.domain.article.commands.RenameTitleCommand;
 import com.example.scenarios.dto.article.RenameTitleInput;
 import com.example.scenarios.inbound.article.RenameTitle;
 import com.example.scenarios.outbound.article.ArticleExtractor;
-import com.example.scenarios.outbound.article.ArticlePersister;
+import com.example.scenarios.outbound.article.ArticleUpdater;
 import jakarta.inject.Named;
 
 @Named
 class RenameTitleUseCase implements RenameTitle {
 
   private final ArticleExtractor articleExtractor;
-  private final ArticlePersister persister;
+  private final ArticleUpdater articleUpdater;
 
-  RenameTitleUseCase(ArticleExtractor articleExtractor, ArticlePersister persister) {
+  RenameTitleUseCase(ArticleExtractor articleExtractor, ArticleUpdater articleUpdater) {
     this.articleExtractor = articleExtractor;
-    this.persister = persister;
+    this.articleUpdater = articleUpdater;
   }
 
   @Override
@@ -29,6 +29,6 @@ class RenameTitleUseCase implements RenameTitle {
 
     final var command = new RenameTitleCommand(articleId, title);
 
-    persister.persist(article.renameTitle(command));
+    articleUpdater.update(article.renameTitle(command));
   }
 }
