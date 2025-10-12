@@ -30,6 +30,7 @@ class ArticlePartialUpdater implements PartialUpdater<Article> {
   public int update(DomainEvent event, Article article) {
     final var entity = ArticleEntity.from(article);
 
+    // can be changed be EventListener
     final int result = switch (event) {
       case CategoryChangedEvent e -> updateCategory(e, entity);
       case ArticleRateChangedEvent e -> updateRate(e, entity);
