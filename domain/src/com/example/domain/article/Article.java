@@ -121,7 +121,7 @@ public class Article extends AggregateRoot<ArticleId> {
 
   private void isChangeText(Paragraph p, String text) {
     if (p.changeText(text)) {
-      addEvent(ParagraphEditedEvent.create(id.value(), id.value(), text));
+      addEvent(ParagraphEditedEvent.create(id.value(), p.id.value(), text));
       update();
     }
   }
