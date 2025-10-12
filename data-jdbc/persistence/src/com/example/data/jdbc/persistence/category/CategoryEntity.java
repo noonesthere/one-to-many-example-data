@@ -25,7 +25,7 @@ public record CategoryEntity(
       category.id.value(),
       category.name().value(),
       category.deletedAt(),
-      category.version().value() - 1
+      category.version().value()
     );
   }
 
