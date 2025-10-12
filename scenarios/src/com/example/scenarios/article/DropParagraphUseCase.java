@@ -11,11 +11,11 @@ import jakarta.inject.Named;
 @Named
 class DropParagraphUseCase implements DropParagraph {
 
-  private final ArticleUpdater updater;
+  private final ArticleUpdater articleUpdater;
   private final ArticleExtractor articleExtractor;
 
-  DropParagraphUseCase(ArticleUpdater updater, ArticleExtractor articleExtractor) {
-    this.updater = updater;
+  DropParagraphUseCase(ArticleUpdater articleUpdater, ArticleExtractor articleExtractor) {
+    this.articleUpdater = articleUpdater;
     this.articleExtractor = articleExtractor;
   }
 
@@ -24,7 +24,7 @@ class DropParagraphUseCase implements DropParagraph {
     final DropParagraphCommand command = input.toCommand();
     final Article article = articleExtractor.get(command.articleId());
     article.dropParagraph(command);
-    updater.update(article);
+    articleUpdater.update(article);
 
   }
 }

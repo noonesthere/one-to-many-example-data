@@ -163,9 +163,9 @@ public class Article extends AggregateRoot<ArticleId> {
     return categoryId;
   }
 
-  private void removeParagraph(Paragraph p) {
-    this.paragraphs.remove(p);
-    addEvent(ParagraphRemovedEvent.create(id.value(), p.id.value()));
+  private void removeParagraph(Paragraph paragraph) {
+    this.paragraphs.remove(paragraph);
+    addEvent(ParagraphRemovedEvent.create(id.value(), paragraph.id.value()));
     update();
   }
 

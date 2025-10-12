@@ -3,10 +3,10 @@
 @param java.util.List<com.example.data.jdbc.presentation.article.ArticleViewWebModel> articles
 
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Oblik</title>
+  <title>Articles</title>
   <script src="/js/htmx.min.js"></script>
   <script src="/js/tailwind.min.js"></script>
   <%--  <script src="/js/utility.js"></script>--%>
