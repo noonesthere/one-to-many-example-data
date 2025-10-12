@@ -1,37 +1,51 @@
 package com.example.data.jdbc.persistence.article;
 
-import com.example.common.types.DomainEvent;
 import com.example.domain.article.Article;
-import com.example.scenarios.outbound.article.ArticleUpdater;
-import org.springframework.context.ApplicationEventPublisher;
+import com.example.scenarios.outbound.article.ArticleCategoryChanger;
+import com.example.scenarios.outbound.article.ArticleParagraphEditor;
+import com.example.scenarios.outbound.article.ArticleParagraphRemover;
+import com.example.scenarios.outbound.article.ArticleRateChanger;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Component
-class H2ArticleRepositoryUpdater implements ArticleUpdater {
+class H2ArticleRepositoryUpdater implements
+  ArticleParagraphEditor,
+  ArticleParagraphRemover,
+  ArticleCategoryChanger,
+  ArticleRateChanger {
 
   private final ArticlePartialUpdater partialUpdater;
-  private final ApplicationEventPublisher eventPublisher;
 
   H2ArticleRepositoryUpdater(
-    ArticlePartialUpdater partialUpdater,
-    ApplicationEventPublisher eventPublisher
+    ArticlePartialUpdater partialUpdater
   ) {
     this.partialUpdater = partialUpdater;
-    this.eventPublisher = eventPublisher;
   }
 
-  @Transactional
   @Override
-  public void update(Article article) {
-    final List<DomainEvent> domainEvents = article.popEvents();
-    if (!domainEvents.isEmpty()) {
-      final var entity = ArticleEntity.from(article);
-      // TODO: can be re-write by each interface
-      partialUpdater.update(domainEvents, entity);
-      domainEvents.forEach(eventPublisher::publishEvent);
-    }
+  public void changeParagraph(Article article) {
+    update(article);
+  }
+
+  @Override
+  public void remove(Article article) {
+    update(article);
+  }
+
+  @Override
+  public void changeCategory(Article article) {
+    update(article);
+  }
+
+  @Override
+  public void changeRate(Article article) {
+    update(article);
+  }
+
+  private void update(Article article) {
+    article.popEvents().forEach(e -> {
+        partialUpdater.update(e, article);
+      }
+    );
   }
 }

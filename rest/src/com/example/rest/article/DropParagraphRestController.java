@@ -20,8 +20,13 @@ class DropParagraphRestController {
   @DeleteMapping("/api/articles/{articleId}/paragraphs/{paragraphId}")
   public ResponseEntity<?> dropParagraph(
     @PathVariable("articleId") String articleId,
-    @PathVariable("paragraphId") String paragraphId) {
-    dropParagraph.execute(new DropParagraphInput(TSID.from(articleId).toLong(), TSID.from(paragraphId).toLong()));
+    @PathVariable("paragraphId") String paragraphId
+  ) {
+    final var input = new DropParagraphInput(
+      TSID.from(articleId).toLong(),
+      TSID.from(paragraphId).toLong()
+    );
+    dropParagraph.execute(input);
     return ResponseEntity.ok().build();
   }
 }

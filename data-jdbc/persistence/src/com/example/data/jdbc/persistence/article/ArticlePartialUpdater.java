@@ -1,44 +1,46 @@
 package com.example.data.jdbc.persistence.article;
 
 import com.example.common.types.DomainEvent;
+import com.example.domain.article.Article;
 import com.example.domain.article.events.ArticleRateChangedEvent;
 import com.example.domain.article.events.CategoryChangedEvent;
 import com.example.domain.article.events.ParagraphEditedEvent;
 import com.example.domain.article.events.ParagraphRemovedEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 class ArticlePartialUpdater {
 
   private final NamedParameterJdbcTemplate jdbcTemplate;
+  private final ApplicationEventPublisher eventPublisher;
 
-  ArticlePartialUpdater(NamedParameterJdbcTemplate jdbcTemplate) {
+  ArticlePartialUpdater(
+    NamedParameterJdbcTemplate jdbcTemplate, ApplicationEventPublisher eventPublisher
+  ) {
     this.jdbcTemplate = jdbcTemplate;
+    this.eventPublisher = eventPublisher;
   }
 
-  void update(List<DomainEvent> events, ArticleEntity entity) {
-    for (DomainEvent event : events) {
-      update(event, entity);
-    }
-  }
+  @Transactional
+  void update(DomainEvent event, Article article) {
+    final var entity = ArticleEntity.from(article);
 
-  private void update(DomainEvent event, ArticleEntity entity) {
     final int result = switch (event) {
-      case CategoryChangedEvent e -> changeCategory(entity);
-      case ArticleRateChangedEvent e -> vote(entity);
-      case ParagraphEditedEvent e -> updateParagraph(entity, e.paragraphId());
-      case ParagraphRemovedEvent e -> deleteParagraph(entity, e.paragraphId());
-      default -> 1;
+      case CategoryChangedEvent e -> changeCategory(e, entity);
+      case ArticleRateChangedEvent e -> vote(e, entity);
+      case ParagraphEditedEvent e -> updateParagraph(e, entity);
+      case ParagraphRemovedEvent e -> deleteParagraph(e, entity);
+      // use for testing purposes
+      default -> throw new UnsupportedOperationException("Unsupported event " + event);
     };
-
-    System.out.println(result);
+    eventPublisher.publishEvent(event);
   }
 
-  private int deleteParagraph(ArticleEntity entity, Long paragraphId) {
+  private int deleteParagraph(ParagraphRemovedEvent e, ArticleEntity entity) {
     final var mapSqlParameterSource = new MapSqlParameterSource();
     mapSqlParameterSource.addValue("updatedAt", entity.updatedAt());
     mapSqlParameterSource.addValue("id", entity.id());
@@ -51,11 +53,12 @@ class ArticlePartialUpdater {
     );
 
     return jdbcTemplate.update(
-      "DELETE FROM PARAGRAPH WHERE ID  = :id", new MapSqlParameterSource("id", paragraphId)
+      "DELETE FROM PARAGRAPH WHERE ID  = :id", new MapSqlParameterSource("id", e.paragraphId())
     );
   }
 
-  private int updateParagraph(ArticleEntity entity, Long paragraphId) {
+  int updateParagraph(ParagraphEditedEvent e, ArticleEntity entity) {
+
 
     final var mapSqlParameterSource = new MapSqlParameterSource();
     mapSqlParameterSource.addValue("updatedAt", entity.updatedAt());
@@ -69,7 +72,7 @@ class ArticlePartialUpdater {
     );
 
     final ParagraphEntity paragraphEntity = entity.paragraphs().stream()
-      .filter(paragraph -> paragraph.id().equals(paragraphId))
+      .filter(paragraph -> paragraph.id().equals(e.paragraphId()))
       .findFirst()
       .orElseThrow();
 
@@ -84,7 +87,7 @@ class ArticlePartialUpdater {
     );
   }
 
-  private int vote(ArticleEntity entity) {
+  private int vote(ArticleRateChangedEvent e, ArticleEntity entity) {
     final var mapSqlParameterSource = new MapSqlParameterSource();
     mapSqlParameterSource.addValue("rating", entity.rating());
     mapSqlParameterSource.addValue("count", entity.voteCount());
@@ -105,7 +108,7 @@ class ArticlePartialUpdater {
     );
   }
 
-  private int changeCategory(ArticleEntity entity) {
+  private int changeCategory(CategoryChangedEvent e, ArticleEntity entity) {
     final var mapSqlParameterSource = new MapSqlParameterSource();
     mapSqlParameterSource.addValue("id", entity.id());
     mapSqlParameterSource.addValue("categoryId", entity.categoryId());
