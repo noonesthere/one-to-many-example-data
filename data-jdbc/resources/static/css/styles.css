@@ -1,0 +1,26 @@
+
+#person-form-dialog {
+  /* keep centering styles */
+  max-width: 900px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 1rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  background: white;
+}
+
+/* If you have a form inside the dialog, increase its width or max-width */
+#person-form-dialog form {
+  width: 100%;      /* take full width of dialog */
+  max-width: 100%;  /* no restriction */
+  padding: 2em;
+  margin: 0;
+}
+
+/* In styles.css, processed by Tailwind */
+fieldset {
+  @apply p-1 border border-gray-100 rounded-xl space-y-1;
+}
+

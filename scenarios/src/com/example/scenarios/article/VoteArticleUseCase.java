@@ -20,7 +20,7 @@ class VoteArticleUseCase implements VoteArticle {
   }
 
   @Override
-  public void exucute(VoteArticleInput input) {
+  public void execute(VoteArticleInput input) {
     final var articleId = new ArticleId(input.articleId());
     final var article = articleExtractor.get(articleId);
     final var command = new VoteCommand(input.grade());

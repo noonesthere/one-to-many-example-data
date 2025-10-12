@@ -1,7 +1,7 @@
 package com.example.scenarios.article;
 
 import com.example.common.utilities.CollectionsUtils;
-import com.example.scenarios.dto.article.ArticleDto;
+import com.example.scenarios.dto.article.ArticleReadModel;
 import com.example.scenarios.inbound.article.GetArticles;
 import com.example.scenarios.outbound.article.ArticlesExtractor;
 import jakarta.inject.Named;
@@ -18,9 +18,8 @@ class GetArticlesUseCase implements GetArticles {
   }
 
   @Override
-  public List<ArticleDto> execute() {
+  public List<ArticleReadModel> execute() {
     return CollectionsUtils.streamOf(extractor.findAll())
-      .map(ArticleDto::from)
       .toList();
   }
 }

@@ -18,7 +18,7 @@ class VoteArticleRestController {
   @PostMapping("/{id}")
   public ResponseEntity<?> postArticle(@PathVariable("id") String id, @RequestBody VoteArticleWebModel webModel) {
     VoteArticleInput input = webModel.to();
-    voteArticle.exucute(input);
+    voteArticle.execute(input);
 
     return ResponseEntity.ok().build();
   }

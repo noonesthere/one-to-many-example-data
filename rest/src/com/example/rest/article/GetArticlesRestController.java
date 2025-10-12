@@ -22,7 +22,7 @@ class GetArticlesRestController {
 
   @GetMapping
   public ResponseEntity<?> get() {
-    List<ArticleDto> dtos = getArticles.execute();
+    final var dtos = getArticles.execute();
     return ResponseEntity.ok(GetArticleWebModel.from(dtos)); //Skipped mapping to WebModel
   }
 }

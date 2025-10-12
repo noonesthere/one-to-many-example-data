@@ -1,10 +1,9 @@
 package com.example.scenarios.outbound.article;
 
-import com.example.domain.article.Article;
+import com.example.scenarios.dto.article.ArticleReadModel;
 
-import java.nio.channels.FileChannel;
 import java.util.List;
 
 public interface ArticlesExtractor {
-  List<Article> findAll();
+  List<ArticleReadModel> findAll();
 }

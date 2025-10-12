@@ -1,6 +1,7 @@
 package com.example.data.jdbc.persistence.article;
 
 import com.example.common.types.DomainEvent;
+import com.example.domain.article.events.ArticleRateChangedEvent;
 import com.example.domain.article.events.CategoryChangedEvent;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -27,10 +28,32 @@ class ArticlePartialUpdater {
   private void update(DomainEvent event, ArticleEntity entity) {
     final int result = switch (event) {
       case CategoryChangedEvent e -> changeCategory(entity);
+      case ArticleRateChangedEvent e -> vote(entity);
       default -> 1;
     };
 
     System.out.println(result);
+  }
+
+  private int vote(ArticleEntity entity) {
+    final var mapSqlParameterSource = new MapSqlParameterSource();
+    mapSqlParameterSource.addValue("rating", entity.rating());
+    mapSqlParameterSource.addValue("count", entity.voteCount());
+    mapSqlParameterSource.addValue("updatedAt", entity.updatedAt());
+    mapSqlParameterSource.addValue("version", entity.version() + 1);
+
+    mapSqlParameterSource.addValue("id", entity.id());
+    mapSqlParameterSource.addValue("previous", entity.version());
+
+//    RATING
+//      VOTE_COUNT
+    return jdbcTemplate.update(
+      """
+        UPDATE ARTICLE SET RATING = :rating, VOTE_COUNT = :count, UPDATED_AT = :updatedAt, VERSION = :version
+        WHERE ID = :id AND VERSION = :previous
+        """,
+      mapSqlParameterSource
+    );
   }
 
   private int changeCategory(ArticleEntity entity) {

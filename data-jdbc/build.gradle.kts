@@ -1,11 +1,19 @@
 plugins {
   alias(libs.plugins.spring.boot)
   alias(libs.plugins.spring.dependency.management)
+  id("gg.jte.gradle") version "3.1.16"
 }
 
 base {
   archivesName = "data-jdbc"
   group = "com.example.data.jdbc"
+}
+
+
+sourceSets {
+  main {
+    resources.srcDirs("resources")
+  }
 }
 
 
@@ -19,6 +27,7 @@ configurations {
 dependencies {
   implementation(project(":domain"))
   implementation(project(":scenarios"))
+  implementation(project(":scenarios:inbound"))
   implementation(project(":rest"))
   implementation(project(":data-jdbc:persistence"))
   implementation(project(":log"))
@@ -27,11 +36,16 @@ dependencies {
   implementation("org.springframework.modulith:spring-modulith-events-jackson")
   implementation("org.springframework.modulith:spring-modulith-events-jdbc")
 
+  implementation(libs.hypersistence.tsid)
+  implementation(libs.spring.boot.starter.web)
   implementation(libs.spring.boot.starter)
   implementation(libs.spring.boot.starter.data.jdbc)
 
   runtimeOnly(libs.h2)
 
+
+  implementation("gg.jte:jte-spring-boot-starter-3:3.1.16")
+  implementation("io.github.wimdeblauwe:htmx-spring-boot:4.0.1")
 
   annotationProcessor(libs.spring.boot.configuration.processor)
 
@@ -47,4 +61,8 @@ dependencyManagement {
   }
 }
 
-
+jte {
+  binaryStaticContent = true
+  sourceDirectory.set(kotlin.io.path.Path("resources/jte"))
+  generate()
+}
