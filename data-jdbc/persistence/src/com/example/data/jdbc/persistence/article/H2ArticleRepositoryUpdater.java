@@ -5,6 +5,7 @@ import com.example.domain.article.Article;
 import com.example.scenarios.outbound.article.ArticleUpdater;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,15 +20,14 @@ class H2ArticleRepositoryUpdater implements ArticleUpdater {
     this.eventPublisher = eventPublisher;
   }
 
+  @Transactional
   @Override
   public void update(Article article) {
-    List<DomainEvent> domainEvents = article.popEvents();
+    final List<DomainEvent> domainEvents = article.popEvents();
     if (!domainEvents.isEmpty()) {
       final var entity = ArticleEntity.from(article);
       updater.update(domainEvents, entity);
       domainEvents.forEach(eventPublisher::publishEvent);
-    } else {
-      throw new IllegalStateException("invalid state");
     }
   }
 }

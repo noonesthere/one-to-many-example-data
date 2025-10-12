@@ -97,9 +97,9 @@ public class ArticleEntity {
     final var paragraphEntities = map(article.paragraphs());
 
     return new ArticleEntity(
-      article.id.asLongValue(),
+      article.id.value(),
       article.title().asStringValue(),
-      article.categoryId().asLongValue(),
+      article.categoryId().value(),
       paragraphEntities,
       article.rating().value(),
       article.rating().count(),
@@ -107,22 +107,23 @@ public class ArticleEntity {
       article.updatedAt(),
       article.deletedAt(),
       article.status().id,
-      article.version().asLongValue() - 1
+      article.version().value() - 1
     );
   }
 
   public Article to() {
     return new Article(
-      ArticleId.from(id),
+      new ArticleId(id),
       new Title(title),
-      CollectionsUtils.streamOf(paragraphs).map(ParagraphEntity::to).collect(Collectors.toList()),
       Rating.from(rating, voteCount),
       Version.from(version),
-      CategoryId.from(categoryId),
+      new CategoryId(categoryId),
       publishedAt,
       updatedAt,
       deletedAt,
-      ArticleStatus.from(status)
+      ArticleStatus.from(status),
+      (a) -> CollectionsUtils.streamOf(paragraphs).map(ParagraphEntity::to).collect(Collectors.toList())
+
     );
   }
 

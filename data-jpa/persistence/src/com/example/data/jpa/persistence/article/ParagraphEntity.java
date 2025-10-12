@@ -41,7 +41,7 @@ public class ParagraphEntity {
 
   public static ParagraphEntity from(Paragraph paragraph) {
     ParagraphEntity entity = new ParagraphEntity();
-    entity.id = paragraph.id.asLongValue();
+    entity.id = paragraph.id.value();
     entity.text = paragraph.text();
     entity.version = paragraph.version().value() - 1;
     return entity;

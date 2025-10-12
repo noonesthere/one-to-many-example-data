@@ -5,7 +5,10 @@ import com.example.domain.category.Category;
 import com.example.domain.category.CategoryId;
 import com.example.domain.category.CategoryName;
 import jakarta.annotation.Nullable;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import java.time.Instant;
 
@@ -47,8 +50,8 @@ public class CategoryEntity {
   // --- Domain Conversion ---
   public static CategoryEntity from(Category category) {
     return new CategoryEntity(
-      category.id.asLongValue(),
-      category.name.asStringValue(),
+      category.id.value(),
+      category.name().value(),
       category.updatedAt(),
       category.deletedAt(),
       category.version().value() // JPA will increment on update
@@ -57,9 +60,9 @@ public class CategoryEntity {
 
   public Category to() {
     return new Category(
-      CategoryId.from(id),
+      new CategoryId(id),
       Version.from(version),
-      CategoryName.from(name),
+      new CategoryName(name),
       updatedAt,
       deletedAt
     );

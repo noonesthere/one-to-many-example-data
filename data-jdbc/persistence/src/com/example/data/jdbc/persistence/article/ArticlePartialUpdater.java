@@ -26,7 +26,6 @@ class ArticlePartialUpdater {
     }
   }
 
-
   private void update(DomainEvent event, ArticleEntity entity) {
     final int result = switch (event) {
       case CategoryChangedEvent e -> changeCategory(entity);
@@ -81,7 +80,7 @@ class ArticlePartialUpdater {
     params.addValue("version", entity.version() + 1);
 
     return jdbcTemplate.update(
-      "UPDATE PARAGRAPH SET `TEXT`=:text, VERSION=:version WHERE ID = :id AND VERSION = :previous", params
+      "UPDATE PARAGRAPH SET TEXT =:text, VERSION=:version WHERE ID = :id AND VERSION = :previous", params
     );
   }
 
