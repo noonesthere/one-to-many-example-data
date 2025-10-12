@@ -9,16 +9,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class IndexController {
+class IndexController {
 
   private final GetArticles getArticles;
 
-  public IndexController(GetArticles getArticles) {
+  IndexController(GetArticles getArticles) {
     this.getArticles = getArticles;
   }
 
   @GetMapping("/")
-  public String listProtocols(Model model) {
+  public String index(Model model) {
     final var articles = getArticles.execute();
     model.addAttribute("articles", ArticleViewWebModel.from(articles));
 

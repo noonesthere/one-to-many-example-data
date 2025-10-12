@@ -10,6 +10,7 @@ public record ArticleViewWebModel(
   String title,
   List<String> paragraphs,
   Double rating,
+  Double ratingPercentage,
   String categoryName
 
 ) {
@@ -24,6 +25,7 @@ public record ArticleViewWebModel(
       article.title(),
       article.paragraphs(),
       article.rating(),
+      article.rating() * 10,
       article.categoryName()
     );
   }

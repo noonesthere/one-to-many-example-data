@@ -37,7 +37,7 @@
             </a>
 
             <a
-              hx-get="/categories/edit"
+              hx-get="/categories"
               hx-target="#content"
               class="text-gray-300 cursor-pointer hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
               Categories

@@ -2,7 +2,8 @@ package com.example.data.jdbc.presentation.article;
 
 public enum ArticlesViews {
   INDEX("index"),
-  PAGE("articles");
+  PAGE("articles"),
+  CATEGORIES("categories");
 
   public final String templateName;
 

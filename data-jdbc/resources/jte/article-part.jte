@@ -18,7 +18,7 @@
   <div class="mt-4 flex items-center justify-between text-sm text-gray-500">
     <span class="font-medium">Rating: ${article.rating()}</span>
     <div class="w-24 h-1.5 bg-gray-200 rounded-full overflow-hidden">
-      <div class="h-full bg-blue-500" style="width:@article.rating()%"></div>
+      <div class="h-full bg-blue-500" style="width:${article.ratingPercentage()}%"></div>
     </div>
   </div>
 

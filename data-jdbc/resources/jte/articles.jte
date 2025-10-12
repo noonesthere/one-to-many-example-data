@@ -9,7 +9,9 @@
 <main>
   <div class="mx-auto py-6 sm:px-6 lg:px-8">
     <div class="overflow-x-auto">
-      @template.article-list(articles = articles)
+      @for(ArticleViewWebModel article: articles)
+        @template.article-part(article = article)
+      @endfor
     </div>
   </div>
 </main>
