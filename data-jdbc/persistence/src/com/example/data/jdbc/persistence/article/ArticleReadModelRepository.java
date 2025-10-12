@@ -10,6 +10,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.example.data.jdbc.persistence.article.ArticleReadModelRepositoryHelper.ARTICLE_ROW_MAPPER;
+import static com.example.data.jdbc.persistence.article.ArticleReadModelRepositoryHelper.PARAGRAPH_ROW_MAPPER;
+import static com.example.data.jdbc.persistence.article.ArticleReadModelRepositoryHelper.SELECT_ARTICLES;
+import static com.example.data.jdbc.persistence.article.ArticleReadModelRepositoryHelper.SELECT_FROM_PARAGRAPH;
+
 @Component
 class ArticleReadModelRepository implements ArticlesExtractor {
 
@@ -21,25 +26,10 @@ class ArticleReadModelRepository implements ArticlesExtractor {
 
   public List<ArticleReadModel> findAll() {
 
-    final List<ArticleReadModelEntity> articles = jdbcTemplate.query("""
-        SELECT A.ID as ID, A.TITLE as TITLE, A.RATING as RATING, C.NAME AS NAME
-         FROM ARTICLE A INNER JOIN CATEGORY C ON A.CATEGORY_ID = C.ID
-        """,
-      (rs, rowNum) -> new ArticleReadModelEntity(
-        rs.getLong("ID"),
-        rs.getString("TITLE"),
-        rs.getDouble("RATING"),
-        rs.getString("NAME")
-      )
-    );
+    final List<ArticleReadModelEntity> articles = jdbcTemplate.query(SELECT_ARTICLES, ARTICLE_ROW_MAPPER);
 
     final Map<Long, List<String>> paragraphsPerArticle = CollectionsUtils.streamOf(
-      jdbcTemplate.query("SELECT *  FROM PARAGRAPH", (rs, rowNum) -> new ParagraphEntity(
-        rs.getLong("ARTICLE_ID"),
-        rs.getLong("ID"),
-        rs.getString("text"),
-        rs.getLong("VERSION")
-      ))
+      jdbcTemplate.query(SELECT_FROM_PARAGRAPH, PARAGRAPH_ROW_MAPPER)
     ).collect(
       Collectors.groupingBy(
         ParagraphEntity::articleId,
