@@ -5,6 +5,7 @@ import com.example.common.types.DomainEvent;
 import com.example.common.utilities.CollectionsUtils;
 import com.example.domain.article.Article;
 import com.example.domain.article.ArticleId;
+import com.example.scenarios.dto.article.ArticleReadModel;
 import com.example.scenarios.outbound.article.ArticlePersister;
 import com.example.scenarios.outbound.article.ArticleExtractor;
 import com.example.scenarios.outbound.article.ArticlesExtractor;
@@ -43,17 +44,14 @@ class H2RepositoryAdapter implements ArticlePersister, ArticlesExtractor, Articl
   }
 
   @Override
-  public List<Article> findAll() {
-    return CollectionsUtils
-      .streamOf(articleRepository.findAll())
-      .map(ArticleEntity::to)
-      .toList();
+  public List<ArticleReadModel> findAll() {
+    return List.of();
   }
 
   @Override
   public Article get(ArticleId id) {
     return articleRepository
-      .findById(id.asLongValue())
+      .findById(id.value())
       .map(ArticleEntity::to)
       .orElseThrow();
   }

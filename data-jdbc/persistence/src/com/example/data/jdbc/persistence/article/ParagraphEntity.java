@@ -17,7 +17,7 @@ public record ParagraphEntity(
   static ParagraphEntity from(Paragraph paragraph) {
     return new ParagraphEntity(
       paragraph.articleId.value(),
-      paragraph.id.asLongValue(),
+      paragraph.id.value(),
       paragraph.text(),
       paragraph.version().value() - 1
     );

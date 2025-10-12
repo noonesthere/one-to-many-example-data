@@ -2,6 +2,7 @@ package com.example.data.jdbc.presentation;
 
 
 import com.example.data.jdbc.presentation.article.ArticleViewWebModel;
+import com.example.data.jdbc.presentation.article.ArticlesViews;
 import com.example.scenarios.inbound.article.GetArticles;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +22,6 @@ public class IndexController {
     final var articles = getArticles.execute();
     model.addAttribute("articles", ArticleViewWebModel.from(articles));
 
-    return "index";
+    return ArticlesViews.INDEX.templateName;
   }
 }

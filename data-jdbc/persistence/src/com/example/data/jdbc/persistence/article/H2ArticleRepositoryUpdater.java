@@ -23,7 +23,7 @@ class H2ArticleRepositoryUpdater implements ArticleUpdater {
   public void update(Article article) {
     List<DomainEvent> domainEvents = article.popEvents();
     if (!domainEvents.isEmpty()) {
-      ArticleEntity entity = ArticleEntity.from(article);
+      final var entity = ArticleEntity.from(article);
       updater.update(domainEvents, entity);
       domainEvents.forEach(eventPublisher::publishEvent);
     } else {

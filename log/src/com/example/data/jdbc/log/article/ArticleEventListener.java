@@ -41,7 +41,6 @@ class ArticleEventListener {
   }
 
   private void handle(ArticleEvent event) {
-    System.out.println(" =================        Received event in right handler: " + event.getClass() + "=========================================");
     repositoryAdapter.persist(event);
   }
 }

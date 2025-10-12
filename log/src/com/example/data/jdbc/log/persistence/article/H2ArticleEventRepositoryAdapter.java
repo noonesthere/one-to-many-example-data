@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class H2ArticleEventRepositoryAdapter {
+
   private final ArticleEventPublicationRepository repository;
   private final ArticleEventMapper mapper;
 

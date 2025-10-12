@@ -57,8 +57,10 @@ public class Paragraph extends DomainEntity<ParagraphId> {
     return text;
   }
 
-  void changeText(String text) {
+  boolean changeText(String text) {
+    final var result = !Objects.equals(this.text, text);
     this.text = text;
+    return result;
   }
 
   @Override

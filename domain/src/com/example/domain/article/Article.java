@@ -3,6 +3,7 @@ package com.example.domain.article;
 import com.example.common.types.AggregateRoot;
 import com.example.common.types.Version;
 import com.example.domain.article.commands.ChangeCategoryCommand;
+import com.example.domain.article.commands.DropParagraphCommand;
 import com.example.domain.article.commands.EditParagraphCommand;
 import com.example.domain.article.commands.PostArticleCommand;
 import com.example.domain.article.commands.RenameTitleCommand;
@@ -13,12 +14,14 @@ import com.example.domain.article.events.ArticleTitleRenamedEvent;
 import com.example.domain.article.events.CategoryChangedEvent;
 import com.example.domain.article.events.ParagraphAddedEvent;
 import com.example.domain.article.events.ParagraphEditedEvent;
+import com.example.domain.article.events.ParagraphRemovedEvent;
 import com.example.domain.category.CategoryId;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class Article extends AggregateRoot<ArticleId> {
 
@@ -73,7 +76,7 @@ public class Article extends AggregateRoot<ArticleId> {
         for (Paragraph p : command.paragraphs()) {
           ps.add(p);
           a.addEvent(
-            ParagraphAddedEvent.create(a.id.value(), p.id.asLongValue(), p.text())
+            ParagraphAddedEvent.create(a.id.value(), p.id.value(), p.text())
           );
         }
 
@@ -112,9 +115,20 @@ public class Article extends AggregateRoot<ArticleId> {
       throw new IllegalStateException("Paragraph can not be empty");
     }
 
-    final var paragraph = changeParagraph(command.paragraphId(), text);
-    addEvent(ParagraphEditedEvent.create(paragraph.articleId.value(), paragraph.id.asLongValue(), text));
-    update();
+    findParagraph(command.paragraphId())
+      .ifPresent(p -> isChangeText(p, text));
+  }
+
+  private void isChangeText(Paragraph p, String text) {
+    if (p.changeText(text)) {
+      addEvent(ParagraphEditedEvent.create(id.value(), id.value(), text));
+      update();
+    }
+  }
+
+  public void dropParagraph(DropParagraphCommand command) {
+    findParagraph(command.paragraphId())
+      .ifPresent(this::removeParagraph);
   }
 
   public Title title() {
@@ -149,18 +163,18 @@ public class Article extends AggregateRoot<ArticleId> {
     return categoryId;
   }
 
-  private Paragraph changeParagraph(ParagraphId paragraphId, String text) {
-    final var paragraph = paragraphs.stream()
-      .filter(p -> p.id.equals(paragraphId))
-      .findFirst()
-      .get(); // TODO: fixme
-
-    paragraph.changeText(text);
-    return paragraph;
+  private void removeParagraph(Paragraph p) {
+    this.paragraphs.remove(p);
+    addEvent(ParagraphRemovedEvent.create(id.value(), p.id.value()));
+    update();
   }
 
   @Override
   protected void update() {
     this.updatedAt = Instant.now();
+  }
+
+  private Optional<Paragraph> findParagraph(ParagraphId paragraphId) {
+    return paragraphs.stream().filter(p -> p.id.equals(paragraphId)).findFirst();
   }
 }
