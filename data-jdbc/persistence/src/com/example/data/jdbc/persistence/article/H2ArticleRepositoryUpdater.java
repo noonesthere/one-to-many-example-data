@@ -27,7 +27,7 @@ class H2ArticleRepositoryUpdater implements ArticleUpdater {
       updater.update(domainEvents, entity);
       domainEvents.forEach(eventPublisher::publishEvent);
     } else {
-      throw new IllegalStateException("ivalid state");
+      throw new IllegalStateException("invalid state");
     }
   }
 }
