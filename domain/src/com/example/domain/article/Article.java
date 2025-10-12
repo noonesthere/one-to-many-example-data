@@ -113,9 +113,7 @@ public class Article extends AggregateRoot<ArticleId> {
     }
 
     final var paragraph = changeParagraph(command.paragraphId(), text);
-    addEvent(
-      ParagraphEditedEvent.create(paragraph.articleId.value(), paragraph.id.asLongValue(), text)
-    );
+    addEvent(ParagraphEditedEvent.create(paragraph.articleId.value(), paragraph.id.asLongValue(), text));
     update();
   }
 

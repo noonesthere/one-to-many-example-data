@@ -1,37 +1,30 @@
 package com.example.scenarios.article;
 
-import com.example.domain.article.ArticleId;
-import com.example.domain.article.ParagraphId;
 import com.example.domain.article.commands.EditParagraphCommand;
 import com.example.scenarios.dto.article.EditParagraphInput;
 import com.example.scenarios.inbound.article.EditParagraph;
-import com.example.scenarios.outbound.article.ArticlePersister;
 import com.example.scenarios.outbound.article.ArticleExtractor;
+import com.example.scenarios.outbound.article.ArticleUpdater;
 import jakarta.inject.Named;
 
 @Named
 class EditParagraphUseCase implements EditParagraph {
 
-  private final ArticleExtractor extractor;
-  private final ArticlePersister persister;
+  private final ArticleExtractor articleExtractor;
+  private final ArticleUpdater articleUpdater;
 
-  EditParagraphUseCase(
-    ArticleExtractor extractor,
-    ArticlePersister persister
-  ) {
-    this.extractor = extractor;
-    this.persister = persister;
+  EditParagraphUseCase(ArticleExtractor articleExtractor, ArticleUpdater articleUpdater) {
+    this.articleExtractor = articleExtractor;
+    this.articleUpdater = articleUpdater;
   }
 
   @Override
   public void execute(EditParagraphInput input) {
-    final var id = new ArticleId(input.articleId());
-    final var paragraphId = new ParagraphId(input.paragraphId());
+    final EditParagraphCommand command = input.asCommand();
+    // TODO: can be different approach use single paragraph and then update article
+    final var article = articleExtractor.get(command.articleId());
+    article.editParagraph(command);
 
-    final var article = extractor.get(id);
-
-    article.editParagraph(new EditParagraphCommand(id, paragraphId, input.text()));
-
-    persister.persist(article);
+    articleUpdater.update(article);
   }
 }

@@ -3,6 +3,7 @@ package com.example.data.jdbc.persistence.article;
 import com.example.common.types.DomainEvent;
 import com.example.domain.article.events.ArticleRateChangedEvent;
 import com.example.domain.article.events.CategoryChangedEvent;
+import com.example.domain.article.events.ParagraphEditedEvent;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -29,10 +30,40 @@ class ArticlePartialUpdater {
     final int result = switch (event) {
       case CategoryChangedEvent e -> changeCategory(entity);
       case ArticleRateChangedEvent e -> vote(entity);
+      case ParagraphEditedEvent e -> updateParagraph(entity, e.paragraphId());
       default -> 1;
     };
 
     System.out.println(result);
+  }
+
+  private int updateParagraph(ArticleEntity entity, Long paragraphId) {
+
+    final var mapSqlParameterSource = new MapSqlParameterSource();
+    mapSqlParameterSource.addValue("updatedAt", entity.updatedAt());
+    mapSqlParameterSource.addValue("id", entity.id());
+    mapSqlParameterSource.addValue("previous", entity.version());
+    mapSqlParameterSource.addValue("version", entity.version() + 1);
+
+    jdbcTemplate.update(
+      "UPDATE ARTICLE SET UPDATED_AT = :updatedAt, VERSION = :version WHERE ID = :id AND VERSION = :previous",
+      mapSqlParameterSource
+    );
+
+    final ParagraphEntity paragraphEntity = entity.paragraphs().stream()
+      .filter(paragraph -> paragraph.id().equals(paragraphId))
+      .findFirst()
+      .orElseThrow();
+
+    final var params = new MapSqlParameterSource();
+    params.addValue("id", paragraphEntity.id());
+    params.addValue("text", paragraphEntity.text());
+    params.addValue("previous", entity.version());
+    params.addValue("version", entity.version() + 1);
+
+    return jdbcTemplate.update(
+      "UPDATE PARAGRAPH SET `TEXT`=:text, VERSION=:version WHERE ID = :id AND VERSION = :previous", params
+    );
   }
 
   private int vote(ArticleEntity entity) {

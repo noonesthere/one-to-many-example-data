@@ -1,12 +1,13 @@
 package com.example.rest.article;
 
-import com.example.scenarios.dto.article.EditParagraphInput;
 import com.example.scenarios.inbound.article.EditParagraph;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/articles/paragraph")
 class EditParagraphRestController {
 
   private final EditParagraph editParagraph;
@@ -15,11 +16,13 @@ class EditParagraphRestController {
     this.editParagraph = editParagraph;
   }
 
-  @PostMapping("/{id}")
-  public ResponseEntity<?> postArticle(@PathVariable("id") String id, @RequestBody EditParagraphWebModel webModel) {
-    final EditParagraphInput input = webModel.to();
-    editParagraph.execute(input);
-
+  @PostMapping("/api/articles/{articleId}/paragraphs/{paragraphId}")
+  public ResponseEntity<?> editParagraph(
+    @PathVariable("articleId") String articleId,
+    @PathVariable("paragraphId") String paragraphId,
+    @RequestBody EditParagraphWebModel webModel
+  ) {
+    editParagraph.execute(webModel.to());
     return ResponseEntity.ok().build();
   }
 }
