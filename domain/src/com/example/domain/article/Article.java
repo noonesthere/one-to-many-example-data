@@ -112,10 +112,10 @@ public class Article extends AggregateRoot<ArticleId> {
     }
 
     findParagraph(command.paragraphId())
-      .ifPresent(p -> isChangeText(p, text));
+      .ifPresent(p -> changeText(p, text));
   }
 
-  private void isChangeText(Paragraph p, String text) {
+  private void changeText(Paragraph p, String text) {
     if (p.changeText(text)) {
       addEvent(ParagraphEditedEvent.create(id, p.id, text, version()));
     }
