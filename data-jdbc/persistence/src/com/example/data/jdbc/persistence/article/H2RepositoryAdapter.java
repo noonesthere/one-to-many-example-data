@@ -14,16 +14,13 @@ import java.util.List;
 @Component
 class H2RepositoryAdapter implements ArticlePersister, ArticleExtractor {
 
-  private final ArticlePartialUpdater articlePartialUpdater;
   private final ArticleRepository articleRepository;
   private final ApplicationEventPublisher eventPublisher;
 
   H2RepositoryAdapter(
-    ArticlePartialUpdater articlePartialUpdater,
     ArticleRepository articleRepository,
     ApplicationEventPublisher eventPublisher
   ) {
-    this.articlePartialUpdater = articlePartialUpdater;
     this.articleRepository = articleRepository;
     this.eventPublisher = eventPublisher;
   }
@@ -35,8 +32,7 @@ class H2RepositoryAdapter implements ArticlePersister, ArticleExtractor {
 
     if (!events.isEmpty()) {
       final ArticleEntity entity = ArticleEntity.from(article);
-//      articleRepository.save(entity);
-      articlePartialUpdater.update(events, entity);
+      articleRepository.save(entity);
       events.forEach(eventPublisher::publishEvent);
     } else {
       throw new IllegalStateException("Stub when persist");

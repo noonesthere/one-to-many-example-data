@@ -18,7 +18,6 @@ public abstract class DomainEntity<T> {
   protected void addEvent(DomainEvent event) {
     if (events.isEmpty()) {
       version = version.next();
-      update();
     }
     events.add(event);
   }

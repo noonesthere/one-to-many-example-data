@@ -56,8 +56,7 @@ public class Article extends AggregateRoot<ArticleId> {
   }
 
   public static Article post(PostArticleCommand command) {
-
-    final var article = new Article(
+    return new Article(
       command.articleId(),
       command.title(),
       Rating.newRating(),
@@ -80,14 +79,13 @@ public class Article extends AggregateRoot<ArticleId> {
 
         return ps;
       }
-
     );
-    return article;
   }
 
   public void vote(VoteCommand command) {
     rating = rating.addVote(command.grade());
     addEvent(ArticleRateChangedEvent.create(id.value(), rating.value(), rating.count()));
+    update();
   }
 
   public Article renameTitle(RenameTitleCommand command) {
@@ -96,12 +94,14 @@ public class Article extends AggregateRoot<ArticleId> {
       command.title().value()
     );
     addEvent(articleTitleRenamedEvent);
+    update();
     return this;
   }
 
   public Article changeCategory(ChangeCategoryCommand command) {
     categoryId = command.categoryId();
     addEvent(CategoryChangedEvent.create(id.value(), categoryId.value()));
+    update();
     return this;
   }
 
@@ -116,6 +116,7 @@ public class Article extends AggregateRoot<ArticleId> {
     addEvent(
       ParagraphEditedEvent.create(paragraph.articleId.value(), paragraph.id.asLongValue(), text)
     );
+    update();
   }
 
   public Title title() {
