@@ -2,11 +2,15 @@ package com.example.data.jdbc.persistence.category;
 
 import com.example.domain.category.CategoryCounter;
 import com.example.domain.category.CategoryId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.domain.Persistable;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
+@Table("CATEGORY_COUNTER")
 public record CategoryCounterEntity(
-  Long categoryId,
-  Integer value
+  @Id @Column("CATEGORY_ID") Long categoryId,
+  @Column("COUNTER") Integer value
 ) implements Persistable<Long> {
 
   CategoryCounter to() {
