@@ -32,7 +32,7 @@ public record ArticleEntity(
   @Column("UPDATED_AT") Instant updatedAt,
   @Column("DELETED_AT") Instant deletedAt,
   @Column("STATUS") int status,
-  @Column("VERSION") @org.springframework.data.annotation.Version Long version
+  @Column("VERSION") Long version
 ) implements Persistable<Long> {
 
   static ArticleEntity from(Article article) {

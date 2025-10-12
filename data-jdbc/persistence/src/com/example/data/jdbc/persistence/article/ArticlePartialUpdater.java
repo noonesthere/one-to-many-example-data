@@ -3,6 +3,7 @@ package com.example.data.jdbc.persistence.article;
 import com.example.common.types.DomainEvent;
 import com.example.domain.article.Article;
 import com.example.domain.article.events.ArticleRateChangedEvent;
+import com.example.domain.article.events.ArticleTitleRenamedEvent;
 import com.example.domain.article.events.CategoryChangedEvent;
 import com.example.domain.article.events.ParagraphEditedEvent;
 import com.example.domain.article.events.ParagraphRemovedEvent;
@@ -32,6 +33,7 @@ class ArticlePartialUpdater implements PartialUpdater<Article> {
 
     // can be changed be EventListener
     final int result = switch (event) {
+      case ArticleTitleRenamedEvent e -> updateTitle(e, entity);
       case CategoryChangedEvent e -> updateCategory(e, entity);
       case ArticleRateChangedEvent e -> updateRate(e, entity);
       case ParagraphEditedEvent e -> updateParagraph(e, entity);
@@ -44,12 +46,29 @@ class ArticlePartialUpdater implements PartialUpdater<Article> {
     return result;
   }
 
+  private int updateTitle(ArticleTitleRenamedEvent e, ArticleEntity entity) {
+    final var mapSqlParameterSource = new MapSqlParameterSource();
+    mapSqlParameterSource.addValue("updatedAt", entity.updatedAt());
+    mapSqlParameterSource.addValue("title", e.title());
+    mapSqlParameterSource.addValue("id", e.articleId());
+    mapSqlParameterSource.addValue("previous", entity.version() - 1);
+    mapSqlParameterSource.addValue("version", entity.version());
+
+    return jdbcTemplate.update(
+      """
+        UPDATE ARTICLE SET UPDATED_AT = :updatedAt, TITLE = :title  VERSION = :version
+        WHERE ID = :id AND VERSION = :previous
+        """,
+      mapSqlParameterSource
+    );
+  }
+
   private int deleteParagraph(ParagraphRemovedEvent e, ArticleEntity entity) {
     final var mapSqlParameterSource = new MapSqlParameterSource();
     mapSqlParameterSource.addValue("updatedAt", entity.updatedAt());
     mapSqlParameterSource.addValue("id", entity.id());
-    mapSqlParameterSource.addValue("previous", entity.version());
-    mapSqlParameterSource.addValue("version", entity.version() + 1);
+    mapSqlParameterSource.addValue("previous", entity.version() - 1);
+    mapSqlParameterSource.addValue("version", entity.version());
 
     jdbcTemplate.update(
       "UPDATE ARTICLE SET UPDATED_AT = :updatedAt, VERSION = :version WHERE ID = :id AND VERSION = :previous",
@@ -65,8 +84,8 @@ class ArticlePartialUpdater implements PartialUpdater<Article> {
     final var mapSqlParameterSource = new MapSqlParameterSource();
     mapSqlParameterSource.addValue("updatedAt", entity.updatedAt());
     mapSqlParameterSource.addValue("id", entity.id());
-    mapSqlParameterSource.addValue("previous", entity.version());
-    mapSqlParameterSource.addValue("version", entity.version() + 1);
+    mapSqlParameterSource.addValue("previous", entity.version() - 1);
+    mapSqlParameterSource.addValue("version", entity.version());
 
     jdbcTemplate.update(
       "UPDATE ARTICLE SET UPDATED_AT = :updatedAt, VERSION = :version WHERE ID = :id AND VERSION = :previous",
@@ -81,8 +100,8 @@ class ArticlePartialUpdater implements PartialUpdater<Article> {
     final var params = new MapSqlParameterSource();
     params.addValue("id", paragraphEntity.id());
     params.addValue("text", paragraphEntity.text());
-    params.addValue("previous", entity.version());
-    params.addValue("version", entity.version() + 1);
+    params.addValue("previous", entity.version() - 1);
+    params.addValue("version", entity.version());
 
     return jdbcTemplate.update(
       "UPDATE PARAGRAPH SET TEXT =:text, VERSION=:version WHERE ID = :id AND VERSION = :previous", params
@@ -94,10 +113,10 @@ class ArticlePartialUpdater implements PartialUpdater<Article> {
     mapSqlParameterSource.addValue("rating", entity.rating());
     mapSqlParameterSource.addValue("count", entity.voteCount());
     mapSqlParameterSource.addValue("updatedAt", entity.updatedAt());
-    mapSqlParameterSource.addValue("version", entity.version() + 1);
+    mapSqlParameterSource.addValue("version", entity.version());
 
     mapSqlParameterSource.addValue("id", entity.id());
-    mapSqlParameterSource.addValue("previous", entity.version());
+    mapSqlParameterSource.addValue("previous", entity.version() - 1); // TODO: fix me
 
 //    RATING
 //      VOTE_COUNT
@@ -112,8 +131,10 @@ class ArticlePartialUpdater implements PartialUpdater<Article> {
 
   private int updateCategory(CategoryChangedEvent e, ArticleEntity entity) {
     final var mapSqlParameterSource = new MapSqlParameterSource();
-    mapSqlParameterSource.addValue("id", entity.id());
-    mapSqlParameterSource.addValue("categoryId", entity.categoryId());
+    mapSqlParameterSource.addValue("id", e.articleId());
+    mapSqlParameterSource.addValue("categoryId", e.categoryId());
+
+    // if we will use that fields in event we can fully use @EventListener
     mapSqlParameterSource.addValue("updatedAt", entity.updatedAt());
     mapSqlParameterSource.addValue("version", entity.version() + 1);
     mapSqlParameterSource.addValue("previous", entity.version());
