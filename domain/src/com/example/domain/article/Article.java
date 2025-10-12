@@ -27,7 +27,7 @@ public class Article extends AggregateRoot<ArticleId> {
 
   private Title title;
   private CategoryId categoryId;
-  private final List<Paragraph> paragraphs;
+  private final List<Paragraph> paragraphs; // from one to some not more that 10 items else use separate logic
   private Rating rating;
   private final Instant publishedAt;
   private Instant deletedAt;
