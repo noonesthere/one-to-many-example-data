@@ -62,8 +62,6 @@ class ArticlePartialUpdater implements PartialUpdater<Article> {
   }
 
   int updateParagraph(ParagraphEditedEvent e, ArticleEntity entity) {
-
-
     final var mapSqlParameterSource = new MapSqlParameterSource();
     mapSqlParameterSource.addValue("updatedAt", entity.updatedAt());
     mapSqlParameterSource.addValue("id", entity.id());
