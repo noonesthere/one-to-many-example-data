@@ -1,4 +1,4 @@
-package com.example.data.jdbc.persistence.article;
+package com.example.data.jdbc.persistence;
 
 import com.example.common.types.DomainEvent;
 

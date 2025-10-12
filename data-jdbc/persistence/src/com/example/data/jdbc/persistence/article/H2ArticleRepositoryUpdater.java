@@ -1,5 +1,6 @@
 package com.example.data.jdbc.persistence.article;
 
+import com.example.data.jdbc.persistence.PartialUpdater;
 import com.example.domain.article.Article;
 import com.example.scenarios.outbound.article.ArticleCategoryChanger;
 import com.example.scenarios.outbound.article.ArticleParagraphEditor;

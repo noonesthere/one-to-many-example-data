@@ -3,7 +3,6 @@ package com.example.data.jdbc.persistence.category;
 import com.example.common.utilities.CollectionsUtils;
 import com.example.domain.article.events.ArticlePostedEvent;
 import com.example.domain.category.CategoryCounter;
-import com.example.domain.category.CategoryId;
 import com.example.scenarios.outbound.category.CategoriesCounterExtractor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -27,11 +26,11 @@ class H2CategoryCounterAdapter implements CategoriesCounterExtractor {
   }
 
   @EventListener
-  public void onPostArticle(ArticlePostedEvent event) {
+  void onPostArticle(ArticlePostedEvent event) {
     final var categoryCounter = repository.findById(event.categoryId())
       .map(CategoryCounterEntity::to)
       .orElseThrow();
 
-    repository.save(CategoryCounterEntity.from(categoryCounter.increase())); // do not use events for such changes
+    repository.save(CategoryCounterEntity.from(categoryCounter.increase()));
   }
 }

@@ -1,6 +1,7 @@
 package com.example.data.jdbc.persistence.article;
 
 import com.example.common.types.DomainEvent;
+import com.example.data.jdbc.persistence.PartialUpdater;
 import com.example.domain.article.Article;
 import com.example.domain.article.events.ArticleRateChangedEvent;
 import com.example.domain.article.events.ArticleTitleRenamedEvent;

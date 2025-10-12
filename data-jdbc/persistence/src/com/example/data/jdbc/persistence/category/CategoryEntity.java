@@ -11,22 +11,19 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.Instant;
-import java.util.Objects;
 
 @Table("CATEGORY")
 public record CategoryEntity(
   @Id @Column("ID") Long id,
   @Column("NAME") String name,
-  @Column("UPDATED_AT") Instant updatedAt,
   @Column("DELETED_AT") @Nullable Instant deletedAt,
-  @Column("VERSION") @org.springframework.data.annotation.Version Long version
+  @Column("VERSION") Long version
 ) implements Persistable<Long> {
 
   static CategoryEntity from(Category category) {
     return new CategoryEntity(
       category.id.value(),
       category.name().value(),
-      category.updatedAt(),
       category.deletedAt(),
       category.version().value() - 1
     );
@@ -37,7 +34,6 @@ public record CategoryEntity(
       new CategoryId(id),
       Version.from(version),
       new CategoryName(name),
-      updatedAt,
       deletedAt
     );
   }
@@ -49,6 +45,6 @@ public record CategoryEntity(
 
   @Override
   public boolean isNew() {
-    return Objects.isNull(updatedAt);
+    return version == 1;
   }
 }

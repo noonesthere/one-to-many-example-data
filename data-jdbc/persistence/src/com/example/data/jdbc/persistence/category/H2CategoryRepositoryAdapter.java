@@ -21,15 +21,10 @@ class H2CategoryRepositoryAdapter implements
   CategoryUpdater,
   CategoryExtractor {
 
-  private final H2PartialCategoryUpdater h2PartialCategoryUpdater;
   private final CategoryRepository categoryRepository;
   private final ApplicationEventPublisher eventPublisher;
 
-  H2CategoryRepositoryAdapter(
-    H2PartialCategoryUpdater h2PartialCategoryUpdater, CategoryRepository categoryRepository,
-    ApplicationEventPublisher eventPublisher
-  ) {
-    this.h2PartialCategoryUpdater = h2PartialCategoryUpdater;
+  H2CategoryRepositoryAdapter(CategoryRepository categoryRepository, ApplicationEventPublisher eventPublisher) {
     this.categoryRepository = categoryRepository;
     this.eventPublisher = eventPublisher;
   }
@@ -65,15 +60,7 @@ class H2CategoryRepositoryAdapter implements
   @Transactional
   @Override
   public Category update(Category category) {
-    final List<DomainEvent> domainEvents = category.popEvents();
-
-    if (Objects.nonNull(domainEvents)) {
-      final CategoryEntity entity = CategoryEntity.from(category);
-      final CategoryEntity updated = h2PartialCategoryUpdater.renameCategory(entity);
-      domainEvents.forEach(eventPublisher::publishEvent);
-      return updated.to();
-    } else {
-      throw new IllegalStateException("Stub "); // TODO: fix me
-    }
+    category.popEvents().forEach(eventPublisher::publishEvent);
+    return category;
   }
 }

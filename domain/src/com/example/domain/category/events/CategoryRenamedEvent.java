@@ -10,10 +10,17 @@ public record CategoryRenamedEvent(
   UUID id,
   Instant createdAt,
   Long categoryId,
-  String categoryName
+  String categoryName,
+  Long previousVersion
 ) implements CategoryEvent {
-  public static CategoryRenamedEvent create(CategoryId categoryId, CategoryName categoryName) {
-    return new CategoryRenamedEvent(UUID.randomUUID(), Instant.now(), categoryId.value(), categoryName.value());
+  public static CategoryRenamedEvent create(CategoryId categoryId, CategoryName categoryName, Long previousVersion) {
+    return new CategoryRenamedEvent(
+      UUID.randomUUID(),
+      Instant.now(),
+      categoryId.value(),
+      categoryName.value(),
+      previousVersion
+    );
   }
 
   @Override

@@ -14,20 +14,16 @@ public class Category extends DomainEntity<CategoryId> {
 
   private CategoryName name;
   @Nullable
-  private Instant updatedAt;
-  @Nullable
   private final Instant deletedAt;
 
   public Category(
     CategoryId categoryId,
     Version version,
     CategoryName name,
-    @Nullable Instant updatedAt,
     @Nullable Instant deletedAt
   ) {
     super(categoryId, version);
     this.name = name;
-    this.updatedAt = updatedAt;
     this.deletedAt = deletedAt;
   }
 
@@ -37,7 +33,6 @@ public class Category extends DomainEntity<CategoryId> {
       command.categoryId(),
       Version.newVersion(),
       command.categoryName(),
-      null,
       null
     );
     category.addEvent(CategoryCreatedEvent.create(category.id, category.name));
@@ -46,12 +41,8 @@ public class Category extends DomainEntity<CategoryId> {
 
   public Category rename(RenameCategoryCommand command) {
     this.name = command.name();
-    addEvent(CategoryRenamedEvent.create(id, name));
+    addEvent(CategoryRenamedEvent.create(id, name, version().value()));
     return this;
-  }
-
-  public Instant updatedAt() {
-    return updatedAt;
   }
 
   public Instant deletedAt() {
@@ -64,6 +55,6 @@ public class Category extends DomainEntity<CategoryId> {
 
   @Override
   protected void update() {
-    updatedAt = Instant.now();
+    // stub used for version with updatedAt field
   }
 }
