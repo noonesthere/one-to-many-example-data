@@ -24,10 +24,10 @@
         <div class="hidden md:block">
           <div class="ml-10 flex items-baseline space-x-4">
             <a
-              hx-get="/articles/add"
+              hx-get="/articles"
               hx-target="#content"
               class="text-gray-300 cursor-pointer hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
-              Create Article
+              Articles
             </a>
             <a
               hx-get="/articles/edit"
