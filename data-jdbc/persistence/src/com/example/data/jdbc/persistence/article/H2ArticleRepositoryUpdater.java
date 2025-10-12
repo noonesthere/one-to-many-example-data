@@ -14,7 +14,7 @@ class H2ArticleRepositoryUpdater implements
   ArticleCategoryChanger,
   ArticleRateChanger {
 
-  private final ArticlePartialUpdater partialUpdater;
+  private final PartialUpdater<Article> partialUpdater;
 
   H2ArticleRepositoryUpdater(
     ArticlePartialUpdater partialUpdater
@@ -44,7 +44,8 @@ class H2ArticleRepositoryUpdater implements
 
   private void update(Article article) {
     article.popEvents().forEach(e -> {
-        partialUpdater.update(e, article);
+        final int result = partialUpdater.update(e, article);
+        System.out.println(result);
       }
     );
   }

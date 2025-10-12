@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
-class ArticlePartialUpdater {
+class ArticlePartialUpdater implements PartialUpdater<Article> {
 
   private final NamedParameterJdbcTemplate jdbcTemplate;
   private final ApplicationEventPublisher eventPublisher;
@@ -26,18 +26,21 @@ class ArticlePartialUpdater {
   }
 
   @Transactional
-  void update(DomainEvent event, Article article) {
+  @Override
+  public int update(DomainEvent event, Article article) {
     final var entity = ArticleEntity.from(article);
 
     final int result = switch (event) {
-      case CategoryChangedEvent e -> changeCategory(e, entity);
-      case ArticleRateChangedEvent e -> vote(e, entity);
+      case CategoryChangedEvent e -> updateCategory(e, entity);
+      case ArticleRateChangedEvent e -> updateRate(e, entity);
       case ParagraphEditedEvent e -> updateParagraph(e, entity);
       case ParagraphRemovedEvent e -> deleteParagraph(e, entity);
       // use for testing purposes
       default -> throw new UnsupportedOperationException("Unsupported event " + event);
     };
     eventPublisher.publishEvent(event);
+
+    return result;
   }
 
   private int deleteParagraph(ParagraphRemovedEvent e, ArticleEntity entity) {
@@ -87,7 +90,7 @@ class ArticlePartialUpdater {
     );
   }
 
-  private int vote(ArticleRateChangedEvent e, ArticleEntity entity) {
+  private int updateRate(ArticleRateChangedEvent e, ArticleEntity entity) {
     final var mapSqlParameterSource = new MapSqlParameterSource();
     mapSqlParameterSource.addValue("rating", entity.rating());
     mapSqlParameterSource.addValue("count", entity.voteCount());
@@ -108,7 +111,7 @@ class ArticlePartialUpdater {
     );
   }
 
-  private int changeCategory(CategoryChangedEvent e, ArticleEntity entity) {
+  private int updateCategory(CategoryChangedEvent e, ArticleEntity entity) {
     final var mapSqlParameterSource = new MapSqlParameterSource();
     mapSqlParameterSource.addValue("id", entity.id());
     mapSqlParameterSource.addValue("categoryId", entity.categoryId());
