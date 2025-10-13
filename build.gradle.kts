@@ -34,11 +34,11 @@ subprojects {
   sourceSets {
     main {
       java.setSrcDirs(listOf("src"))
-      resources.setSrcDirs(listOf("src")).exclude("**/*.kt")
+      resources.setSrcDirs(listOf("src")).exclude("**/*.java")
     }
     test {
       java.setSrcDirs(listOf("test"))
-      resources.setSrcDirs(listOf("test")).exclude("**/*.kt")
+      resources.setSrcDirs(listOf("test")).exclude("**/*.kava")
     }
   }
 
