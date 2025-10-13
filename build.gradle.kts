@@ -38,7 +38,7 @@ subprojects {
     }
     test {
       java.setSrcDirs(listOf("test"))
-      resources.setSrcDirs(listOf("test")).exclude("**/*.kava")
+      resources.setSrcDirs(listOf("test")).exclude("**/*.java")
     }
   }
 
