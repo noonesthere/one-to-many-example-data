@@ -1,4 +1,22 @@
-Disscussions:
+#### Demo project for testing CQRS and partial updating using domain events
 
-1. Commands should contain VO and Events should contain primitive types
-2. Pa
+Main module for now - data-jdbc
+
+run project:  ./gradlew data-jdbc:bootRun
+for testing UI:  http://localhost:8080
+check database: http://localhost:8080/h2-console/
+db password:
+db user: sa
+Check schema.sql to find useful info about tables structure and tables usage for different scenarios
+
+To test some api use sh files in project root project:
+
+- **renameCategoryApi.sh**
+- **voteArticlesApi.sh**
+- **renameCategoryApi.sh**
+- **editParagraph.sh** to test use before dropParagraph.sh can be invoked multiple times operation is idempotent
+- **dropParagraph.sh** can invoke multiple times operation is idempotent
+- **createCategoryApi.sh** can be invoked multiple times (name will be randomly generated)
+- **createArticleApi.sh** can be invoked multiple times (name will be randomly generated)
+
+TODO: functional approach and right error handling tests and other useful things
