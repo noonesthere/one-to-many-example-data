@@ -24,10 +24,6 @@ public class CategoryEntity {
   private String name;
 
   @Nullable
-  @Column(name = "UPDATED_AT")
-  private Instant updatedAt;
-
-  @Nullable
   @Column(name = "DELETED_AT")
   private Instant deletedAt;
 
@@ -39,10 +35,9 @@ public class CategoryEntity {
     // required by JPA
   }
 
-  public CategoryEntity(Long id, String name, @Nullable Instant updatedAt, @Nullable Instant deletedAt, Long version) {
+  public CategoryEntity(Long id, String name, @Nullable Instant deletedAt, Long version) {
     this.id = id;
     this.name = name;
-    this.updatedAt = updatedAt;
     this.deletedAt = deletedAt;
     this.version = version;
   }
@@ -52,7 +47,6 @@ public class CategoryEntity {
     return new CategoryEntity(
       category.id.value(),
       category.name().value(),
-      category.updatedAt(),
       category.deletedAt(),
       category.version().value() // JPA will increment on update
     );
@@ -63,7 +57,6 @@ public class CategoryEntity {
       new CategoryId(id),
       Version.from(version),
       new CategoryName(name),
-      updatedAt,
       deletedAt
     );
   }
@@ -75,10 +68,6 @@ public class CategoryEntity {
 
   public String getName() {
     return name;
-  }
-
-  public Instant getUpdatedAt() {
-    return updatedAt;
   }
 
   public Instant getDeletedAt() {

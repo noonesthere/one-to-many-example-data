@@ -13,15 +13,13 @@ import java.util.List;
 public record CategoryEntity(
   Long id,
   String name,
-  Instant updatedAt,
   @Nullable Instant deletedAt,
   Long version
 ) {
   public static CategoryEntity from(Category category) {
     return new CategoryEntity(
-      category.id.asLongValue(),
-      category.name.asStringValue(),
-      category.updatedAt(),
+      category.id.value(),
+      category.name().value(),
       category.deletedAt(),
       category.version().value() - 1
     );
@@ -35,10 +33,9 @@ public record CategoryEntity(
 
   Category to() {
     return new Category(
-      CategoryId.from(id),
+      new CategoryId(id),
       Version.from(version),
-      CategoryName.from(name),
-      updatedAt,
+      new CategoryName(name),
       deletedAt
     );
   }

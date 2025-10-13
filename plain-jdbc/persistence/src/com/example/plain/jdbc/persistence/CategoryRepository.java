@@ -28,9 +28,8 @@ class CategoryRepository {
   public Category insert(Category category) {
 
     final MapSqlParameterSource parameters = new MapSqlParameterSource();
-    parameters.addValue(CategoryRepositoryHelper.ID_COLUMN_NAME, category.id.asLongValue());
-    parameters.addValue(CategoryRepositoryHelper.NAME_COLUMN_NAME, category.name.asStringValue());
-    parameters.addValue(CategoryRepositoryHelper.UPDATED_AT_COLUMN_NAME, category.updatedAt());
+    parameters.addValue(CategoryRepositoryHelper.ID_COLUMN_NAME, category.id.value());
+    parameters.addValue(CategoryRepositoryHelper.NAME_COLUMN_NAME, category.name().value());
     parameters.addValue(CategoryRepositoryHelper.DELETED_AT_COLUMN_NAME, category.deletedAt());
     parameters.addValue(CategoryRepositoryHelper.VERSION_COLUMN_NAME, category.version().value());
 

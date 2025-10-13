@@ -38,7 +38,6 @@ class ArticlePartialUpdater {
     );
   }
 
-
   @EventListener
   int deleteParagraph(ParagraphRemovedEvent event) {
     final var mapSqlParameterSource = new MapSqlParameterSource();

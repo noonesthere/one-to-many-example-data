@@ -50,17 +50,12 @@ public class ArticleEntity {
   private Instant publishedAt;
 
   @Nullable
-  @Column(name = "UPDATED_AT")
-  private Instant updatedAt;
-
-  @Nullable
   @Column(name = "DELETED_AT")
   private Instant deletedAt;
 
   @Column(name = "STATUS")
   private int status;
 
-  @jakarta.persistence.Version
   @Column(name = "VERSION")
   private Long version;
 
@@ -75,7 +70,6 @@ public class ArticleEntity {
     Double rating,
     Integer voteCount,
     Instant publishedAt,
-    Instant updatedAt,
     Instant deletedAt,
     int status,
     Long version
@@ -87,7 +81,6 @@ public class ArticleEntity {
     this.rating = rating;
     this.voteCount = voteCount;
     this.publishedAt = publishedAt;
-    this.updatedAt = updatedAt;
     this.deletedAt = deletedAt;
     this.status = status;
     this.version = version;
@@ -104,7 +97,6 @@ public class ArticleEntity {
       article.rating().value(),
       article.rating().count(),
       article.publishedAt(),
-      article.updatedAt(),
       article.deletedAt(),
       article.status().id,
       article.version().value() - 1
@@ -119,7 +111,6 @@ public class ArticleEntity {
       Version.from(version),
       new CategoryId(categoryId),
       publishedAt,
-      updatedAt,
       deletedAt,
       ArticleStatus.from(status),
       (a) -> CollectionsUtils.streamOf(paragraphs).map(ParagraphEntity::to).collect(Collectors.toList())

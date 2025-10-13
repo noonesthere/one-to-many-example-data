@@ -2,12 +2,11 @@ package com.example.data.jpa.persistence.article;
 
 
 import com.example.common.types.DomainEvent;
-import com.example.common.utilities.CollectionsUtils;
 import com.example.domain.article.Article;
 import com.example.domain.article.ArticleId;
 import com.example.scenarios.dto.article.ArticleReadModel;
-import com.example.scenarios.outbound.article.ArticlePersister;
 import com.example.scenarios.outbound.article.ArticleExtractor;
+import com.example.scenarios.outbound.article.ArticlePersister;
 import com.example.scenarios.outbound.article.ArticlesExtractor;
 import jakarta.transaction.Transactional;
 import org.springframework.context.ApplicationEventPublisher;
