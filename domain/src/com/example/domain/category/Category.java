@@ -10,6 +10,7 @@ import com.example.domain.category.events.CategoryRenamedEvent;
 import jakarta.annotation.Nullable;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Category extends DomainEntity<CategoryId> {
@@ -30,32 +31,37 @@ public class Category extends DomainEntity<CategoryId> {
   }
 
   public static Category rebuild(List<DomainEvent> events) {
-    final CategoryCreatedEvent createEvent = (CategoryCreatedEvent) events.removeFirst();
-    final Category category = initialize(createEvent);
-    events.forEach(category::applyEvent);
-    return category;
+    final var domainEvents = new ArrayList<>(events); // smell
+
+    final CategoryCreatedEvent createEvent = (CategoryCreatedEvent) domainEvents.removeFirst(); // smell
+
+    final Category category = applyEvent(createEvent);
+    domainEvents.forEach(category::applyEvent);
+
+    return new Category(category.id, category.version().next(), category.name, category.deletedAt); // smell with version
   }
 
-  private static Category initialize(CategoryCreatedEvent event) {
+  private static Category applyEvent(CategoryCreatedEvent event) {
     final Long id = event.categoryId();
     final String name = event.categoryName();
+    final Version version = Version.newVersion();
 
     return new Category(
       new CategoryId(id),
-      Version.newVersion(),
+      version,
       new CategoryName(name),
       null
     );
   }
 
-  private Category applyEvent(DomainEvent event) {
-    return switch (event) {
+  private void applyEvent(DomainEvent event) {
+    switch (event) {
       case CategoryRenamedEvent e -> {
         this.name = new CategoryName(e.categoryName());
-        yield this;
       }
       default -> throw new IllegalStateException("Unexpected value: " + event);
-    };
+    }
+    ;
   }
 
   public static Category create(CreateCategoryCommand command) {
@@ -64,16 +70,16 @@ public class Category extends DomainEntity<CategoryId> {
       command.categoryName()
     );
 
-    final var category = initialize(event);
+    final var category = applyEvent(event);
     category.addEvent(event);
+
     return category;
   }
 
-  public Category rename(RenameCategoryCommand command) {
-    final var event = CategoryRenamedEvent.create(id, command.name(), version().value());
+  public void rename(RenameCategoryCommand command) {
+    final var event = CategoryRenamedEvent.create(id, command.name(), version());
     applyEvent(event);
     addEvent(event);
-    return this;
   }
 
   public Instant deletedAt() {

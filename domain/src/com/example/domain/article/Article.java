@@ -66,7 +66,7 @@ public class Article extends AggregateRoot<ArticleId> {
       null,
       ArticleStatus.PUBLISHED,
       (a) -> {
-        a.addEvent(ArticlePostedEvent.create(a.id.value(), a.publishedAt, a.categoryId.value()));
+        a.addEvent(ArticlePostedEvent.create(a.id, a.publishedAt, a.categoryId));
 
         final List<Paragraph> ps = new ArrayList<>();
         for (Paragraph p : command.paragraphs()) {

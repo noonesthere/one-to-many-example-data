@@ -27,7 +27,9 @@ class RenameCategoryUseCase implements RenameCategory {
     final var name = new CategoryName(dto.name());
     final var category = extractor.get(id);
 
-    category.rename(new RenameCategoryCommand(id, name));
+    final var command = new RenameCategoryCommand(id, name);
+
+    category.rename(command);
 
     return updater.update(category); // I know that we can return just locator or not return anything but...
   }

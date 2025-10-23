@@ -1,10 +1,6 @@
 package com.example.scenarios.article;
 
-import com.example.domain.article.Article;
-import com.example.domain.article.ArticleIdProvider;
-import com.example.domain.article.Paragraph;
-import com.example.domain.article.ParagraphIdProvider;
-import com.example.domain.article.Title;
+import com.example.domain.article.*;
 import com.example.domain.article.commands.PostArticleCommand;
 import com.example.domain.category.CategoryId;
 import com.example.scenarios.dto.article.ArticleInput;
@@ -47,6 +43,8 @@ class PostArticleUseCase implements PostArticle {
 
     final var command = new PostArticleCommand(articleId, title, paragraphs, categoryId);
 
-    articlePersister.persist(Article.post(command));
+    final var article = Article.post(command);
+
+    articlePersister.persist(article);
   }
 }

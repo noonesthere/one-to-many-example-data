@@ -14,7 +14,12 @@ public record CategoryCreatedEvent(
 ) implements CategoryEvent {
 
   public static CategoryCreatedEvent create(CategoryId categoryId, CategoryName categoryName) {
-    return new CategoryCreatedEvent(UUID.randomUUID(), Instant.now(), categoryId.value(), categoryName.value());
+    return new CategoryCreatedEvent(
+      UUID.randomUUID(),
+      Instant.now(),
+      categoryId.value(),
+      categoryName.value()
+    );
   }
 
   @Override

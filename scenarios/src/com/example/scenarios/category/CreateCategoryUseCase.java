@@ -14,7 +14,7 @@ class CreateCategoryUseCase implements CreateCategory {
   private final CategoryPersister persister;
   private final CategoryIdProvider categoryIdGenerator;
 
-  public CreateCategoryUseCase(
+  CreateCategoryUseCase(
     CategoryPersister persister,
     CategoryIdProvider categoryIdGenerator
   ) {

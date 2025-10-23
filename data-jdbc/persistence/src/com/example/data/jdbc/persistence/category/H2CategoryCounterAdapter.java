@@ -8,6 +8,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 class H2CategoryCounterAdapter implements CategoriesCounterExtractor {
@@ -27,7 +28,7 @@ class H2CategoryCounterAdapter implements CategoriesCounterExtractor {
 
   @EventListener
   void onPostArticle(ArticlePostedEvent event) {
-    final var categoryCounter = repository.findById(event.categoryId())
+    final CategoryCounter categoryCounter = repository.findById(event.categoryId())
       .map(CategoryCounterEntity::to)
       .orElseThrow();
 

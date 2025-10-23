@@ -1,5 +1,6 @@
 package com.example.domain.category.events;
 
+import com.example.common.types.Version;
 import com.example.domain.category.CategoryId;
 import com.example.domain.category.CategoryName;
 
@@ -13,13 +14,13 @@ public record CategoryRenamedEvent(
   String categoryName,
   Long previousVersion
 ) implements CategoryEvent {
-  public static CategoryRenamedEvent create(CategoryId categoryId, CategoryName categoryName, Long previousVersion) {
+  public static CategoryRenamedEvent create(CategoryId categoryId, CategoryName categoryName, Version previousVersion) {
     return new CategoryRenamedEvent(
       UUID.randomUUID(),
       Instant.now(),
       categoryId.value(),
       categoryName.value(),
-      previousVersion
+      previousVersion.value()
     );
   }
 
