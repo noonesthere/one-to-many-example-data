@@ -11,6 +11,9 @@ base {
 dependencies {
   implementation(project(":common:utilities"))
   api(project(":common:types"))
+
+  testImplementation(libs.junit.jupiter)
+  testRuntimeOnly(libs.junit.platform.launcher)
 }
 
 

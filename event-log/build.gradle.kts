@@ -12,7 +12,9 @@ configurations {
 
 
 dependencies {
+  implementation(project(":common:utilities"))
   implementation(project(":domain"))
+  implementation(project(":scenarios:outbound"))
 //
   implementation(libs.spring.context)
 //  implementation(libs.spring.tx)

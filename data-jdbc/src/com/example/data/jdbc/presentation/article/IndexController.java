@@ -1,8 +1,6 @@
-package com.example.data.jdbc.presentation;
+package com.example.data.jdbc.presentation.article;
 
 
-import com.example.data.jdbc.presentation.article.ArticleViewWebModel;
-import com.example.data.jdbc.presentation.article.ArticlesViews;
 import com.example.scenarios.inbound.article.GetArticles;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

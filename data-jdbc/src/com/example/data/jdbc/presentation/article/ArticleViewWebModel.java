@@ -15,7 +15,7 @@ public record ArticleViewWebModel(
 
 ) {
 
-  public static List<ArticleViewWebModel> from(List<ArticleReadModel> articles) {
+  static List<ArticleViewWebModel> from(List<ArticleReadModel> articles) {
     return articles.stream().map(ArticleViewWebModel::from).toList();
   }
 

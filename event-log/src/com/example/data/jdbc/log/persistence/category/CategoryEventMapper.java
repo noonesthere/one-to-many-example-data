@@ -1,6 +1,7 @@
 package com.example.data.jdbc.log.persistence.category;
 
 
+import com.example.common.types.DomainEvent;
 import com.example.domain.category.events.CategoryEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,7 +14,7 @@ class CategoryEventMapper {
 
   private final ObjectMapper objectMapper;
 
-  public CategoryEventMapper(ObjectMapper objectMapper) {
+  CategoryEventMapper(ObjectMapper objectMapper) {
     this.objectMapper = objectMapper;
   }
 
@@ -32,4 +33,18 @@ class CategoryEventMapper {
       throw new RuntimeException("Failed to serialize CategoryCreatedEvent", e);
     }
   }
+
+  public DomainEvent fromEntity(CategoryEventPublicationEntity entity) {
+    try {
+      String eventType = entity.eventType();
+      Class<?> aClass = Class.forName(eventType);
+      Object o = objectMapper.readValue(entity.serializedEvent(), aClass);
+      return (CategoryEvent) o;
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException("Failed to serialize CategoryCreatedEvent", e);
+    } catch (ClassNotFoundException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
 }

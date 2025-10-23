@@ -4,7 +4,6 @@ import com.example.common.types.DomainEvent;
 import com.example.domain.category.Category;
 import com.example.domain.category.CategoryId;
 import com.example.scenarios.outbound.category.CategoriesExtractor;
-import com.example.scenarios.outbound.category.CategoryExtractor;
 import com.example.scenarios.outbound.category.CategoryPersister;
 import com.example.scenarios.outbound.category.CategoryUpdater;
 import org.springframework.context.ApplicationEventPublisher;
@@ -18,8 +17,7 @@ import java.util.Objects;
 class H2CategoryRepositoryAdapter implements
   CategoryPersister,
   CategoriesExtractor,
-  CategoryUpdater,
-  CategoryExtractor {
+  CategoryUpdater {
 
   private final CategoryRepository categoryRepository;
   private final ApplicationEventPublisher eventPublisher;
@@ -29,7 +27,7 @@ class H2CategoryRepositoryAdapter implements
     this.eventPublisher = eventPublisher;
   }
 
-  @Override
+  //  @Override
   public Category get(CategoryId id) {
     return categoryRepository.findById(id.value())
       .map(CategoryEntity::to)
