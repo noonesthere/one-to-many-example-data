@@ -28,7 +28,7 @@ public class H2CategoryEventRepositoryAdapter implements CategoryExtractor { // 
 
   @Override
   public Category get(CategoryId id) {
-    final var events = CollectionsUtils.streamOf(repository.findAllOrderByPublicationDateDesc())
+    final var events = CollectionsUtils.streamOf(repository.findAllByIdOrderByPublicationDateDesc(id.value()))
       .map(mapper::fromEntity)
       .toList();
 

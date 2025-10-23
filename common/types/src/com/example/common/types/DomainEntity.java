@@ -16,9 +16,7 @@ public abstract class DomainEntity<T> {
   }
 
   protected void addEvent(DomainEvent event) {
-    if (events.isEmpty()) {
-      version = version.next();
-    }
+    // TODO: think about it
     events.add(event);
   }
 
@@ -35,4 +33,9 @@ public abstract class DomainEntity<T> {
   protected void setVersion(Version version) {
     this.version = version;
   }
+
+  protected void updateVersion() {
+    version = version.next();
+  }
+
 }

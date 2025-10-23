@@ -56,7 +56,7 @@ public class Article extends AggregateRoot<ArticleId> {
   }
 
   public static Article post(PostArticleCommand command) {
-    return new Article(
+    Article article = new Article(
       command.articleId(),
       command.title(),
       Rating.newRating(),
@@ -79,6 +79,8 @@ public class Article extends AggregateRoot<ArticleId> {
         return ps;
       }
     );
+    article.updateVersion();
+    return article;
   }
 
   public void vote(VoteCommand command) {
@@ -86,6 +88,7 @@ public class Article extends AggregateRoot<ArticleId> {
     addEvent(
       ArticleRateChangedEvent.create(id, rating, version())
     );
+    updateVersion();
   }
 
   public Article renameTitle(RenameTitleCommand command) {
@@ -95,12 +98,14 @@ public class Article extends AggregateRoot<ArticleId> {
       version()
     );
     addEvent(articleTitleRenamedEvent);
+    updateVersion();
     return this;
   }
 
   public Article changeCategory(ChangeCategoryCommand command) {
     categoryId = command.categoryId();
     addEvent(CategoryChangedEvent.create(id, categoryId, version()));
+    updateVersion();
     return this;
   }
 
@@ -113,17 +118,20 @@ public class Article extends AggregateRoot<ArticleId> {
 
     findParagraph(command.paragraphId())
       .ifPresent(p -> changeText(p, text));
+    updateVersion();
   }
 
   private void changeText(Paragraph p, String text) {
     if (p.changeText(text)) {
       addEvent(ParagraphEditedEvent.create(id, p.id, text, version()));
     }
+    updateVersion();
   }
 
   public void dropParagraph(DropParagraphCommand command) {
     findParagraph(command.paragraphId())
       .ifPresent(this::removeParagraph);
+    updateVersion();
   }
 
   public Title title() {

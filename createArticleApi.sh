@@ -7,5 +7,5 @@ curl -X POST http://localhost:8080/api/articles \
   -d '{
     "title": "Article '"$RANDOM"'",
     "paragraphs": ["First paragraph", "Second paragraph", "Third paragraph"],
-    "categoryId": "7J455XHCBZVN3"
+    "categoryId": "0NB6E72VDBMMH"
   }'
