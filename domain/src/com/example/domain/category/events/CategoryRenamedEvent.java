@@ -12,7 +12,7 @@ public record CategoryRenamedEvent(
   Instant createdAt,
   Long categoryId,
   String categoryName,
-  Long previousVersion
+  Long version
 ) implements CategoryEvent {
   public static CategoryRenamedEvent create(CategoryId categoryId, CategoryName categoryName, Version previousVersion) {
     return new CategoryRenamedEvent(

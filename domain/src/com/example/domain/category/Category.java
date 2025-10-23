@@ -35,13 +35,13 @@ public class Category extends DomainEntity<CategoryId> {
 
     final CategoryCreatedEvent createEvent = (CategoryCreatedEvent) domainEvents.removeFirst(); // smell
 
-    final Category category = applyEvent(createEvent);
+    final Category category = handleInitialEvent(createEvent);
     domainEvents.forEach(category::applyEvent);
 
     return new Category(category.id, category.version().next(), category.name, category.deletedAt); // smell with version
   }
 
-  private static Category applyEvent(CategoryCreatedEvent event) {
+  private static Category handleInitialEvent(CategoryCreatedEvent event) {
     final Long id = event.categoryId();
     final String name = event.categoryName();
     final Version version = Version.newVersion();
@@ -57,11 +57,16 @@ public class Category extends DomainEntity<CategoryId> {
   private void applyEvent(DomainEvent event) {
     switch (event) {
       case CategoryRenamedEvent e -> {
-        this.name = new CategoryName(e.categoryName());
+        this.setName(e);
       }
       default -> throw new IllegalStateException("Unexpected value: " + event);
     }
     ;
+  }
+
+  private void setName(CategoryRenamedEvent e) {
+    this.name = new CategoryName(e.categoryName());
+    this.setVersion(Version.from(e.version()));
   }
 
   public static Category create(CreateCategoryCommand command) {
@@ -70,7 +75,7 @@ public class Category extends DomainEntity<CategoryId> {
       command.categoryName()
     );
 
-    final var category = applyEvent(event);
+    final var category = handleInitialEvent(event);
     category.addEvent(event);
 
     return category;

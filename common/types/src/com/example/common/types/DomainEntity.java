@@ -32,4 +32,7 @@ public abstract class DomainEntity<T> {
     return version;
   }
 
+  protected void setVersion(Version version) {
+    this.version = version;
+  }
 }

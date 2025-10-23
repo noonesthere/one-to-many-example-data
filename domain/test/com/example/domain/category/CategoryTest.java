@@ -29,12 +29,12 @@ class CategoryTest {
     Assertions.assertEquals(id, category.id);
     Assertions.assertEquals(name, category.name());
 
-    CategoryName rEnamedCategoryName = new CategoryName("REnamed Category Name");
-    category.rename(new RenameCategoryCommand(id, rEnamedCategoryName));
+    CategoryName renamedCategoryName1 = new CategoryName("REnamed Category Name");
+    category.rename(new RenameCategoryCommand(id, renamedCategoryName1));
     events.addAll(category.popEvents());
 
-    CategoryName rEnamedCategoryName1 = new CategoryName("REnamed Category Name");
-    category.rename(new RenameCategoryCommand(id, rEnamedCategoryName1));
+    CategoryName renamedCategoryName2 = new CategoryName("REnamed Category Name");
+    category.rename(new RenameCategoryCommand(id, renamedCategoryName2));
     events.addAll(category.popEvents());
 
     final var rebuilded = Category.rebuild(events);

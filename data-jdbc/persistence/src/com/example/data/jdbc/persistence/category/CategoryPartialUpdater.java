@@ -22,9 +22,9 @@ class CategoryPartialUpdater {
     final int update = jdbcClient.sql(
         "UPDATE CATEGORY SET NAME = :name, version = :version WHERE ID = :id AND version = :previous"
       ).param("name", event.categoryName()).
-      param("version", event.previousVersion() + 1).
+      param("version", event.version() + 1).
       param("id", event.categoryId()).
-      param("previous", event.previousVersion()).update();
+      param("previous", event.version()).update();
 
     if (update!=1) {
       throw new RuntimeException("Optimistic update failure");
