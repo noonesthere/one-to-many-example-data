@@ -1,6 +1,8 @@
 package com.example.rest.category;
 
+import com.example.domain.category.CategoryId;
 import com.example.scenarios.inbound.category.CreateCategory;
+import io.hypersistence.tsid.TSID;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,9 +20,10 @@ class CreateCategoryRestController {
   }
 
   @PostMapping
-  public ResponseEntity<?> create(@RequestBody CreateCategoryWebModel webModel) {
-    createCategory.execute(webModel.name());
-    //TODO: handle exceptions
-    return ResponseEntity.ok().build();
+  public ResponseEntity<String> create(@RequestBody CreateCategoryWebModel webModel) {
+    final CategoryId categoryId = createCategory.execute(webModel.name());
+    final var body = "Location link: " + TSID.from(categoryId.value()).toString();
+
+    return ResponseEntity.ok().body(body);
   }
 }

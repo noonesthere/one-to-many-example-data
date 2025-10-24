@@ -3,12 +3,13 @@ package com.example.data.jdbc.persistence.category;
 import com.example.common.utilities.CollectionsUtils;
 import com.example.domain.article.events.ArticlePostedEvent;
 import com.example.domain.category.CategoryCounter;
+import com.example.domain.category.CategoryId;
+import com.example.domain.category.events.CategoryCreatedEvent;
 import com.example.scenarios.outbound.category.CategoriesCounterExtractor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 class H2CategoryCounterAdapter implements CategoriesCounterExtractor {
@@ -33,5 +34,12 @@ class H2CategoryCounterAdapter implements CategoriesCounterExtractor {
       .orElseThrow();
 
     repository.save(CategoryCounterEntity.from(categoryCounter.increase()));
+  }
+
+  @EventListener
+  void onCreateCategory(CategoryCreatedEvent event) {
+    Long categoryIdValue = event.categoryId();
+    final var categoryCounter = CategoryCounter.newCounter(new CategoryId(categoryIdValue));
+    repository.save(CategoryCounterEntity.from(categoryCounter));
   }
 }

@@ -2,6 +2,14 @@
 
 set -e
 
-curl -X POST http://localhost:8080/api/categories/0NB6E72VDBMMH \
+# Check if argument provided
+if [ -z "$1" ]; then
+  echo "Usage: $0 <categoryId>"
+  exit 1
+fi
+
+categoryId="$1"
+
+curl -X POST "http://localhost:8080/api/categories/${categoryId}" \
   -H "Content-Type: application/json" \
-  -d '{"id": "0NB6E72VDBMMH", "name": "Renamed Category '"$RANDOM"'"}'
+  -d "{\"id\": \"${categoryId}\", \"name\": \"Renamed Category ${RANDOM}\"}"
