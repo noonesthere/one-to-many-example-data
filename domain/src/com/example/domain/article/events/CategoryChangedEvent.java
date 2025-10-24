@@ -12,7 +12,7 @@ public record CategoryChangedEvent(
   Instant createdAt,
   Long articleId,
   Long categoryId,
-  Long previousVersion
+  Long version
 ) implements ArticleEvent {
 
   public static CategoryChangedEvent create(ArticleId articleId, CategoryId categoryId, Version previousVersion) {

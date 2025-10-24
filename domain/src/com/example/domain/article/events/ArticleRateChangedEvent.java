@@ -13,7 +13,7 @@ public record ArticleRateChangedEvent(
   Long articleId,
   Double rating,
   Integer count,
-  Long previousVersion
+  Long version
 ) implements ArticleEvent {
 
   public static ArticleRateChangedEvent create(

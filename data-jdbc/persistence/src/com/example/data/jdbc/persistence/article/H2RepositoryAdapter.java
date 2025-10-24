@@ -41,8 +41,7 @@ class H2RepositoryAdapter implements ArticlePersister, ArticleExtractor {
 
   @Override
   public Article get(ArticleId id) {
-    return articleRepository
-      .findById(id.value())
+    return articleRepository.findById(id.value())
       .map(ArticleEntity::to)
       .orElseThrow();
   }

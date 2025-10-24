@@ -22,13 +22,14 @@ class ArticlePartialUpdater {
   int updateTitle(ArticleTitleRenamedEvent event) {
     int update = jdbcClient.sql(
         """
-          UPDATE ARTICLE SET TITLE = :title  VERSION = :version
+          UPDATE ARTICLE SET TITLE = :title,  VERSION = :version
           WHERE ID = :id AND VERSION = :previous
           """
       ).param("title", event.title())
       .param("id", event.articleId())
-      .param("previous", event.previousVersion())
-      .param("version", event.previousVersion() + 1).update();
+      .param("previous", event.version() - 1)
+      .param("version", event.version())
+      .update();
     if (update != 1) {
       throw new RuntimeException("Article title update failed");
     }
@@ -40,8 +41,8 @@ class ArticlePartialUpdater {
     final int update = jdbcClient.sql(
         "UPDATE ARTICLE SET VERSION = :version WHERE ID = :id AND VERSION = :previous"
       ).param("id", event.articleId())
-      .param("previous", event.previousVersion())
-      .param("version", event.previousVersion() + 1)
+      .param("previous", event.version() - 1)
+      .param("version", event.version())
       .update();
 
     return jdbcClient.sql(
@@ -54,8 +55,8 @@ class ArticlePartialUpdater {
     int update = jdbcClient.sql(
         "UPDATE ARTICLE SET VERSION = :version WHERE ID = :id AND VERSION = :previous"
       ).param("id", event.articleId())
-      .param("previous", event.previousVersion())
-      .param("version", event.previousVersion() + 1).update();
+      .param("previous", event.version() - 1)
+      .param("version", event.version()).update();
 
     //TODO: we can add Version and o/l for paragraphs skipped for simplicity
     return jdbcClient.sql("UPDATE PARAGRAPH SET TEXT =:text WHERE ID = :id")
@@ -74,9 +75,9 @@ class ArticlePartialUpdater {
       )
       .param("rating", event.rating())
       .param("count", event.count())
-      .param("version", event.previousVersion() + 1)
+      .param("version", event.version())
       .param("id", event.articleId())
-      .param("previous", event.previousVersion())
+      .param("previous", event.version() - 1)
       .update();
   }
 
@@ -91,8 +92,8 @@ class ArticlePartialUpdater {
       )
       .param("id", event.articleId())
       .param("categoryId", event.categoryId())
-      .param("previous", event.previousVersion())
-      .param("version", event.previousVersion() + 1)
+      .param("previous", event.version() - 1)
+      .param("version", event.version())
       .update();
   }
 }

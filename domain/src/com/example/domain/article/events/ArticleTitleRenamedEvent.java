@@ -13,7 +13,7 @@ public record ArticleTitleRenamedEvent(
   Instant createdAt,
   Long articleId,
   String title,
-  Long previousVersion
+  Long version
 ) implements ArticleEvent {
 
   public static DomainEvent create(ArticleId articleId, Title title, Version version) {

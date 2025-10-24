@@ -56,7 +56,8 @@ public class Article extends AggregateRoot<ArticleId> {
   }
 
   public static Article post(PostArticleCommand command) {
-    Article article = new Article(
+
+    return new Article(
       command.articleId(),
       command.title(),
       Rating.newRating(),
@@ -66,6 +67,7 @@ public class Article extends AggregateRoot<ArticleId> {
       null,
       ArticleStatus.PUBLISHED,
       (a) -> {
+        a.updateVersion();
         a.addEvent(ArticlePostedEvent.create(a.id, a.publishedAt, a.categoryId));
 
         final List<Paragraph> ps = new ArrayList<>();
@@ -79,37 +81,37 @@ public class Article extends AggregateRoot<ArticleId> {
         return ps;
       }
     );
-    article.updateVersion();
-    return article;
   }
 
   public void vote(VoteCommand command) {
+    updateVersion();
     rating = rating.addVote(command.grade());
     addEvent(
       ArticleRateChangedEvent.create(id, rating, version())
     );
-    updateVersion();
   }
 
   public Article renameTitle(RenameTitleCommand command) {
+    updateVersion();
     final var articleTitleRenamedEvent = ArticleTitleRenamedEvent.create(
       command.articleId(),
       command.title(),
       version()
     );
     addEvent(articleTitleRenamedEvent);
-    updateVersion();
+
     return this;
   }
 
   public Article changeCategory(ChangeCategoryCommand command) {
+    updateVersion();
     categoryId = command.categoryId();
     addEvent(CategoryChangedEvent.create(id, categoryId, version()));
-    updateVersion();
     return this;
   }
 
   public void editParagraph(EditParagraphCommand command) {
+    updateVersion();
     final String text = command.text();
 
     if (Objects.isNull(text) || text.isBlank()) {
@@ -118,20 +120,19 @@ public class Article extends AggregateRoot<ArticleId> {
 
     findParagraph(command.paragraphId())
       .ifPresent(p -> changeText(p, text));
-    updateVersion();
   }
 
   private void changeText(Paragraph p, String text) {
+    updateVersion();
     if (p.changeText(text)) {
       addEvent(ParagraphEditedEvent.create(id, p.id, text, version()));
     }
-    updateVersion();
   }
 
   public void dropParagraph(DropParagraphCommand command) {
+    updateVersion();
     findParagraph(command.paragraphId())
       .ifPresent(this::removeParagraph);
-    updateVersion();
   }
 
   public Title title() {

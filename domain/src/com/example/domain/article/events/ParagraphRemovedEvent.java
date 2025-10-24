@@ -13,7 +13,7 @@ public record ParagraphRemovedEvent(
   Instant createdAt,
   Long articleId,
   Long paragraphId,
-  Long previousVersion
+  Long version
 ) implements ArticleEvent {
 
   public static DomainEvent create(ArticleId articleId, ParagraphId paragraphId, Version version) {

@@ -1,6 +1,11 @@
 package com.example.scenarios.article;
 
-import com.example.domain.article.*;
+import com.example.domain.article.Article;
+import com.example.domain.article.ArticleId;
+import com.example.domain.article.ArticleIdProvider;
+import com.example.domain.article.Paragraph;
+import com.example.domain.article.ParagraphIdProvider;
+import com.example.domain.article.Title;
 import com.example.domain.article.commands.PostArticleCommand;
 import com.example.domain.category.CategoryId;
 import com.example.scenarios.dto.article.ArticleInput;
@@ -31,7 +36,7 @@ class PostArticleUseCase implements PostArticle {
   }
 
   @Override
-  public void execute(ArticleInput articleInput) {
+  public ArticleId execute(ArticleInput articleInput) {
 
     final var articleId = articleIdProvider.provide();
     final var categoryId = new CategoryId(articleInput.categoryId());
@@ -46,5 +51,7 @@ class PostArticleUseCase implements PostArticle {
     final var article = Article.post(command);
 
     articlePersister.persist(article);
+
+    return article.id;
   }
 }

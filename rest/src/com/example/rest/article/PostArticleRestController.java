@@ -1,6 +1,8 @@
 package com.example.rest.article;
 
+import com.example.domain.article.ArticleId;
 import com.example.scenarios.inbound.article.PostArticle;
+import io.hypersistence.tsid.TSID;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,8 +21,9 @@ class PostArticleRestController {
 
 
   @PostMapping
-  public ResponseEntity<?> postArticle(@RequestBody PostArticleWebModel webModel) {
-    postArticle.execute(webModel.to());
-    return ResponseEntity.ok().build();
+  public ResponseEntity<String> postArticle(@RequestBody PostArticleWebModel webModel) {
+    final ArticleId articleId = postArticle.execute(webModel.to());
+    return ResponseEntity.ok()
+      .body(TSID.from(articleId.value()).toString());
   }
 }

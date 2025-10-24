@@ -13,7 +13,7 @@ public record ParagraphEditedEvent(
   Long articleId,
   Long paragraphId,
   String text,
-  Long previousVersion
+  Long version
 ) implements ArticleEvent {
 
   public static ParagraphEditedEvent create(ArticleId articleId, ParagraphId paragraphId, String text, Version version) {
