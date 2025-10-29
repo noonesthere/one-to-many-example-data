@@ -6,17 +6,17 @@ import com.example.domain.category.CategoryIdProvider;
 import com.example.domain.category.CategoryName;
 import com.example.domain.category.commands.CreateCategoryCommand;
 import com.example.scenarios.inbound.category.CreateCategoryInPort;
-import com.example.scenarios.outbound.category.CategoryPersister;
+import com.example.scenarios.outbound.category.CategoryPersisterOutPort;
 import jakarta.inject.Named;
 
 @Named
 class CreateCategoryUseCase implements CreateCategoryInPort {
 
-  private final CategoryPersister persister;
+  private final CategoryPersisterOutPort persister;
   private final CategoryIdProvider categoryIdGenerator;
 
   CreateCategoryUseCase(
-    CategoryPersister persister,
+    CategoryPersisterOutPort persister,
     CategoryIdProvider categoryIdGenerator
   ) {
     this.persister = persister;

@@ -3,8 +3,8 @@ package com.example.data.jdbc.persistence.article;
 import com.example.common.types.DomainEvent;
 import com.example.domain.article.Article;
 import com.example.domain.article.ArticleId;
-import com.example.scenarios.outbound.article.ArticleExtractor;
-import com.example.scenarios.outbound.article.ArticlePersister;
+import com.example.scenarios.outbound.article.ArticleExtractorOutPort;
+import com.example.scenarios.outbound.article.ArticlePersisterOutPort;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Component
-class H2RepositoryAdapter implements ArticlePersister, ArticleExtractor {
+class H2RepositoryAdapter implements ArticlePersisterOutPort, ArticleExtractorOutPort {
 
   private final ArticleRepository articleRepository;
   private final ApplicationEventPublisher eventPublisher;

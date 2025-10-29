@@ -2,7 +2,7 @@ package com.example.data.jdbc.persistence.article;
 
 import com.example.common.utilities.CollectionsUtils;
 import com.example.scenarios.dto.article.ArticleReadModel;
-import com.example.scenarios.outbound.article.ArticlesExtractor;
+import com.example.scenarios.outbound.article.ArticlesExtractorOutPort;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +16,7 @@ import static com.example.data.jdbc.persistence.article.ArticleReadModelReposito
 import static com.example.data.jdbc.persistence.article.ArticleReadModelRepositoryHelper.SELECT_FROM_PARAGRAPH;
 
 @Component
-class ArticleReadModelRepository implements ArticlesExtractor {
+class ArticleReadModelRepository implements ArticlesExtractorOutPort {
 
   private final NamedParameterJdbcTemplate jdbcTemplate;
 

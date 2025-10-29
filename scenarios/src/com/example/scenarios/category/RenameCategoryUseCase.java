@@ -6,17 +6,17 @@ import com.example.domain.category.CategoryName;
 import com.example.domain.category.commands.RenameCategoryCommand;
 import com.example.scenarios.dto.category.RenamingCategoryDto;
 import com.example.scenarios.inbound.category.RenameCategoryInPort;
-import com.example.scenarios.outbound.category.CategoryExtractor;
-import com.example.scenarios.outbound.category.CategoryUpdater;
+import com.example.scenarios.outbound.category.CategoryExtractorOutPort;
+import com.example.scenarios.outbound.category.CategoryUpdaterOutPort;
 import jakarta.inject.Named;
 
 @Named
 class RenameCategoryUseCase implements RenameCategoryInPort {
 
-  private final CategoryUpdater updater;
-  private final CategoryExtractor extractor;
+  private final CategoryUpdaterOutPort updater;
+  private final CategoryExtractorOutPort extractor;
 
-  RenameCategoryUseCase(CategoryUpdater updater, CategoryExtractor extractor) {
+  RenameCategoryUseCase(CategoryUpdaterOutPort updater, CategoryExtractorOutPort extractor) {
     this.updater = updater;
     this.extractor = extractor;
   }

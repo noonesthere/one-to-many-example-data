@@ -1,13 +1,13 @@
 package com.example.data.jdbc.persistence.article;
 
 import com.example.domain.article.Article;
-import com.example.scenarios.outbound.article.ArticleUpdater;
+import com.example.scenarios.outbound.article.ArticleUpdaterOutPort;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
-class H2ArticleRepositoryUpdater implements ArticleUpdater {
+class H2ArticleRepositoryUpdater implements ArticleUpdaterOutPort {
   private final ApplicationEventPublisher eventPublisher;
 
   H2ArticleRepositoryUpdater(ApplicationEventPublisher eventPublisher

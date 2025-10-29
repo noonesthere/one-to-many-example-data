@@ -1,14 +1,14 @@
 package com.example.plain.jdbc.persistence;
 
 import com.example.domain.category.Category;
-import com.example.scenarios.outbound.category.CategoriesExtractor;
-import com.example.scenarios.outbound.category.CategoryPersister;
+import com.example.scenarios.outbound.category.CategoriesExtractorOutPort;
+import com.example.scenarios.outbound.category.CategoryPersisterOutPort;
 import jakarta.inject.Named;
 
 import java.util.List;
 
 @Named
-class H2CategoryRepositoryAdapter implements CategoryPersister, CategoriesExtractor {
+class H2CategoryRepositoryAdapter implements CategoryPersisterOutPort, CategoriesExtractorOutPort {
 
   private final CategoryRepository repository;
 

@@ -4,6 +4,6 @@ import com.example.scenarios.dto.article.ArticleReadModel;
 
 import java.util.List;
 
-public interface ArticlesExtractor {
+public interface ArticlesExtractorOutPort {
   List<ArticleReadModel> findAll();
 }

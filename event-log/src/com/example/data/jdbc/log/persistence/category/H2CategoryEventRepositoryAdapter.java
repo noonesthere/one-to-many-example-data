@@ -5,11 +5,11 @@ import com.example.common.utilities.CollectionsUtils;
 import com.example.domain.category.Category;
 import com.example.domain.category.CategoryId;
 import com.example.domain.category.events.CategoryEvent;
-import com.example.scenarios.outbound.category.CategoryExtractor;
+import com.example.scenarios.outbound.category.CategoryExtractorOutPort;
 import org.springframework.stereotype.Component;
 
 @Component
-public class H2CategoryEventRepositoryAdapter implements CategoryExtractor { // Skipped interface and other stuff for simplicity
+public class H2CategoryEventRepositoryAdapter implements CategoryExtractorOutPort { // Skipped interface and other stuff for simplicity
 
   private final CategoryEventPublicationRepository repository;
   private final CategoryEventMapper mapper;

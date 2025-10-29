@@ -3,9 +3,9 @@ package com.example.data.jdbc.persistence.category;
 import com.example.common.types.DomainEvent;
 import com.example.domain.category.Category;
 import com.example.domain.category.CategoryId;
-import com.example.scenarios.outbound.category.CategoriesExtractor;
-import com.example.scenarios.outbound.category.CategoryPersister;
-import com.example.scenarios.outbound.category.CategoryUpdater;
+import com.example.scenarios.outbound.category.CategoriesExtractorOutPort;
+import com.example.scenarios.outbound.category.CategoryPersisterOutPort;
+import com.example.scenarios.outbound.category.CategoryUpdaterOutPort;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,9 +15,9 @@ import java.util.Objects;
 
 @Component
 class H2CategoryRepositoryAdapter implements
-  CategoryPersister,
-  CategoriesExtractor,
-  CategoryUpdater {
+  CategoryPersisterOutPort,
+  CategoriesExtractorOutPort,
+        CategoryUpdaterOutPort {
 
   private final CategoryRepository categoryRepository;
   private final ApplicationEventPublisher eventPublisher;

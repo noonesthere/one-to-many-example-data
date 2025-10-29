@@ -4,8 +4,8 @@ import com.example.common.utilities.CollectionsUtils;
 import com.example.domain.category.CategoryCounter;
 import com.example.scenarios.dto.category.CategoryReadModel;
 import com.example.scenarios.inbound.category.GetCategoriesInPort;
-import com.example.scenarios.outbound.category.CategoriesCounterExtractor;
-import com.example.scenarios.outbound.category.CategoriesExtractor;
+import com.example.scenarios.outbound.category.CategoriesCounterExtractorOutPort;
+import com.example.scenarios.outbound.category.CategoriesExtractorOutPort;
 import jakarta.inject.Named;
 
 import java.util.List;
@@ -15,12 +15,12 @@ import java.util.stream.Collectors;
 @Named
 class GetCategoriesUseCase implements GetCategoriesInPort {
 
-  private final CategoriesExtractor extractor;
-  private final CategoriesCounterExtractor counterExtractor;
+  private final CategoriesExtractorOutPort extractor;
+  private final CategoriesCounterExtractorOutPort counterExtractor;
 
   GetCategoriesUseCase(
-    CategoriesExtractor extractor,
-    CategoriesCounterExtractor counterExtractor
+    CategoriesExtractorOutPort extractor,
+    CategoriesCounterExtractorOutPort counterExtractor
   ) {
     this.extractor = extractor;
     this.counterExtractor = counterExtractor;

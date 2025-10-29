@@ -5,14 +5,14 @@ import com.example.domain.article.events.ArticlePostedEvent;
 import com.example.domain.category.CategoryCounter;
 import com.example.domain.category.CategoryId;
 import com.example.domain.category.events.CategoryCreatedEvent;
-import com.example.scenarios.outbound.category.CategoriesCounterExtractor;
+import com.example.scenarios.outbound.category.CategoriesCounterExtractorOutPort;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-class H2CategoryCounterAdapter implements CategoriesCounterExtractor {
+class H2CategoryCounterAdapter implements CategoriesCounterExtractorOutPort {
 
   private final CategoryCounterRepository repository;
 

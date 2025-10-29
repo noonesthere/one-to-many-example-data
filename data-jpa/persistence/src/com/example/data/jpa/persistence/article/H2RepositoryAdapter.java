@@ -5,9 +5,9 @@ import com.example.common.types.DomainEvent;
 import com.example.domain.article.Article;
 import com.example.domain.article.ArticleId;
 import com.example.scenarios.dto.article.ArticleReadModel;
-import com.example.scenarios.outbound.article.ArticleExtractor;
-import com.example.scenarios.outbound.article.ArticlePersister;
-import com.example.scenarios.outbound.article.ArticlesExtractor;
+import com.example.scenarios.outbound.article.ArticleExtractorOutPort;
+import com.example.scenarios.outbound.article.ArticlePersisterOutPort;
+import com.example.scenarios.outbound.article.ArticlesExtractorOutPort;
 import jakarta.transaction.Transactional;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-class H2RepositoryAdapter implements ArticlePersister, ArticlesExtractor, ArticleExtractor {
+class H2RepositoryAdapter implements ArticlePersisterOutPort, ArticlesExtractorOutPort, ArticleExtractorOutPort {
 
   private final ArticleRepository articleRepository;
   private final ApplicationEventPublisher eventPublisher;

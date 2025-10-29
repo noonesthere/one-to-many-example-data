@@ -10,8 +10,8 @@ import com.example.domain.article.commands.PostArticleCommand;
 import com.example.domain.category.CategoryId;
 import com.example.scenarios.dto.article.ArticleInput;
 import com.example.scenarios.inbound.article.PostArticleInPort;
-import com.example.scenarios.outbound.article.ArticlePersister;
-import com.example.scenarios.outbound.category.CategoryExtractor;
+import com.example.scenarios.outbound.article.ArticlePersisterOutPort;
+import com.example.scenarios.outbound.category.CategoryExtractorOutPort;
 import jakarta.inject.Named;
 
 import java.util.List;
@@ -19,19 +19,19 @@ import java.util.List;
 @Named
 class PostArticleUseCase implements PostArticleInPort {
 
-  private final ArticlePersister articlePersister;
+  private final ArticlePersisterOutPort articlePersisterOutPort;
   private final ArticleIdProvider articleIdProvider;
-  private final CategoryExtractor categoryExtractor;
+  private final CategoryExtractorOutPort categoryExtractorOutPort;
   private final ParagraphIdProvider paragraphIdProvider;
 
   public PostArticleUseCase(
-    ArticlePersister articlePersister,
+    ArticlePersisterOutPort articlePersisterOutPort,
     ArticleIdProvider articleIdProvider,
-    CategoryExtractor categoryExtractor, ParagraphIdProvider paragraphIdProvider
+    CategoryExtractorOutPort categoryExtractorOutPort, ParagraphIdProvider paragraphIdProvider
   ) {
-    this.articlePersister = articlePersister;
+    this.articlePersisterOutPort = articlePersisterOutPort;
     this.articleIdProvider = articleIdProvider;
-    this.categoryExtractor = categoryExtractor;
+    this.categoryExtractorOutPort = categoryExtractorOutPort;
     this.paragraphIdProvider = paragraphIdProvider;
   }
 
@@ -42,7 +42,7 @@ class PostArticleUseCase implements PostArticleInPort {
     final var categoryId = new CategoryId(articleInput.categoryId());
     final var title = new Title(articleInput.title());
 
-    categoryExtractor.get(categoryId); // TODO: just stub for emulate invariant
+    categoryExtractorOutPort.get(categoryId); // TODO: just stub for emulate invariant
 
     final List<Paragraph> paragraphs = Paragraph.create(articleId, articleInput.paragraphs(), paragraphIdProvider);
 
@@ -50,7 +50,7 @@ class PostArticleUseCase implements PostArticleInPort {
 
     final var article = Article.post(command);
 
-    articlePersister.persist(article);
+    articlePersisterOutPort.persist(article);
 
     return article.id;
   }

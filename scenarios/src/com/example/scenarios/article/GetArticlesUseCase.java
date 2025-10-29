@@ -3,7 +3,7 @@ package com.example.scenarios.article;
 import com.example.common.utilities.CollectionsUtils;
 import com.example.scenarios.dto.article.ArticleReadModel;
 import com.example.scenarios.inbound.article.GetArticlesInPort;
-import com.example.scenarios.outbound.article.ArticlesExtractor;
+import com.example.scenarios.outbound.article.ArticlesExtractorOutPort;
 import jakarta.inject.Named;
 
 import java.util.List;
@@ -11,9 +11,9 @@ import java.util.List;
 @Named
 class GetArticlesUseCase implements GetArticlesInPort {
 
-  private final ArticlesExtractor extractor;
+  private final ArticlesExtractorOutPort extractor;
 
-  GetArticlesUseCase(ArticlesExtractor extractor) {
+  GetArticlesUseCase(ArticlesExtractorOutPort extractor) {
     this.extractor = extractor;
   }
 
