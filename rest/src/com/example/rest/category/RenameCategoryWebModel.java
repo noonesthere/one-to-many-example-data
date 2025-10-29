@@ -1,11 +1,11 @@
 package com.example.rest.category;
 
-import com.example.scenarios.dto.category.RenamingCategoryDto;
+import com.example.scenarios.dto.category.RenamingCategoryInput;
 import io.hypersistence.tsid.TSID;
 
 public record RenameCategoryWebModel(String id, String name) {
-  RenamingCategoryDto toDto() {
+  RenamingCategoryInput toDto() {
     final TSID tsid = TSID.from(id);
-    return new RenamingCategoryDto(tsid.toLong(), name);
+    return new RenamingCategoryInput(tsid.toLong(), name);
   }
 }

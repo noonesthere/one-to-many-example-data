@@ -1,6 +1,8 @@
 package com.example.scenarios.article;
 
 import com.example.domain.article.Article;
+import com.example.domain.article.ArticleId;
+import com.example.domain.article.ParagraphId;
 import com.example.domain.article.commands.DropParagraphCommand;
 import com.example.scenarios.dto.article.DropParagraphInput;
 import com.example.scenarios.inbound.article.DropParagraphInPort;
@@ -22,9 +24,14 @@ class DropParagraphUseCase implements DropParagraphInPort {
 
   @Override
   public void execute(DropParagraphInput input) {
-    final DropParagraphCommand command = input.toCommand();
+    final var articleId = new ArticleId(input.articleId());
+    final var paragraphId = new ParagraphId(input.paragraphId());
+    final var command = new DropParagraphCommand(articleId, paragraphId);
+    
     final Article article = articleExtractorOutPort.get(command.articleId());
+
     article.dropParagraph(command);
+
     articleUpdaterOutPort.update(article);
   }
 }

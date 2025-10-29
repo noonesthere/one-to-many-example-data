@@ -1,5 +1,6 @@
 package com.example.scenarios.article;
 
+import com.example.domain.article.Article;
 import com.example.domain.article.ArticleId;
 import com.example.domain.article.Title;
 import com.example.domain.article.commands.RenameTitleCommand;
@@ -22,12 +23,10 @@ class RenameTitleUseCase implements RenameTitleInPort {
 
   @Override
   public void execute(RenameTitleInput input) {
-
     final var articleId = new ArticleId(input.articleId());
-    final var article = articleExtractorOutPort.get(articleId);
     final var title = new Title(input.title());
-
     final var command = new RenameTitleCommand(articleId, title);
+    final Article article = articleExtractorOutPort.get(articleId);
 
     articleUpdaterOutPort.update(article.renameTitle(command));
   }

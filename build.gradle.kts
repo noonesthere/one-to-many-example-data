@@ -10,7 +10,6 @@ plugins {
 
 subprojects {
 
-
   configurations.all {
     resolutionStrategy {
       eachDependency {

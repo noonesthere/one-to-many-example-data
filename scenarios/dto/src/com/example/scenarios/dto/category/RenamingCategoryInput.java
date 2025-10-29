@@ -1,6 +1,6 @@
 package com.example.scenarios.dto.category;
 
-public record RenamingCategoryDto(
+public record RenamingCategoryInput(
   Long id,
   String name
 ) {

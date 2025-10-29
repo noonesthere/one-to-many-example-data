@@ -23,8 +23,8 @@ class VoteArticleUseCase implements VoteArticleInPort {
   @Override
   public void execute(VoteArticleInput input) {
     final var articleId = new ArticleId(input.articleId());
-    final var article = articleExtractorOutPort.get(articleId);
     final var command = new VoteCommand(input.grade());
+    final var article = articleExtractorOutPort.get(articleId);
     article.vote(command);
     articleUpdaterOutPort.update(article);
   }

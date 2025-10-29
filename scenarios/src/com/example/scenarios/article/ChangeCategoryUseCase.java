@@ -1,7 +1,9 @@
 package com.example.scenarios.article;
 
 import com.example.domain.article.Article;
+import com.example.domain.article.ArticleId;
 import com.example.domain.article.commands.ChangeCategoryCommand;
+import com.example.domain.category.CategoryId;
 import com.example.scenarios.dto.article.ChangeCategoryInput;
 import com.example.scenarios.inbound.article.ChangeCategoryInPort;
 import com.example.scenarios.outbound.article.ArticleExtractorOutPort;
@@ -21,8 +23,12 @@ class ChangeCategoryUseCase implements ChangeCategoryInPort {
 
   @Override
   public void execute(ChangeCategoryInput input) {
-    final ChangeCategoryCommand command = input.toCommand();
+    final var articleId = new ArticleId(input.articleId());
+    final var categoryId = new CategoryId(input.categoryId());
+    final var command = new ChangeCategoryCommand(articleId, categoryId);
+
     final Article article = extractor.get(command.articleId());
+
     articleUpdaterOutPort.update(article.changeCategory(command));
   }
 }

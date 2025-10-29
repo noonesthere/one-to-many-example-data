@@ -4,7 +4,7 @@ import com.example.domain.category.Category;
 import com.example.domain.category.CategoryId;
 import com.example.domain.category.CategoryName;
 import com.example.domain.category.commands.RenameCategoryCommand;
-import com.example.scenarios.dto.category.RenamingCategoryDto;
+import com.example.scenarios.dto.category.RenamingCategoryInput;
 import com.example.scenarios.inbound.category.RenameCategoryInPort;
 import com.example.scenarios.outbound.category.CategoryExtractorOutPort;
 import com.example.scenarios.outbound.category.CategoryUpdaterOutPort;
@@ -22,9 +22,9 @@ class RenameCategoryUseCase implements RenameCategoryInPort {
   }
 
   @Override
-  public Category execute(RenamingCategoryDto dto) {
-    final var id = new CategoryId(dto.id());
-    final var name = new CategoryName(dto.name());
+  public Category execute(RenamingCategoryInput input) {
+    final var id = new CategoryId(input.id());
+    final var name = new CategoryName(input.name());
     final var command = new RenameCategoryCommand(id, name);
     final var category = extractor.get(id);
     category.rename(command);

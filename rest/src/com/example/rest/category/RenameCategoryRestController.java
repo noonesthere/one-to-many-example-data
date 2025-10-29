@@ -1,6 +1,5 @@
 package com.example.rest.category;
 
-import com.example.scenarios.dto.category.RenamingCategoryDto;
 import com.example.scenarios.inbound.category.RenameCategoryInPort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +25,7 @@ class RenameCategoryRestController {
         .body("Path variable id does not match request body id");
     }
 
-    RenamingCategoryDto dto = webModel.toDto();
-    renameCategoryInPort.execute(dto);
+    renameCategoryInPort.execute(webModel.toDto());
 
     return ResponseEntity.ok().build();
   }

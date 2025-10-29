@@ -1,5 +1,8 @@
 package com.example.scenarios.article;
 
+import com.example.domain.article.Article;
+import com.example.domain.article.ArticleId;
+import com.example.domain.article.ParagraphId;
 import com.example.domain.article.commands.EditParagraphCommand;
 import com.example.scenarios.dto.article.EditParagraphInput;
 import com.example.scenarios.inbound.article.EditParagraphInPort;
@@ -20,10 +23,14 @@ class EditParagraphUseCase implements EditParagraphInPort {
 
   @Override
   public void execute(EditParagraphInput input) {
-    final EditParagraphCommand command = input.asCommand();
+    final var articleId = new ArticleId(input.articleId());
+    final var paragraphId = new ParagraphId(input.paragraphId());
+    final var command = new EditParagraphCommand(articleId, paragraphId, input.text());
     // TODO: can be different approach use single paragraph and then update article
-    final var article = articleExtractorOutPort.get(command.articleId());
+    final Article article = articleExtractorOutPort.get(command.articleId());
+
     article.editParagraph(command);
+
     articleUpdaterOutPort.update(article);
   }
 }
