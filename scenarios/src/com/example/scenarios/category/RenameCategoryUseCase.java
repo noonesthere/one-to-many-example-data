@@ -25,12 +25,9 @@ class RenameCategoryUseCase implements RenameCategoryInPort {
   public Category execute(RenamingCategoryDto dto) {
     final var id = new CategoryId(dto.id());
     final var name = new CategoryName(dto.name());
-    final var category = extractor.get(id);
-
     final var command = new RenameCategoryCommand(id, name);
-
+    final var category = extractor.get(id);
     category.rename(command);
-
     return updater.update(category); // I know that we can return just locator or not return anything but...
   }
 }

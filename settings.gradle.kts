@@ -22,3 +22,4 @@ include(":event-log")
 include(":data-jpa")
 include(":data-jpa:persistence")
 
+include(":tsid")

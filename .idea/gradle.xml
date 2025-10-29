@@ -26,6 +26,7 @@
             <option value="$PROJECT_DIR$/scenarios/dto" />
             <option value="$PROJECT_DIR$/scenarios/inbound" />
             <option value="$PROJECT_DIR$/scenarios/outbound" />
+            <option value="$PROJECT_DIR$/tsid" />
           </set>
         </option>
       </GradleProjectSettings>

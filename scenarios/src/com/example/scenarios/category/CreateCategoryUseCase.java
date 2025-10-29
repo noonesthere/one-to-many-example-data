@@ -25,12 +25,11 @@ class CreateCategoryUseCase implements CreateCategoryInPort {
 
   @Override
   public CategoryId execute(String name) {
-    final var categoryId = categoryIdGenerator.provide();
+    final CategoryId categoryId = categoryIdGenerator.provide();
     final var categoryName = new CategoryName(name);
     final var createCategoryCommand = new CreateCategoryCommand(categoryId, categoryName);
-    final var category = Category.create(createCategoryCommand);
+    final Category category = Category.create(createCategoryCommand);
 
-    Category persisted = persister.persist(category);
-    return persisted.id;
+    return persister.persist(category).id;
   }
 }

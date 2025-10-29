@@ -7,7 +7,6 @@ base {
 dependencies {
 
   implementation(libs.inject.api)
-  implementation(libs.hypersistence.tsid)
 
   implementation(project(":common:types"))
   implementation(project(":common:utilities"))

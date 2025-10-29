@@ -1,4 +1,4 @@
-package com.example.scenarios.article;
+package com.example.tsid.article;
 
 import com.example.domain.article.ParagraphId;
 import com.example.domain.article.ParagraphIdProvider;

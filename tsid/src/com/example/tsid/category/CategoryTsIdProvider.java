@@ -1,4 +1,4 @@
-package com.example.scenarios.category;
+package com.example.tsid.category;
 
 import com.example.domain.category.CategoryId;
 import com.example.domain.category.CategoryIdProvider;
