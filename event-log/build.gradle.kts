@@ -1,5 +1,5 @@
 base {
-  archivesName = "data-jdbc-log"
+  archivesName = "event-log"
   group = "com.example.data.jdbc.log"
 }
 
@@ -24,7 +24,6 @@ dependencies {
   implementation(libs.spring.boot.starter.data.jdbc)
   implementation("org.springframework.modulith:spring-modulith-events-api:1.4.1")
   runtimeOnly(libs.h2)
-
 
   annotationProcessor(libs.spring.boot.configuration.processor)
 

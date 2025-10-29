@@ -12,14 +12,8 @@ include(":scenarios:dto")
 include(":scenarios:inbound")
 include(":scenarios:outbound")
 
-include(":plain-jdbc")
-include(":plain-jdbc:persistence")
-
 include(":data-jdbc")
 include(":data-jdbc:persistence")
 include(":event-log")
-
-include(":data-jpa")
-include(":data-jpa:persistence")
 
 include(":tsid")
