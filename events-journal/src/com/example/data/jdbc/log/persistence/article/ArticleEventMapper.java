@@ -23,7 +23,7 @@ class ArticleEventMapper {
       // TODO: can be simplified by using instead ARTICLE_ID column or CATEGORY_ID COLUMN just DOMAIN_ID and reduce count of Mappers
       return new ArticleEventPublicationEntity(
         UUID.randomUUID(),
-        event.domainId(),
+        event.articleId(),
         event.getClass().getCanonicalName(),
         event.createdAt(),
         serializedEvent

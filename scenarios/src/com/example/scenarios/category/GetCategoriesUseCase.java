@@ -39,7 +39,7 @@ class GetCategoriesUseCase implements GetCategoriesInPort {
 
     return CollectionsUtils.streamOf(categories)
       .map(category -> {
-        final var counter = countersByCategoryId.getOrDefault(category.id, CategoryCounter.newCounter(category.id));
+        final var counter = countersByCategoryId.getOrDefault(category.id(), CategoryCounter.newCounter(category.id()));
         return CategoryReadModel.from(
           category,
           counter

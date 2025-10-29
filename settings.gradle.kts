@@ -14,6 +14,6 @@ include(":scenarios:outbound")
 
 include(":data-jdbc")
 include(":data-jdbc:persistence")
-include(":event-log")
+include(":events-journal")
 
 include(":tsid")

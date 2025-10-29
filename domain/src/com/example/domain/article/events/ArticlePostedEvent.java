@@ -1,5 +1,6 @@
 package com.example.domain.article.events;
 
+import com.example.common.types.Version;
 import com.example.domain.article.ArticleId;
 import com.example.domain.category.CategoryId;
 
@@ -11,21 +12,22 @@ public record ArticlePostedEvent(
   Instant createdAt,
   Long articleId,
   Instant publishedAt,
-  Long categoryId
+  Long categoryId,
+  Long version
 ) implements ArticleEvent {
 
-  public static ArticlePostedEvent create(ArticleId articleId, Instant publishedAt, CategoryId categoryId) {
+  public static ArticlePostedEvent create(
+    ArticleId articleId,
+    Instant publishedAt,
+    CategoryId categoryId
+  ) {
     return new ArticlePostedEvent(
       UUID.randomUUID(),
       Instant.now(),
       articleId.value(),
       publishedAt,
-      categoryId.value()
+      categoryId.value(),
+      Version.newVersion().value()
     );
-  }
-
-  @Override
-  public Long domainId() {
-    return articleId;
   }
 }

@@ -10,13 +10,16 @@ import java.util.stream.Collectors;
 
 public class Paragraph extends DomainEntity<ParagraphId> {
 
+  private ParagraphId id;
   public final ArticleId articleId;
   private String text;
+  private Version version;
 
   public Paragraph(ParagraphId id, Version version, ArticleId articleId, String text) {
-    super(id, version);
+    this.id = id;
     this.articleId = articleId;
     this.text = text;
+    this.version = version;
   }
 
   static Paragraph createNew(ArticleId articleId, ParagraphId paragraphId, String text) {
@@ -61,5 +64,13 @@ public class Paragraph extends DomainEntity<ParagraphId> {
     final var result = !Objects.equals(this.text, text);
     this.text = text;
     return result;
+  }
+
+  public ParagraphId id() {
+    return id;
+  }
+
+  public Version version() {
+    return version;
   }
 }

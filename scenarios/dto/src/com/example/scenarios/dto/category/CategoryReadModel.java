@@ -12,7 +12,7 @@ public record CategoryReadModel(
 ) {
   public static CategoryReadModel from(Category category, CategoryCounter counter) {
     return new CategoryReadModel(
-      category.id,
+      category.id(),
       category.name(),
       counter.value()
     );

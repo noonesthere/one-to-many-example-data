@@ -8,5 +8,5 @@ public interface DomainEvent {
 
   Instant createdAt();
 
-  Long domainId();
+  Long version();
 }

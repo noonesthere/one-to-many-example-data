@@ -26,9 +26,4 @@ public record ParagraphEditedEvent(
       version.value()
     );
   }
-
-  @Override
-  public Long domainId() {
-    return articleId;
-  }
 }

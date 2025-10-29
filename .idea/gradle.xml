@@ -16,7 +16,7 @@
             <option value="$PROJECT_DIR$/data-jdbc" />
             <option value="$PROJECT_DIR$/data-jdbc/persistence" />
             <option value="$PROJECT_DIR$/domain" />
-            <option value="$PROJECT_DIR$/event-log" />
+            <option value="$PROJECT_DIR$/events-journal" />
             <option value="$PROJECT_DIR$/rest" />
             <option value="$PROJECT_DIR$/scenarios" />
             <option value="$PROJECT_DIR$/scenarios/dto" />

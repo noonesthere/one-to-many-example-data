@@ -30,7 +30,7 @@ dependencies {
   implementation(project(":scenarios:inbound"))
   implementation(project(":rest"))
   implementation(project(":data-jdbc:persistence"))
-  implementation(project(":event-log"))
+  implementation(project(":events-journal"))
   implementation(project(":tsid"))
 
   implementation("org.springframework.modulith:spring-modulith-starter-core") // TODO move to toml

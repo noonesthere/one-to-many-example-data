@@ -15,4 +15,8 @@ public record CategoryName(String value) {
       throw new IllegalArgumentException();
     }
   }
+
+  boolean same(CategoryName name) {
+    return this.value.equals(name.value());
+  }
 }

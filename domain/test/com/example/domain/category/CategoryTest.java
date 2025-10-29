@@ -13,7 +13,7 @@ class CategoryTest {
 
 
   @Test
-  void testCreateCategory() {
+  void testHandleCategory() {
 
     final List<DomainEvent> events = new ArrayList<>();
     // A
@@ -22,19 +22,19 @@ class CategoryTest {
     final var createCategoryCommand = new CreateCategoryCommand(id, name);
 
     // A
-    final var category = Category.create(createCategoryCommand);
+    final var category = Category.handle(createCategoryCommand);
     events.addAll(category.popEvents());
 
     // A
-    Assertions.assertEquals(id, category.id);
+    Assertions.assertEquals(id, category.id());
     Assertions.assertEquals(name, category.name());
 
     CategoryName renamedCategoryName1 = new CategoryName("REnamed Category Name");
-    category.rename(new RenameCategoryCommand(id, renamedCategoryName1));
+    category.handle(new RenameCategoryCommand(id, renamedCategoryName1));
     events.addAll(category.popEvents());
 
     CategoryName renamedCategoryName2 = new CategoryName("REnamed Category Name");
-    category.rename(new RenameCategoryCommand(id, renamedCategoryName2));
+    category.handle(new RenameCategoryCommand(id, renamedCategoryName2));
     events.addAll(category.popEvents());
 
     final var rebuilded = Category.rebuild(events);

@@ -30,9 +30,4 @@ public record ArticleRateChangedEvent(
       version.value()
     );
   }
-
-  @Override
-  public Long domainId() {
-    return articleId;
-  }
 }

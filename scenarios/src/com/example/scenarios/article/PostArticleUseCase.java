@@ -38,7 +38,7 @@ class PostArticleUseCase implements PostArticleInPort {
   @Override
   public ArticleId execute(ArticleInput articleInput) {
 
-    final var articleId = articleIdProvider.provide();
+    final ArticleId articleId = articleIdProvider.provide();
     final var categoryId = new CategoryId(articleInput.categoryId());
     final var title = new Title(articleInput.title());
 
@@ -52,6 +52,6 @@ class PostArticleUseCase implements PostArticleInPort {
 
     articlePersisterOutPort.persist(article);
 
-    return article.id;
+    return article.id();
   }
 }

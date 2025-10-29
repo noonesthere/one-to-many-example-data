@@ -35,7 +35,7 @@ public record ArticleEntity(
 
   static ArticleEntity from(Article article) {
     return new ArticleEntity(
-      article.id.value(),
+      article.id().value(),
       article.title().asStringValue(),
       article.categoryId().value(),
       map(article.paragraphs()),

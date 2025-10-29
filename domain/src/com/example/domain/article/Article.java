@@ -68,13 +68,13 @@ public class Article extends AggregateRoot<ArticleId> {
       ArticleStatus.PUBLISHED,
       (a) -> {
         a.updateVersion();
-        a.addEvent(ArticlePostedEvent.create(a.id, a.publishedAt, a.categoryId));
+        a.addEvent(ArticlePostedEvent.create(a.id(), a.publishedAt, a.categoryId));
 
         final List<Paragraph> ps = new ArrayList<>();
         for (Paragraph p : command.paragraphs()) {
           ps.add(p);
           a.addEvent(
-            ParagraphAddedEvent.create(a.id.value(), p.id.value(), p.text())
+            ParagraphAddedEvent.create(a.id().value(), p.id().value(), p.text(), a.version())
           );
         }
 
@@ -86,9 +86,8 @@ public class Article extends AggregateRoot<ArticleId> {
   public void vote(VoteCommand command) {
     updateVersion();
     rating = rating.addVote(command.grade());
-    addEvent(
-      ArticleRateChangedEvent.create(id, rating, version())
-    );
+    final var event = ArticleRateChangedEvent.create(id(), rating, version());
+    addEvent(event);
   }
 
   public Article renameTitle(RenameTitleCommand command) {
@@ -106,7 +105,7 @@ public class Article extends AggregateRoot<ArticleId> {
   public Article changeCategory(ChangeCategoryCommand command) {
     updateVersion();
     categoryId = command.categoryId();
-    addEvent(CategoryChangedEvent.create(id, categoryId, version()));
+    addEvent(CategoryChangedEvent.create(id(), categoryId, version()));
     return this;
   }
 
@@ -125,7 +124,7 @@ public class Article extends AggregateRoot<ArticleId> {
   private void changeText(Paragraph p, String text) {
     updateVersion();
     if (p.changeText(text)) {
-      addEvent(ParagraphEditedEvent.create(id, p.id, text, version()));
+      addEvent(ParagraphEditedEvent.create(id(), p.id(), text, version()));
     }
   }
 
@@ -165,10 +164,10 @@ public class Article extends AggregateRoot<ArticleId> {
 
   private void removeParagraph(Paragraph paragraph) {
     this.paragraphs.remove(paragraph);
-    addEvent(ParagraphRemovedEvent.create(id, paragraph.id, version()));
+    addEvent(ParagraphRemovedEvent.create(id(), paragraph.id(), version()));
   }
 
   private Optional<Paragraph> findParagraph(ParagraphId paragraphId) {
-    return paragraphs.stream().filter(p -> p.id.equals(paragraphId)).findFirst();
+    return paragraphs.stream().filter(p -> p.id().equals(paragraphId)).findFirst();
   }
 }

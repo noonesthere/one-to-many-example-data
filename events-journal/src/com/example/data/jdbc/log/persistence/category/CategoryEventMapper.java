@@ -24,7 +24,7 @@ class CategoryEventMapper {
 
       return new CategoryEventPublicationEntity(
         UUID.randomUUID(),
-        event.domainId(),
+        event.categoryId(),
         event.getClass().getCanonicalName(),
         event.createdAt(), // OffsetDateTime.now(ZoneOffset.UTC),
         serializedEvent

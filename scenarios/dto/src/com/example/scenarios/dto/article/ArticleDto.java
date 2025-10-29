@@ -15,7 +15,7 @@ public record ArticleDto(
   public static ArticleDto from(Article article) {
     List<String> paragraphs = article.paragraphs().stream().map(Paragraph::text).toList();
     return new ArticleDto(
-      article.id.value(),
+      article.id().value(),
       article.title().asStringValue(),
       paragraphs,
       article.rating().value()

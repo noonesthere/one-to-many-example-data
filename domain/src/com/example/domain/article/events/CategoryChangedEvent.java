@@ -24,9 +24,4 @@ public record CategoryChangedEvent(
       previousVersion.value()
     );
   }
-
-  @Override
-  public Long domainId() {
-    return articleId;
-  }
 }

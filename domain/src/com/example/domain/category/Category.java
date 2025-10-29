@@ -10,93 +10,106 @@ import com.example.domain.category.events.CategoryRenamedEvent;
 import jakarta.annotation.Nullable;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Category extends DomainEntity<CategoryId> {
 
+  private CategoryId id;
   private CategoryName name;
+  private Version version;
   @Nullable
-  private final Instant deletedAt;
+  private Instant deletedAt;
 
   public Category(
     CategoryId categoryId,
-    Version version,
     CategoryName name,
+    Version version,
     @Nullable Instant deletedAt
   ) {
-    super(categoryId, version);
+    this.id = categoryId;
     this.name = name;
+    this.version = version;
     this.deletedAt = deletedAt;
   }
 
+  private Category() {
+  }
+
   public static Category rebuild(List<DomainEvent> events) {
-    final var domainEvents = new ArrayList<>(events); // smell
+    final var category = new Category();
 
-    final CategoryCreatedEvent createEvent = (CategoryCreatedEvent) domainEvents.removeFirst(); // smell
-
-    final Category category = handleInitialEvent(createEvent);
-    domainEvents.forEach(category::applyEvent);
-
-    return category;
-  }
-
-  private static Category handleInitialEvent(CategoryCreatedEvent event) {
-
-    final Long id = event.categoryId();
-    final String name = event.categoryName();
-    final Version version = Version.newVersion();
-
-    final Category category = new Category(
-      new CategoryId(id),
-      version,
-      new CategoryName(name),
-      null
-    );
-
-    category.updateVersion();
-    return category;
-  }
-
-  private void applyEvent(DomainEvent event) {
-    switch (event) {
-      case CategoryRenamedEvent e -> {
-        this.setName(e);
+    events.forEach(event -> {
+      switch (event) {
+        case CategoryCreatedEvent e -> category.onEvent(e);
+        case CategoryRenamedEvent e -> category.onEvent(e);
+        default -> throw new IllegalStateException("Unexpected value: " + event);
       }
-      default -> throw new IllegalStateException("Unexpected value: " + event);
-    }
+    });
 
+    return category;
   }
 
-  private void setName(CategoryRenamedEvent e) {
-    this.name = new CategoryName(e.categoryName());
-    this.setVersion(Version.from(e.version()));
-  }
+  /**
+   * Command handlers
+   */
 
-  public static Category create(CreateCategoryCommand command) {
+  public static Category handle(CreateCategoryCommand command) {
+    // some business logic maybe
+
     final var event = CategoryCreatedEvent.create(
       command.categoryId(),
       command.categoryName()
     );
 
-    final var category = handleInitialEvent(event);
+    final var category = new Category();
+    category.onEvent(event);
     category.addEvent(event);
-
     return category;
   }
 
-  public void rename(RenameCategoryCommand command) {
-    updateVersion();
-    final var event = CategoryRenamedEvent.create(id, command.name(), version());
-    applyEvent(event);
-    addEvent(event);
+  public void handle(RenameCategoryCommand command) {
+    // business logic: graceful idempotent operation
+    if (!this.name().same(command.name())) {
+      final var event = CategoryRenamedEvent.create(id, command.name(), this.version.next());
+      onEvent(event);
+      addEvent(event);
+    }
   }
 
+  /**
+   *
+   * Event handlers
+   */
+
+  private void onEvent(CategoryCreatedEvent event) {
+    this.id = new CategoryId(event.categoryId());
+    this.name = new CategoryName(event.categoryName());
+    this.version = Version.newVersion();
+    this.deletedAt = null;
+  }
+
+  private void onEvent(CategoryRenamedEvent e) {
+    this.name = new CategoryName(e.categoryName());
+  }
+
+  /**
+   * Getters and setters
+   */
+
+  @Nullable
   public Instant deletedAt() {
     return deletedAt;
   }
 
   public CategoryName name() {
     return name;
+  }
+
+  public Version version() {
+    return version;
+  }
+
+  public CategoryId id() {
+    return id;
   }
 }

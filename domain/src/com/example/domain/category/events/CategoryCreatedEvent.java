@@ -1,5 +1,6 @@
 package com.example.domain.category.events;
 
+import com.example.common.types.Version;
 import com.example.domain.category.CategoryId;
 import com.example.domain.category.CategoryName;
 
@@ -10,7 +11,8 @@ public record CategoryCreatedEvent(
   UUID id,
   Instant createdAt,
   Long categoryId,
-  String categoryName
+  String categoryName,
+  Long version
 ) implements CategoryEvent {
 
   public static CategoryCreatedEvent create(CategoryId categoryId, CategoryName categoryName) {
@@ -18,12 +20,8 @@ public record CategoryCreatedEvent(
       UUID.randomUUID(),
       Instant.now(),
       categoryId.value(),
-      categoryName.value()
+      categoryName.value(),
+      Version.newVersion().value()
     );
-  }
-
-  @Override
-  public Long domainId() {
-    return categoryId;
   }
 }

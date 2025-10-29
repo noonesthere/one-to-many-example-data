@@ -25,10 +25,4 @@ public record ArticleTitleRenamedEvent(
       version.value()
     );
   }
-
-  @Override
-  public Long domainId() {
-    return articleId;
-  }
-
 }

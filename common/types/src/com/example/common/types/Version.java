@@ -2,7 +2,7 @@ package com.example.common.types;
 
 public record Version(long value) {
 
-  Version next() {
+  public Version next() {
     return new Version(value + 1);
   }
 
@@ -11,7 +11,7 @@ public record Version(long value) {
   }
 
   public static Version newVersion() {
-    return new Version(0L);
+    return new Version(1L);
   }
 
   public static Version from(Long value) {

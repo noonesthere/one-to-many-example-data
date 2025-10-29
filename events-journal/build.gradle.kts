@@ -1,5 +1,5 @@
 base {
-  archivesName = "event-log"
+  archivesName = "events-journal"
   group = "com.example.data.jdbc.log"
 }
 
