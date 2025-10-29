@@ -1,7 +1,7 @@
 package com.example.rest.category;
 
 import com.example.scenarios.dto.category.RenamingCategoryDto;
-import com.example.scenarios.inbound.category.RenameCategory;
+import com.example.scenarios.inbound.category.RenameCategoryInPort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,10 +11,10 @@ import java.util.Objects;
 @RequestMapping("/api/categories")
 class RenameCategoryRestController {
 
-  private final RenameCategory renameCategory;
+  private final RenameCategoryInPort renameCategoryInPort;
 
-  RenameCategoryRestController(RenameCategory renameCategory) {
-    this.renameCategory = renameCategory;
+  RenameCategoryRestController(RenameCategoryInPort renameCategoryInPort) {
+    this.renameCategoryInPort = renameCategoryInPort;
   }
 
   @PostMapping("/{id}")
@@ -27,7 +27,7 @@ class RenameCategoryRestController {
     }
 
     RenamingCategoryDto dto = webModel.toDto();
-    renameCategory.execute(dto);
+    renameCategoryInPort.execute(dto);
 
     return ResponseEntity.ok().build();
   }

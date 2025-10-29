@@ -4,13 +4,13 @@ import com.example.domain.article.ArticleId;
 import com.example.domain.article.Title;
 import com.example.domain.article.commands.RenameTitleCommand;
 import com.example.scenarios.dto.article.RenameTitleInput;
-import com.example.scenarios.inbound.article.RenameTitle;
+import com.example.scenarios.inbound.article.RenameTitleInPort;
 import com.example.scenarios.outbound.article.ArticleExtractor;
 import com.example.scenarios.outbound.article.ArticleUpdater;
 import jakarta.inject.Named;
 
 @Named
-class RenameTitleUseCase implements RenameTitle {
+class RenameTitleUseCase implements RenameTitleInPort {
 
   private final ArticleExtractor articleExtractor;
   private final ArticleUpdater articleUpdater;

@@ -5,13 +5,13 @@ import com.example.domain.category.CategoryId;
 import com.example.domain.category.CategoryName;
 import com.example.domain.category.commands.RenameCategoryCommand;
 import com.example.scenarios.dto.category.RenamingCategoryDto;
-import com.example.scenarios.inbound.category.RenameCategory;
+import com.example.scenarios.inbound.category.RenameCategoryInPort;
 import com.example.scenarios.outbound.category.CategoryExtractor;
 import com.example.scenarios.outbound.category.CategoryUpdater;
 import jakarta.inject.Named;
 
 @Named
-class RenameCategoryUseCase implements RenameCategory {
+class RenameCategoryUseCase implements RenameCategoryInPort {
 
   private final CategoryUpdater updater;
   private final CategoryExtractor extractor;

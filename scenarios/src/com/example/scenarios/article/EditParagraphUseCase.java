@@ -2,13 +2,13 @@ package com.example.scenarios.article;
 
 import com.example.domain.article.commands.EditParagraphCommand;
 import com.example.scenarios.dto.article.EditParagraphInput;
-import com.example.scenarios.inbound.article.EditParagraph;
+import com.example.scenarios.inbound.article.EditParagraphInPort;
 import com.example.scenarios.outbound.article.ArticleExtractor;
 import com.example.scenarios.outbound.article.ArticleUpdater;
 import jakarta.inject.Named;
 
 @Named
-class EditParagraphUseCase implements EditParagraph {
+class EditParagraphUseCase implements EditParagraphInPort {
 
   private final ArticleExtractor articleExtractor;
   private final ArticleUpdater articleUpdater;

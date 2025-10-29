@@ -3,13 +3,13 @@ package com.example.scenarios.article;
 import com.example.domain.article.ArticleId;
 import com.example.domain.article.commands.VoteCommand;
 import com.example.scenarios.dto.article.VoteArticleInput;
-import com.example.scenarios.inbound.article.VoteArticle;
+import com.example.scenarios.inbound.article.VoteArticleInPort;
 import com.example.scenarios.outbound.article.ArticleExtractor;
 import com.example.scenarios.outbound.article.ArticleUpdater;
 import jakarta.inject.Named;
 
 @Named
-class VoteArticleUseCase implements VoteArticle {
+class VoteArticleUseCase implements VoteArticleInPort {
 
   private final ArticleExtractor articleExtractor;
   private final ArticleUpdater articleUpdater;

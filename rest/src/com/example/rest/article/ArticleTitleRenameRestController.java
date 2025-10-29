@@ -1,7 +1,7 @@
 package com.example.rest.article;
 
 import com.example.scenarios.dto.article.RenameTitleInput;
-import com.example.scenarios.inbound.article.RenameTitle;
+import com.example.scenarios.inbound.article.RenameTitleInPort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,16 +9,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/articles")
 class ArticleTitleRenameRestController {
 
-  private final RenameTitle renameTitle;
+  private final RenameTitleInPort renameTitleInPort;
 
-  ArticleTitleRenameRestController(RenameTitle renameTitle) {
-    this.renameTitle = renameTitle;
+  ArticleTitleRenameRestController(RenameTitleInPort renameTitleInPort) {
+    this.renameTitleInPort = renameTitleInPort;
   }
 
   @PostMapping("/{id}/title")
   public ResponseEntity<?> rename(@PathVariable("id") String id, @RequestBody RenameArticleWebModel webModel) {
     RenameTitleInput input = webModel.to();
-    renameTitle.execute(input);
+    renameTitleInPort.execute(input);
 
     return ResponseEntity.ok().build();
   }

@@ -1,7 +1,7 @@
 package com.example.rest.article;
 
 import com.example.domain.article.ArticleId;
-import com.example.scenarios.inbound.article.PostArticle;
+import com.example.scenarios.inbound.article.PostArticleInPort;
 import io.hypersistence.tsid.TSID;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,16 +13,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/articles")
 class PostArticleRestController {
 
-  private final PostArticle postArticle;
+  private final PostArticleInPort postArticleInPort;
 
-  PostArticleRestController(PostArticle postArticle) {
-    this.postArticle = postArticle;
+  PostArticleRestController(PostArticleInPort postArticleInPort) {
+    this.postArticleInPort = postArticleInPort;
   }
 
 
   @PostMapping
   public ResponseEntity<String> postArticle(@RequestBody PostArticleWebModel webModel) {
-    final ArticleId articleId = postArticle.execute(webModel.to());
+    final ArticleId articleId = postArticleInPort.execute(webModel.to());
     return ResponseEntity.ok()
       .body(TSID.from(articleId.value()).toString());
   }

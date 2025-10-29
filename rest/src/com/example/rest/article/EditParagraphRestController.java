@@ -1,6 +1,6 @@
 package com.example.rest.article;
 
-import com.example.scenarios.inbound.article.EditParagraph;
+import com.example.scenarios.inbound.article.EditParagraphInPort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 class EditParagraphRestController {
 
-  private final EditParagraph editParagraph;
+  private final EditParagraphInPort editParagraphInPort;
 
-  EditParagraphRestController(EditParagraph editParagraph) {
-    this.editParagraph = editParagraph;
+  EditParagraphRestController(EditParagraphInPort editParagraphInPort) {
+    this.editParagraphInPort = editParagraphInPort;
   }
 
   @PostMapping("/api/articles/{articleId}/paragraphs/{paragraphId}")
@@ -22,7 +22,7 @@ class EditParagraphRestController {
     @PathVariable("paragraphId") String paragraphId,
     @RequestBody EditParagraphWebModel webModel
   ) {
-    editParagraph.execute(webModel.to());
+    editParagraphInPort.execute(webModel.to());
     return ResponseEntity.ok().build();
   }
 }

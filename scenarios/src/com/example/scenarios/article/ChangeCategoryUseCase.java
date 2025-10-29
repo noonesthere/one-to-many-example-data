@@ -3,13 +3,13 @@ package com.example.scenarios.article;
 import com.example.domain.article.Article;
 import com.example.domain.article.commands.ChangeCategoryCommand;
 import com.example.scenarios.dto.article.ChangeCategoryInput;
-import com.example.scenarios.inbound.article.ChangeCategory;
+import com.example.scenarios.inbound.article.ChangeCategoryInPort;
 import com.example.scenarios.outbound.article.ArticleExtractor;
 import com.example.scenarios.outbound.article.ArticleUpdater;
 import jakarta.inject.Named;
 
 @Named
-class ChangeCategoryUseCase implements ChangeCategory {
+class ChangeCategoryUseCase implements ChangeCategoryInPort {
 
   private final ArticleUpdater articleUpdater;
   private final ArticleExtractor extractor;

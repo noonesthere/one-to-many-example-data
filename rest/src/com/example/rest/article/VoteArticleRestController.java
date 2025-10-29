@@ -1,7 +1,7 @@
 package com.example.rest.article;
 
 import com.example.scenarios.dto.article.VoteArticleInput;
-import com.example.scenarios.inbound.article.VoteArticle;
+import com.example.scenarios.inbound.article.VoteArticleInPort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,16 +9,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/articles")
 class VoteArticleRestController {
 
-  private final VoteArticle voteArticle;
+  private final VoteArticleInPort voteArticleInPort;
 
-  VoteArticleRestController(VoteArticle voteArticle) {
-    this.voteArticle = voteArticle;
+  VoteArticleRestController(VoteArticleInPort voteArticleInPort) {
+    this.voteArticleInPort = voteArticleInPort;
   }
 
   @PostMapping("/{id}")
   public ResponseEntity<?> postArticle(@PathVariable("id") String id, @RequestBody VoteArticleWebModel webModel) {
     VoteArticleInput input = webModel.to();
-    voteArticle.execute(input);
+    voteArticleInPort.execute(input);
 
     return ResponseEntity.ok().build();
   }

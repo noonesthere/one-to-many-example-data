@@ -1,7 +1,7 @@
 package com.example.rest.article;
 
 import com.example.scenarios.dto.article.DropParagraphInput;
-import com.example.scenarios.inbound.article.DropParagraph;
+import com.example.scenarios.inbound.article.DropParagraphInPort;
 import io.hypersistence.tsid.TSID;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 class DropParagraphRestController {
 
-  private final DropParagraph dropParagraph;
+  private final DropParagraphInPort dropParagraphInPort;
 
-  DropParagraphRestController(DropParagraph dropParagraph) {
-    this.dropParagraph = dropParagraph;
+  DropParagraphRestController(DropParagraphInPort dropParagraphInPort) {
+    this.dropParagraphInPort = dropParagraphInPort;
   }
 
   @DeleteMapping("/api/articles/{articleId}/paragraphs/{paragraphId}")
@@ -26,7 +26,7 @@ class DropParagraphRestController {
       TSID.from(articleId).toLong(),
       TSID.from(paragraphId).toLong()
     );
-    dropParagraph.execute(input);
+    dropParagraphInPort.execute(input);
     return ResponseEntity.ok().build();
   }
 }

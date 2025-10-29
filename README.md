@@ -14,8 +14,8 @@ To test some api use sh files in project root project:
 - **renameCategoryApi.sh**
 - **voteArticlesApi.sh**
 - **renameCategoryApi.sh**
-- **editParagraph.sh** to test use before dropParagraph.sh can be invoked multiple times operation is idempotent
-- **dropParagraph.sh** can invoke multiple times operation is idempotent
+- **editParagraphInPort.sh** to test use before dropParagraphInPort.sh can be invoked multiple times operation is idempotent
+- **dropParagraphInPort.sh** can invoke multiple times operation is idempotent
 - **createCategoryApi.sh** can be invoked multiple times (name will be randomly generated)
 - **createArticleApi.sh** can be invoked multiple times (name will be randomly generated)
 

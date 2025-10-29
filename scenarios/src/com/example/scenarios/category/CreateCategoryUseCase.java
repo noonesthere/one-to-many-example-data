@@ -5,12 +5,12 @@ import com.example.domain.category.CategoryId;
 import com.example.domain.category.CategoryIdProvider;
 import com.example.domain.category.CategoryName;
 import com.example.domain.category.commands.CreateCategoryCommand;
-import com.example.scenarios.inbound.category.CreateCategory;
+import com.example.scenarios.inbound.category.CreateCategoryInPort;
 import com.example.scenarios.outbound.category.CategoryPersister;
 import jakarta.inject.Named;
 
 @Named
-class CreateCategoryUseCase implements CreateCategory {
+class CreateCategoryUseCase implements CreateCategoryInPort {
 
   private final CategoryPersister persister;
   private final CategoryIdProvider categoryIdGenerator;

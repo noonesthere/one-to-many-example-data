@@ -4,6 +4,6 @@ import com.example.scenarios.dto.article.ArticleReadModel;
 
 import java.util.List;
 
-public interface GetArticles {
+public interface GetArticlesInPort {
   List<ArticleReadModel> execute();
 }

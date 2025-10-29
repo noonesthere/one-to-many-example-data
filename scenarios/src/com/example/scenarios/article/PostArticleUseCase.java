@@ -9,7 +9,7 @@ import com.example.domain.article.Title;
 import com.example.domain.article.commands.PostArticleCommand;
 import com.example.domain.category.CategoryId;
 import com.example.scenarios.dto.article.ArticleInput;
-import com.example.scenarios.inbound.article.PostArticle;
+import com.example.scenarios.inbound.article.PostArticleInPort;
 import com.example.scenarios.outbound.article.ArticlePersister;
 import com.example.scenarios.outbound.category.CategoryExtractor;
 import jakarta.inject.Named;
@@ -17,7 +17,7 @@ import jakarta.inject.Named;
 import java.util.List;
 
 @Named
-class PostArticleUseCase implements PostArticle {
+class PostArticleUseCase implements PostArticleInPort {
 
   private final ArticlePersister articlePersister;
   private final ArticleIdProvider articleIdProvider;

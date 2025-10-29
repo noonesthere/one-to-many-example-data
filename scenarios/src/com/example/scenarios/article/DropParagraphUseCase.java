@@ -3,13 +3,13 @@ package com.example.scenarios.article;
 import com.example.domain.article.Article;
 import com.example.domain.article.commands.DropParagraphCommand;
 import com.example.scenarios.dto.article.DropParagraphInput;
-import com.example.scenarios.inbound.article.DropParagraph;
+import com.example.scenarios.inbound.article.DropParagraphInPort;
 import com.example.scenarios.outbound.article.ArticleExtractor;
 import com.example.scenarios.outbound.article.ArticleUpdater;
 import jakarta.inject.Named;
 
 @Named
-class DropParagraphUseCase implements DropParagraph {
+class DropParagraphUseCase implements DropParagraphInPort {
 
   private final ArticleUpdater articleUpdater;
   private final ArticleExtractor articleExtractor;
